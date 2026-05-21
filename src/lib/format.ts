@@ -72,3 +72,11 @@ export function formatPhone(phone: string): string {
 export function formatPhoneFull(phone: string): string {
   return phone;
 }
+
+/** Strip redundant "Property ID" prefix; return display token e.g. "86". */
+export function formatPropertyRefDisplay(ref: string | null | undefined): string {
+  const trimmed = (ref ?? "").trim();
+  if (!trimmed) return "—";
+  const withoutPrefix = trimmed.replace(/^#?\s*property\s*id\s*:?\s*/i, "").trim();
+  return withoutPrefix || trimmed;
+}

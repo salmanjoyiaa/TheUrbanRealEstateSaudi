@@ -181,8 +181,8 @@ export default async function HomePage() {
       <HomepageNav />
 
       {/* ── Hero ── */}
-      <section className="relative min-h-[70vh] flex items-center gradient-primary overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
+      <section className="relative min-h-[70vh] flex items-center gradient-primary">
+        <div className="absolute inset-0 overflow-hidden opacity-10">
           <div className="absolute top-20 right-20 w-72 h-72 bg-blue-400 rounded-full blur-3xl animate-float" />
           <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-400 rounded-full blur-3xl animate-float" style={{ animationDelay: "3s" }} />
           <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-indigo-400 rounded-full blur-3xl animate-float" style={{ animationDelay: "1.5s" }} />
@@ -190,7 +190,7 @@ export default async function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-28">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-            <div className="max-w-xl flex flex-col">
+            <div className="relative z-10 max-w-xl flex flex-col">
               <div className="animate-fade-in-up inline-flex items-center gap-2 self-start px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-[12px] sm:text-[13px] mb-5 sm:mb-6 animate-soft-glow">
                 <Star className="h-3.5 w-3.5 text-yellow-400 shrink-0" />
                 Trusted by 500+ tenants
