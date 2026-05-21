@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { HomepageNav } from "@/components/home/homepage-nav";
 import { HeroHeadline } from "@/components/home/hero-headline";
+import { PropertyIdSearch } from "@/components/home/property-id-search";
 import { PropertySlider } from "@/components/home/property-slider";
 import { ProductSlider } from "@/components/home/product-slider";
 import { MaintenanceSlider } from "@/components/home/maintenance-slider";
@@ -199,10 +200,12 @@ export default async function HomePage() {
                 <HeroHeadline />
               </div>
 
-              <p className="animate-fade-in-up text-[15px] sm:text-lg lg:text-xl text-white/70 max-w-xl mb-8 sm:mb-10 leading-relaxed" style={{ animationDelay: "0.2s" }}>
+              <p className="animate-fade-in-up text-[15px] sm:text-lg lg:text-xl text-white/70 max-w-xl mb-6 sm:mb-8 leading-relaxed" style={{ animationDelay: "0.2s" }}>
                 Discover premium apartments, houses, and flats from verified
                 agents. Book directly via WhatsApp — no middlemen, no hassle.
               </p>
+
+              <PropertyIdSearch />
 
               {/* Mobile-only stats card: shows between text and buttons so buttons are last */}
               <div className="animate-fade-in-up flex justify-center lg:hidden mb-8" style={{ animationDelay: "0.35s" }}>

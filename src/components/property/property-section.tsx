@@ -71,7 +71,7 @@ export function PropertySection({
             </Badge>
           )}
         </div>
-        {totalCount > 10 && (
+        {totalCount > preview.length && (
           <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
             View all ({totalCount})
           </Button>

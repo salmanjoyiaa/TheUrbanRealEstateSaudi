@@ -108,7 +108,7 @@ export default async function PropertiesPage({ searchParams }: PropertiesPagePro
             <PropertySection
               title="Available for Rent"
               status="available"
-              preview={available.data.slice(0, 10)}
+              preview={available.data}
               all={available.data}
               totalCount={available.count}
             />
