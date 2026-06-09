@@ -6,10 +6,12 @@ export function AdminPropertyFilters({
   initialStatus,
   initialCity,
   initialDistrict,
+  initialPropertyRef,
 }: {
   initialStatus?: string;
   initialCity?: string;
   initialDistrict?: string;
+  initialPropertyRef?: string;
 }) {
   const [city, setCity] = useState(initialCity || "");
   const [cities, setCities] = useState<string[]>([]);
@@ -40,6 +42,16 @@ export function AdminPropertyFilters({
 
   return (
     <form className="flex flex-wrap gap-3 items-end" action="/admin/properties" method="get">
+      <div>
+        <label className="text-xs font-medium text-muted-foreground block mb-1">Property ID</label>
+        <input
+          type="search"
+          name="property_ref"
+          defaultValue={initialPropertyRef || ""}
+          placeholder="e.g. 55"
+          className="h-9 w-28 rounded-md border border-input bg-background px-3 text-sm sm:w-36"
+        />
+      </div>
       <div>
         <label className="text-xs font-medium text-muted-foreground block mb-1">Status</label>
         <select

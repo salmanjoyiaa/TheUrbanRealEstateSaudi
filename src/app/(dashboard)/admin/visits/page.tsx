@@ -5,6 +5,10 @@ import { SendDayVisits } from "@/components/admin/send-day-visits";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 import { createAdminClient } from "@/lib/supabase/admin";
+import {
+  resolvePropertyIdsByRef,
+  sanitizePropertyRefQuery,
+} from "@/lib/server/resolve-property-ids-by-ref";
 import { VISIT_STATUS_LABELS, getVisitStatusBadgeClass } from "@/lib/visit-status";
 
 type VisitRow = {
@@ -62,9 +66,15 @@ export default async function AdminVisitsPage({
     date_from?: string;
     date_to?: string;
     sort?: string;
+    property_ref?: string;
+    view?: string;
   };
 }) {
   const supabase = createAdminClient();
+  const propertyRefQ = sanitizePropertyRefQuery(searchParams.property_ref);
+  const propertyIdsForRef = propertyRefQ
+    ? await resolvePropertyIdsByRef(supabase, propertyRefQ)
+    : null;
 
   // Build query with filters
   const sortField = searchParams.sort === "visit_date_asc" || searchParams.sort === "visit_date_desc" ? "visit_date" : "created_at";
@@ -94,6 +104,13 @@ export default async function AdminVisitsPage({
   }
   if (searchParams.date_to) {
     query = query.lte("visit_date", searchParams.date_to);
+  }
+  if (propertyIdsForRef !== null) {
+    if (propertyIdsForRef.length === 0) {
+      query = query.in("property_id", ["00000000-0000-0000-0000-000000000000"]);
+    } else {
+      query = query.in("property_id", propertyIdsForRef);
+    }
   }
 
   const { data } = (await query) as { data: VisitRow[] | null };
@@ -231,6 +248,16 @@ export default async function AdminVisitsPage({
       {/* Filters */}
       <form className="flex flex-wrap gap-3 items-end">
         <div>
+          <label className="text-xs font-medium text-muted-foreground block mb-1">Property ID</label>
+          <input
+            type="search"
+            name="property_ref"
+            defaultValue={searchParams.property_ref || ""}
+            placeholder="e.g. 55"
+            className="h-9 w-28 rounded-md border border-input bg-background px-3 text-sm sm:w-36"
+          />
+        </div>
+        <div>
           <label className="text-xs font-medium text-muted-foreground block mb-1">Status</label>
           <select
             name="status"
@@ -289,7 +316,20 @@ export default async function AdminVisitsPage({
         </a>
       </form>
 
-      <AdminVisitsTable rows={rowsWithBusy} visitingAgents={visitingAgents} pageSize={10} />
+      {propertyRefQ ? (
+        <p className="text-sm text-muted-foreground">
+          Visits for Property ID &quot;{propertyRefQ}&quot; ({rowsWithBusy.length}{" "}
+          {rowsWithBusy.length === 1 ? "request" : "requests"})
+        </p>
+      ) : null}
+
+      <AdminVisitsTable
+        rows={rowsWithBusy}
+        visitingAgents={visitingAgents}
+        pageSize={10}
+        defaultView={searchParams.view === "table" ? "table" : "day"}
+        sortMode={searchParams.sort || ""}
+      />
     </div>
   );
 }

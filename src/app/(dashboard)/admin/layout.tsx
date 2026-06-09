@@ -15,13 +15,17 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   const { data: profile } = (await supabase
     .from("profiles")
-    .select("role, full_name")
+    .select("role, full_name, avatar_url")
     .eq("id", user.id)
-    .single()) as { data: { role: string; full_name: string } | null };
+    .single()) as { data: { role: string; full_name: string; avatar_url: string | null } | null };
 
   if (!profile || profile.role !== "admin") {
     redirect("/");
   }
 
-  return <AdminShell userName={profile?.full_name}>{children}</AdminShell>;
+  return (
+    <AdminShell userName={profile?.full_name} avatarUrl={profile?.avatar_url}>
+      {children}
+    </AdminShell>
+  );
 }

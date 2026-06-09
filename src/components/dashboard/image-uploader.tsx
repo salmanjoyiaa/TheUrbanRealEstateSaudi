@@ -11,6 +11,7 @@ type ImageUploaderProps = {
   values: string[];
   onChange: (values: string[]) => void;
   maxFiles?: number;
+  pathPrefix?: string;
 };
 
 export function sanitizeStorageFileName(name: string) {
@@ -81,7 +82,7 @@ export async function optimizeImage(file: File): Promise<File> {
   });
 }
 
-export function ImageUploader({ bucket, values, onChange, maxFiles = 20 }: ImageUploaderProps) {
+export function ImageUploader({ bucket, values, onChange, maxFiles = 20, pathPrefix }: ImageUploaderProps) {
   const supabase = useMemo(() => createClient(), []);
   const [isUploading, setUploading] = useState(false);
 
@@ -127,7 +128,8 @@ export function ImageUploader({ bucket, values, onChange, maxFiles = 20 }: Image
         // Optimize and resize
         file = await optimizeImage(file);
 
-        const path = `${Date.now()}-${sanitizeStorageFileName(file.name)}`;
+        const fileName = `${Date.now()}-${sanitizeStorageFileName(file.name)}`;
+        const path = pathPrefix ? `${pathPrefix}/${fileName}` : fileName;
         const { error } = await supabase.storage.from(bucket).upload(path, file, {
           cacheControl: "3600",
           upsert: false,

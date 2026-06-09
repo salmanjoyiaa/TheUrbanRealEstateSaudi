@@ -15,6 +15,7 @@ import {
   ClipboardList,
   Settings,
   FileText,
+  User,
 } from "lucide-react";
 
 export interface NavItem {
@@ -33,24 +34,28 @@ export const agentNav: NavItem[] = [
   { title: "Overview", href: "/agent", icon: LayoutDashboard },
   { title: "My Properties", href: "/agent/properties", icon: Building2 },
   { title: "Visit Requests", href: "/agent/visits", icon: Calendar },
+  { title: "Profile", href: "/agent/profile", icon: User },
 ];
 
 export const visitingAgentNav: NavItem[] = [
   { title: "Overview", href: "/agent", icon: LayoutDashboard },
   { title: "My Assignments", href: "/agent/assignments", icon: MapPin },
   { title: "My Properties", href: "/agent/properties-assigned", icon: Building2 },
+  { title: "Profile", href: "/agent/profile", icon: User },
 ];
 
 export const sellerNav: NavItem[] = [
   { title: "Overview", href: "/agent", icon: LayoutDashboard },
   { title: "My Products", href: "/agent/products", icon: Package },
   { title: "Product contacts", href: "/agent/leads", icon: ShoppingBag },
+  { title: "Profile", href: "/agent/profile", icon: User },
 ];
 
 export const maintenanceNav: NavItem[] = [
   { title: "Overview", href: "/agent", icon: LayoutDashboard },
   { title: "My Services", href: "/agent/maintenance-services", icon: Wrench },
   { title: "Service Requests", href: "/agent/maintenance-requests", icon: ScrollText },
+  { title: "Profile", href: "/agent/profile", icon: User },
 ];
 
 // Grouped admin navigation
@@ -105,6 +110,12 @@ export const adminNavGroups: NavGroup[] = [
     items: [
       { title: "Message Logs", href: "/admin/logs", icon: MessageSquare },
       { title: "Audit Log", href: "/admin/audit-log", icon: FileText },
+    ],
+  },
+  {
+    label: "Account",
+    items: [
+      { title: "Profile", href: "/admin/profile", icon: User },
     ],
   },
 ];

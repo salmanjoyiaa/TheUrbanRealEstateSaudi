@@ -6,6 +6,7 @@ import { formatSAR } from "@/lib/format";
 import { PropertyActions } from "@/components/admin/property-actions";
 import { FeaturedToggle } from "@/components/admin/featured-toggle";
 import { AdminPropertyFilters } from "@/components/admin/admin-property-filters";
+import { sanitizePropertyRefQuery } from "@/lib/server/resolve-property-ids-by-ref";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -37,9 +38,11 @@ const STATUS_COLORS: Record<string, string> = {
 export default async function AdminPropertiesPage({
   searchParams,
 }: {
-  searchParams: { status?: string; city?: string; district?: string };
+  searchParams: { status?: string; city?: string; district?: string; property_ref?: string };
 }) {
   const supabase = createAdminClient();
+  const propertyRefQ = sanitizePropertyRefQuery(searchParams?.property_ref);
+
   let query = supabase
     .from("properties")
     .select("id, title, city, district, status, price, property_ref, featured, agents:agent_id(profiles:profile_id(full_name))")
@@ -53,6 +56,9 @@ export default async function AdminPropertiesPage({
   }
   if (searchParams?.district) {
     query = query.eq("district", searchParams.district);
+  }
+  if (propertyRefQ) {
+    query = query.ilike("property_ref", `%${propertyRefQ}%`);
   }
 
   const { data } = (await query) as { data: Row[] | null };
@@ -78,7 +84,14 @@ export default async function AdminPropertiesPage({
         initialStatus={searchParams?.status}
         initialCity={searchParams?.city}
         initialDistrict={searchParams?.district}
+        initialPropertyRef={searchParams?.property_ref}
       />
+
+      {propertyRefQ ? (
+        <p className="text-sm text-muted-foreground">
+          Showing {rows.length} {rows.length === 1 ? "property" : "properties"} matching Property ID &quot;{propertyRefQ}&quot;
+        </p>
+      ) : null}
 
       <DataTable
         rows={rows}

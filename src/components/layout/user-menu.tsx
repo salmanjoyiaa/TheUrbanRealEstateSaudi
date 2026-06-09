@@ -1,7 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { LogOut } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { LogOut, User } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import {
   DropdownMenu,
@@ -22,14 +23,37 @@ function getInitials(name?: string) {
     .toUpperCase();
 }
 
+function AvatarCircle({ avatarUrl, userName }: { avatarUrl?: string | null; userName?: string }) {
+  if (avatarUrl) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={avatarUrl}
+        alt={userName || "Account"}
+        className="h-8 w-8 shrink-0 rounded-full object-cover ring-2 ring-background"
+      />
+    );
+  }
+
+  return (
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-[11px] font-bold text-primary-foreground shadow-inner ring-2 ring-background transition-transform group-hover:scale-105">
+      {getInitials(userName)}
+    </span>
+  );
+}
+
 type UserMenuProps = {
   userName?: string;
   role?: string;
+  avatarUrl?: string | null;
 };
 
-export function UserMenu({ userName, role }: UserMenuProps) {
+export function UserMenu({ userName, role, avatarUrl }: UserMenuProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const supabase = createClient();
+
+  const profileHref = pathname.startsWith("/admin") ? "/admin/profile" : "/agent/profile";
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -46,17 +70,20 @@ export function UserMenu({ userName, role }: UserMenuProps) {
           <span className="hidden sm:inline-block max-w-[120px] truncate text-muted-foreground group-hover:text-foreground transition-colors">
             {userName || "Account"}
           </span>
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-[11px] font-bold text-primary-foreground shadow-inner ring-2 ring-background transition-transform group-hover:scale-105">
-            {getInitials(userName)}
-          </span>
+          <AvatarCircle avatarUrl={avatarUrl} userName={userName} />
         </button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" sideOffset={8} className="w-56">
         <DropdownMenuLabel className="font-normal">
           <div className="flex items-center gap-3 py-1">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-xs font-bold text-primary-foreground shadow-inner">
-              {getInitials(userName)}
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary/70 text-xs font-bold text-primary-foreground shadow-inner">
+              {avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={avatarUrl} alt={userName || "Account"} className="h-full w-full object-cover" />
+              ) : (
+                getInitials(userName)
+              )}
             </span>
             <div className="min-w-0 flex-1 space-y-0.5">
               {userName && (
@@ -74,6 +101,13 @@ export function UserMenu({ userName, role }: UserMenuProps) {
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />
+
+        <DropdownMenuItem asChild className="gap-2 cursor-pointer">
+          <Link href={profileHref}>
+            <User className="h-4 w-4" />
+            Profile
+          </Link>
+        </DropdownMenuItem>
 
         <DropdownMenuItem
           className="gap-2 text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
