@@ -6,10 +6,25 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // Public routes — no auth required
+  const publicPaths = [
+    "/",
+    "/about",
+    "/contact",
+    "/privacy-policy",
+    "/terms-of-service",
+    "/cookie-policy",
+    "/advertising-disclosure",
+    "/safety-and-listing-policy",
+    "/robots.txt",
+    "/sitemap.xml",
+    "/ads.txt",
+  ];
+
   if (
-    pathname === "/" ||
+    publicPaths.includes(pathname) ||
     pathname.startsWith("/properties") ||
     pathname.startsWith("/products") ||
+    pathname.startsWith("/maintenance") ||
     pathname.startsWith("/sell") ||
     pathname.startsWith("/api/properties/search") ||
     pathname.startsWith("/api/visits") ||

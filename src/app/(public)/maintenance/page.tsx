@@ -6,6 +6,14 @@ import { createClient } from "@/lib/supabase/server";
 export const metadata: Metadata = {
     title: "Maintenance Services Marketplace",
     description: "Browse verified professionals for plumbing, electrical, HVAC, and more across Saudi Arabia.",
+    alternates: { canonical: "/maintenance" },
+    openGraph: {
+        title: "Maintenance Services Marketplace | The Urban Real Estate",
+        description: "Browse verified professionals for plumbing, electrical, HVAC, and more across Saudi Arabia.",
+        url: "/maintenance",
+        type: "website",
+        siteName: "The Urban Real Estate",
+    },
 };
 
 export const revalidate = 0;

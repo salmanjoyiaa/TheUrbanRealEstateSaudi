@@ -7,6 +7,8 @@ import { KITCHEN_FEATURES, UTILITIES_AND_SERVICES } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { PropertyGallery } from "@/components/property/property-gallery";
 import { VisitScheduler } from "@/components/visit/visit-scheduler";
+import { JsonLd } from "@/components/seo/json-ld";
+import { buildBreadcrumbJsonLd } from "@/lib/seo";
 
 type PropertyDetail = {
   id: string;
@@ -143,7 +145,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${property.title} | Properties`,
     description: property.description.slice(0, 140),
+    alternates: { canonical: `/properties/${params.id}` },
     openGraph: {
+      title: property.title,
+      description: property.description.slice(0, 140),
+      url: `/properties/${params.id}`,
+      type: "website",
+      siteName: "The Urban Real Estate",
       images: property.images?.[0] ? [property.images[0]] : undefined,
     },
   };
@@ -185,8 +193,15 @@ export default async function PropertyDetailPage({ params }: PageProps) {
   const utilitiesFeatures = (property.amenities || []).filter((a) => utilitiesSet.has(a));
   const otherAmenities = (property.amenities || []).filter((a) => !kitchenFeaturesSet.has(a) && !utilitiesSet.has(a));
 
+  const breadcrumbData = buildBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Properties", path: "/properties" },
+    { name: property.title, path: `/properties/${property.id}` },
+  ]);
+
   return (
     <div className="container mx-auto space-y-6 px-4 py-6 sm:py-8 max-w-7xl">
+      <JsonLd data={breadcrumbData} />
       <div>
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <h1 className="text-[22px] font-extrabold text-[#0f1419] sm:text-[28px] leading-tight">{property.title}</h1>

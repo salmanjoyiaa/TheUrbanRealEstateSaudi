@@ -1,0 +1,3 @@
+# ads.txt for theurbanrealestate.com
+# Add Google AdSense seller line after approval:
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

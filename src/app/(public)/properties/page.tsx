@@ -28,6 +28,14 @@ export async function generateMetadata({ searchParams }: PropertiesPageProps): P
   return {
     title: `Properties${city}${type}`,
     description: "Browse premium properties across Saudi Arabia with filters by city, type, and budget.",
+    alternates: { canonical: "/properties" },
+    openGraph: {
+      title: `Properties${city}${type} | The Urban Real Estate`,
+      description: "Browse premium properties across Saudi Arabia with filters by city, type, and budget.",
+      url: "/properties",
+      type: "website",
+      siteName: "The Urban Real Estate",
+    },
   };
 }
 

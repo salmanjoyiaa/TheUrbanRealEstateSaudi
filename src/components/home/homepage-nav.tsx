@@ -17,6 +17,8 @@ const navLinks = [
   { title: "Properties", href: "/properties" },
   { title: "Products", href: "/products" },
   { title: "Maintenance", href: "/maintenance" },
+  { title: "About", href: "/about" },
+  { title: "Contact", href: "/contact" },
 ];
 
 export function HomepageNav() {

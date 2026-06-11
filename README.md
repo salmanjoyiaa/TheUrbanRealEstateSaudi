@@ -351,6 +351,26 @@ This is a production codebase. For modifications:
 3. Update documentation if needed
 4. Submit pull request with detailed description
 
+## Google Analytics, Search Console, and AdSense
+
+Set these in Vercel (or `.env.local`) — **do not commit real IDs** to git:
+
+| Variable | Purpose |
+|----------|---------|
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 measurement ID (e.g. `G-XXXXXXXXXX`). Loads only after the user accepts analytics cookies. |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Search Console HTML tag verification token. |
+| `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | AdSense publisher ID (e.g. `ca-pub-XXXXXXXXXXXXXXXX`). Loads only after advertising cookie consent. |
+| `NEXT_PUBLIC_ADSENSE_VERIFICATION_META` | Optional AdSense verification meta value if required. |
+| `NEXT_PUBLIC_BUSINESS_EMAIL` | Optional public email shown on the Contact page. |
+
+### After deployment
+
+1. **GA4 Realtime**: Set `NEXT_PUBLIC_GA_MEASUREMENT_ID`, deploy, accept analytics cookies on the site, then open GA4 → Reports → Realtime.
+2. **Search Console**: Add property `https://www.theurbanrealestate.com`, choose HTML tag verification, set `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`, redeploy, then verify. Submit `https://www.theurbanrealestate.com/sitemap.xml`.
+3. **AdSense**: Apply at [Google AdSense](https://www.google.com/adsense/). After approval, set `NEXT_PUBLIC_ADSENSE_CLIENT_ID`, update [`public/ads.txt`](public/ads.txt) with your real publisher line (replace the comment placeholder), and redeploy.
+
+Legal/trust pages (`/about`, `/contact`, `/privacy-policy`, etc.) and `/ads.txt` are required for AdSense readiness. Cookie consent gates non-essential scripts.
+
 ## 📄 License
 
 Private project. All rights reserved.

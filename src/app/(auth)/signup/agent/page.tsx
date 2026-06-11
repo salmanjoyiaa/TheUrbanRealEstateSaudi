@@ -161,6 +161,25 @@ function AgentSignupPage() {
     let documentPath: string | null = null;
 
     if (documentFile) {
+      const maxDocumentSize = 10 * 1024 * 1024;
+      const allowedExtensions = [".pdf", ".jpg", ".jpeg", ".png"];
+      const blockedExtensions = [".exe", ".bat", ".cmd", ".sh", ".msi", ".dll", ".js", ".html", ".htm"];
+      const fileName = documentFile.name.toLowerCase();
+      const extension = fileName.includes(".") ? fileName.slice(fileName.lastIndexOf(".")) : "";
+
+      if (blockedExtensions.includes(extension)) {
+        toast.error("This file type is not allowed");
+        return;
+      }
+      if (!allowedExtensions.includes(extension)) {
+        toast.error("License document must be PDF, JPG, or PNG");
+        return;
+      }
+      if (documentFile.size > maxDocumentSize) {
+        toast.error("License document must be 10MB or smaller");
+        return;
+      }
+
       const path = `agent-documents/${userId}/${Date.now()}-${sanitizeFileName(documentFile.name)}`;
       const { error: uploadError } = await supabase.storage
         .from("agent-documents")

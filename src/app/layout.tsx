@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Inter, Outfit } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
@@ -8,6 +9,12 @@ import { ToastProvider } from "@/providers/toast-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import NextTopLoader from "nextjs-toploader";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { AdSenseScript } from "@/components/analytics/adsense-script";
+import { CookieConsent } from "@/components/consent/cookie-consent";
+
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
+const adsenseVerificationMeta = process.env.NEXT_PUBLIC_ADSENSE_VERIFICATION_META?.trim();
 
 const inter = Inter({
   subsets: ["latin"],
@@ -71,6 +78,12 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  ...(googleSiteVerification
+    ? { verification: { google: googleSiteVerification } }
+    : {}),
+  ...(adsenseVerificationMeta
+    ? { other: { "google-adsense-account": adsenseVerificationMeta } }
+    : {}),
 };
 
 export const dynamic = "force-dynamic";
@@ -88,7 +101,12 @@ export default function RootLayout({
           <QueryProvider>
             <AuthProvider>
               <PageViewTracker />
+              <Suspense fallback={null}>
+                <GoogleAnalytics />
+              </Suspense>
+              <AdSenseScript />
               {children}
+              <CookieConsent />
               <ToastProvider />
               <Analytics />
             </AuthProvider>

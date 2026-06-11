@@ -28,6 +28,14 @@ export async function generateMetadata({ searchParams }: ProductsPageProps): Pro
   return {
     title: `Products${city}`,
     description: "Browse quality used household items from verified agents across Saudi Arabia.",
+    alternates: { canonical: "/products" },
+    openGraph: {
+      title: `Products${city} | The Urban Real Estate`,
+      description: "Browse quality used household items from verified agents across Saudi Arabia.",
+      url: "/products",
+      type: "website",
+      siteName: "The Urban Real Estate",
+    },
   };
 }
 

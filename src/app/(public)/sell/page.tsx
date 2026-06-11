@@ -1,6 +1,22 @@
 import { Suspense } from "react";
+import { Metadata } from "next";
 import { Loader2 } from "lucide-react";
 import { SellListingForm } from "@/components/sell/sell-listing-form";
+
+export const metadata: Metadata = {
+  title: "List Your Product Free",
+  description:
+    "List your used household product for free on The Urban Real Estate (UrbanSaudi) marketplace in Saudi Arabia.",
+  alternates: { canonical: "/sell" },
+  openGraph: {
+    title: "List Your Product Free | The Urban Real Estate",
+    description:
+      "List your used household product for free on The Urban Real Estate marketplace in Saudi Arabia.",
+    url: "/sell",
+    type: "website",
+    siteName: "The Urban Real Estate",
+  },
+};
 
 export default function SellPage() {
   return (

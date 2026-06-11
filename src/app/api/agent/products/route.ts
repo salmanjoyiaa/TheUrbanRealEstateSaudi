@@ -51,6 +51,8 @@ export async function GET() {
   return NextResponse.json({ data: data || [] });
 }
 
+// TODO: Add pending_review moderation status for new product submissions when schema is updated.
+// Currently products use is_available boolean; public listings filter on is_available=true.
 export async function POST(request: Request) {
   const { supabase, agentId, error, status } = await getApprovedAgentId();
   if (!agentId) return NextResponse.json({ error }, { status });

@@ -6,6 +6,8 @@ import { getPublicShareBaseUrl } from "@/config/site";
 import { formatDate, formatPhoneFull, formatSAR } from "@/lib/format";
 import { PropertyGallery } from "@/components/property/property-gallery";
 import { ProductContactActions } from "@/components/product/product-contact-actions";
+import { JsonLd } from "@/components/seo/json-ld";
+import { buildBreadcrumbJsonLd } from "@/lib/seo";
 
 type ProductDetail = {
   id: string;
@@ -99,6 +101,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: desc,
       images: ogImage ? [ogImage] : undefined,
     },
+    alternates: { canonical: `/products/${params.id}` },
   };
 }
 
@@ -117,8 +120,15 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
   const locationLine = [product.city, product.district?.trim()].filter(Boolean).join(", ");
 
+  const breadcrumbData = buildBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Products", path: "/products" },
+    { name: product.title, path: `/products/${product.id}` },
+  ]);
+
   return (
     <div className="container mx-auto space-y-6 px-4 py-8">
+      <JsonLd data={breadcrumbData} />
       <div>
         <h1 className="text-[24px] font-extrabold text-[#0f1419] sm:text-[28px]">{product.title}</h1>
         <p className="mt-1 inline-flex items-center gap-1 text-[15px] text-[#536471]">
