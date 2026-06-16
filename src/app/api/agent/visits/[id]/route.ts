@@ -39,9 +39,27 @@ const rescheduleSchema = z.object({
   visit_time: z.string().regex(/^\d{2}:\d{2}(:\d{2})?$/, "Time must be HH:MM"),
 });
 
+const completeVisitSchema = z
+  .object({
+    action: z.literal("complete_visit"),
+    customer_remarks: z.string().max(5000).optional(),
+    deal_outcome: z.enum(["no_deal", "deal_pending", "deal_closed"]),
+    commission_amount: z.coerce.number().positive("Commission amount must be greater than zero").optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.deal_outcome === "deal_closed" && !data.commission_amount) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Commission amount is required when commission was received",
+        path: ["commission_amount"],
+      });
+    }
+  });
+
 const payloadSchema = z.union([
   cancelSchema,
   rescheduleSchema,
+  completeVisitSchema,
   statusUpdateSchema,
 ]);
 
@@ -86,7 +104,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     .from("visit_requests")
     .select(`
       id, property_id, visitor_name, visitor_email, visitor_phone,
-      visiting_agent_id, status, visit_date, visit_time,
+      visiting_agent_id, status, visiting_status, visit_date, visit_time,
       properties:property_id (title)
     `)
     .eq("id", context.params.id)
@@ -100,6 +118,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
         visitor_phone: string;
         visiting_agent_id: string;
         status: string;
+        visiting_status: string;
         visit_date: string;
         visit_time: string;
         properties: { title: string } | null;
@@ -112,6 +131,10 @@ export async function PATCH(request: Request, context: { params: { id: string } 
 
   if (currentVisit.status === "cancelled") {
     return NextResponse.json({ error: "This visit is already cancelled" }, { status: 400 });
+  }
+
+  if (["deal_close", "deal_fail"].includes(currentVisit.visiting_status)) {
+    return NextResponse.json({ error: "This visit is already closed" }, { status: 400 });
   }
 
   const propertyTitle = currentVisit.properties?.title || "Property";
@@ -279,6 +302,57 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     };
 
     await sendWhatsApp(currentVisit.visitor_phone, visitRescheduled(templateParams), context.params.id);
+
+    revalidateAgentSurfaces();
+    return NextResponse.json({ success: true });
+  }
+
+  if ("action" in parsed.data && parsed.data.action === "complete_visit") {
+    const { customer_remarks, deal_outcome, commission_amount } = parsed.data;
+
+    const outcomeLabels = {
+      no_deal: "No deal",
+      deal_pending: "Deal pending",
+      deal_closed: "Commission received",
+    } as const;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const updatePayload: Record<string, any> = {
+      status: "completed",
+      ...(customer_remarks?.trim() ? { customer_remarks: customer_remarks.trim() } : {}),
+    };
+
+    if (deal_outcome === "no_deal") {
+      updatePayload.visiting_status = "deal_fail";
+    } else if (deal_outcome === "deal_pending") {
+      updatePayload.visiting_status = "deal_pending";
+    } else {
+      updatePayload.visiting_status = "deal_close";
+      updatePayload.commission_received_amount = commission_amount;
+      updatePayload.commission_received_at = new Date().toISOString();
+    }
+
+    const { error } = await adminDb
+      .from("visit_requests")
+      .update(updatePayload as never)
+      .eq("id", context.params.id)
+      .eq("visiting_agent_id", user.id);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    const remarkNote = customer_remarks?.trim() ? ` Remarks: ${customer_remarks.trim()}` : "";
+    const commissionNote =
+      deal_outcome === "deal_closed" && commission_amount
+        ? ` Commission: SAR ${commission_amount}.`
+        : "";
+
+    await supabase.from("visit_comments").insert({
+      visit_id: context.params.id,
+      author_id: user.id,
+      content: `Visit completed. Outcome: ${outcomeLabels[deal_outcome]}.${commissionNote}${remarkNote}`,
+    } as never);
 
     revalidateAgentSurfaces();
     return NextResponse.json({ success: true });

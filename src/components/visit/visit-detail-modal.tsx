@@ -11,7 +11,7 @@ import {
   Image as ImageIcon,
   MessageCircle,
   ExternalLink,
-  ChevronRight,
+  CheckCircle2,
 } from "lucide-react";
 import {
   Dialog,
@@ -27,7 +27,7 @@ import { VisitPipelineProgress } from "@/components/visit/visit-pipeline-progres
 import { VisitCommentsSection } from "@/components/visit/visit-comments-section";
 import { VisitCancelDialog } from "@/components/visit/visit-cancel-dialog";
 import { VisitReschedulePanel } from "@/components/visit/visit-reschedule-panel";
-import { VisitConfirmWizard } from "@/components/visit/visit-confirm-wizard";
+import { VisitCompleteForm, type CompleteVisitPayload } from "@/components/visit/visit-complete-form";
 import {
   type AssignmentRow,
   type AssignmentHistoryItem,
@@ -45,7 +45,7 @@ export type VisitDetailModalProps = {
   assignmentHistory?: AssignmentHistoryItem[];
   onCancel: (visitId: string, reason: string) => Promise<void>;
   onReschedule: (visitId: string, data: { reason: string; visit_date: string; visit_time: string }) => Promise<void>;
-  onStatusUpdate: (visitId: string, status: string, extra?: Record<string, string | number>) => Promise<void>;
+  onCompleteVisit: (visitId: string, payload: CompleteVisitPayload) => Promise<void>;
   loading?: boolean;
 };
 
@@ -61,10 +61,10 @@ export function VisitDetailModal({
   assignmentHistory = [],
   onCancel,
   onReschedule,
-  onStatusUpdate,
+  onCompleteVisit,
   loading,
 }: VisitDetailModalProps) {
-  const [mode, setMode] = useState<"view" | "reschedule" | "confirm">("view");
+  const [mode, setMode] = useState<"view" | "reschedule" | "complete">("view");
   const [cancelOpen, setCancelOpen] = useState(false);
 
   if (!visit) return null;
@@ -152,13 +152,14 @@ export function VisitDetailModal({
                 />
               )}
 
-              {mode === "confirm" && !terminal && (
-                <VisitConfirmWizard
-                  visit={visit}
+              {mode === "complete" && !terminal && (
+                <VisitCompleteForm
                   loading={loading}
-                  onClose={() => setMode("view")}
-                  onStatusUpdate={async (status, extra) => {
-                    await onStatusUpdate(visit.id, status, extra);
+                  initialRemarks={visit.customer_remarks}
+                  onCancel={() => setMode("view")}
+                  onSubmit={async (payload) => {
+                    await onCompleteVisit(visit.id, payload);
+                    handleClose(false);
                   }}
                 />
               )}
@@ -287,9 +288,9 @@ export function VisitDetailModal({
                   >
                     Reschedule
                   </Button>
-                  <Button className="flex-1" onClick={() => setMode("confirm")} disabled={loading}>
-                    Confirm
-                    <ChevronRight className="ml-1 h-4 w-4" />
+                  <Button className="flex-1" onClick={() => setMode("complete")} disabled={loading}>
+                    <CheckCircle2 className="mr-1.5 h-4 w-4" />
+                    Complete visit
                   </Button>
                 </div>
               </div>

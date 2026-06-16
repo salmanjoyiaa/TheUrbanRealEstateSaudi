@@ -64,6 +64,38 @@ export function useVisitMutations() {
     }
   }, [refresh]);
 
+  const completeVisit = useCallback(async (
+    visitId: string,
+    payload: {
+      customer_remarks?: string;
+      deal_outcome: "no_deal" | "deal_pending" | "deal_closed";
+      commission_amount?: number;
+    }
+  ) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/agent/visits/${visitId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "complete_visit",
+          ...payload,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to complete visit");
+      }
+      toast.success("Visit completed");
+      refresh();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "An error occurred");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [refresh]);
+
   const updateStatus = useCallback(async (
     visitId: string,
     status: string,
@@ -93,5 +125,5 @@ export function useVisitMutations() {
     }
   }, [refresh]);
 
-  return { loading, cancelVisit, rescheduleVisit, updateStatus };
+  return { loading, cancelVisit, rescheduleVisit, updateStatus, completeVisit };
 }

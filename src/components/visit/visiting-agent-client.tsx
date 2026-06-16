@@ -32,7 +32,7 @@ export function VisitingAgentClient({
 }) {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [selectedVisit, setSelectedVisit] = useState<AssignmentRow | null>(null);
-  const { loading, cancelVisit, rescheduleVisit, updateStatus } = useVisitMutations();
+  const { loading, cancelVisit, rescheduleVisit, completeVisit } = useVisitMutations();
 
   useEffect(() => {
     setSelectedVisit((current) => {
@@ -141,7 +141,7 @@ export function VisitingAgentClient({
         loading={loading}
         onCancel={cancelVisit}
         onReschedule={rescheduleVisit}
-        onStatusUpdate={updateStatus}
+        onCompleteVisit={completeVisit}
       />
     </div>
   );
