@@ -65,6 +65,15 @@ export function visitCancelled(params: {
   return `Hello ${params.visitorName}, your visit for "${params.propertyTitle}" on ${params.visitDate} at ${params.visitTime} was cancelled.`;
 }
 
+export function visitRescheduled(params: {
+  visitorName: string;
+  propertyTitle: string;
+  visitDate: string;
+  visitTime: string;
+}) {
+  return `Hello ${params.visitorName}, your visit for "${params.propertyTitle}" has been rescheduled to ${params.visitDate} at ${params.visitTime}.`;
+}
+
 export function leadConfirmedBuyer(params: {
   buyerName: string;
   productTitle: string;

@@ -401,9 +401,9 @@ export default async function PropertyDetailPage({ params }: PageProps) {
         </div>
 
         {/* Right Column: Sticky Sidebar for Action / Booking */}
-        <div className="space-y-5 lg:sticky lg:top-24 lg:self-start">
+        <div className="space-y-5 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-6rem)]">
           {isAvailable ? (
-            <div id="visit-scheduler" className="rounded-2xl border border-[#eff3f4] bg-white shadow-sm overflow-hidden">
+            <div id="visit-scheduler" className="rounded-2xl border border-[#eff3f4] bg-white shadow-sm overflow-hidden lg:flex lg:flex-col lg:max-h-[calc(100vh-7rem)]">
               <VisitScheduler propertyId={property.id} propertyTitle={property.title} />
             </div>
           ) : (

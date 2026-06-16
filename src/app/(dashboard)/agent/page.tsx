@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
+import { VisitDayBoard } from "@/components/visit/visit-day-board";
+import { fetchVisitingAgentDashboardData } from "@/lib/visiting-agent-data";
 
 export default async function AgentOverviewPage() {
   const supabase = await createClient();
@@ -111,6 +113,11 @@ export default async function AgentOverviewPage() {
   const outputVisits = agent.agent_type === "visiting" ? confirmedVisits : propertyAgentVisits;
   const outputLeads = agent.agent_type === "visiting" ? confirmedLeads : propertyAgentLeads;
 
+  const visitingDashboardData =
+    agent.agent_type === "visiting"
+      ? await fetchVisitingAgentDashboardData(user.id, agent.id)
+      : null;
+
   return (
     <div className="space-y-6">
       <div>
@@ -139,6 +146,22 @@ export default async function AgentOverviewPage() {
           </>
         )}
       </div>
+
+      {visitingDashboardData && (
+        <div className="space-y-3">
+          <div>
+            <h2 className="text-lg font-semibold text-navy">Today&apos;s schedule</h2>
+            <p className="text-sm text-muted-foreground">
+              Property-wise daily visits. Click a visit for details and actions.
+            </p>
+          </div>
+          <VisitDayBoard
+            rows={visitingDashboardData.rows}
+            assignedProperties={visitingDashboardData.assignedProperties}
+            assignmentHistoryByVisit={visitingDashboardData.assignmentHistoryByVisit}
+          />
+        </div>
+      )}
 
       <Card>
         <CardHeader>

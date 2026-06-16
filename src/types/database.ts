@@ -128,6 +128,12 @@ export interface VisitRequest {
   reschedule_reason: string | null;
   reschedule_date: string | null;
   reschedule_time: string | null;
+  cancellation_reason: string | null;
+  cancelled_by: string | null;
+  cancelled_at: string | null;
+  commission_received_amount: number | null;
+  commission_received_at: string | null;
+  visitor_message: string | null;
   created_at: string;
   updated_at: string;
 }

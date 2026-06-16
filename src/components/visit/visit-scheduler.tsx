@@ -41,6 +41,14 @@ type VisitSchedulerProps = {
   propertyTitle: string;
 };
 
+function StepFooter({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="shrink-0 border-t border-[#eff3f4] bg-white px-6 py-4 lg:sticky lg:bottom-0">
+      <div className="flex gap-2">{children}</div>
+    </div>
+  );
+}
+
 export function VisitScheduler({ propertyId, propertyTitle }: VisitSchedulerProps) {
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -51,7 +59,6 @@ export function VisitScheduler({ propertyId, propertyTitle }: VisitSchedulerProp
   const dateKey = useMemo(() => (date ? format(date, "yyyy-MM-dd") : ""), [date]);
   const { data: slots = [], isLoading: loadingSlots } = useVisitSlots(propertyId, dateKey, !!dateKey);
   const availableSlots = useMemo(() => slots.filter((s) => s.available), [slots]);
-
 
   const createVisit = useCreateVisitRequest();
 
@@ -141,7 +148,7 @@ export function VisitScheduler({ propertyId, propertyTitle }: VisitSchedulerProp
 
   if (step === 4) {
     return (
-      <Card>
+      <Card className="border-0 shadow-none">
         <CardContent className="pt-6">
           <SuccessState
             title="Visit Scheduled!"
@@ -161,20 +168,20 @@ export function VisitScheduler({ propertyId, propertyTitle }: VisitSchedulerProp
   }
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="flex flex-col border-0 shadow-none lg:max-h-[calc(100vh-7rem)] lg:overflow-hidden">
+      <CardHeader className="shrink-0 pb-4">
         <CardTitle>Schedule a visit</CardTitle>
         <CardDescription>Book a time for {propertyTitle}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="flex items-center gap-2 text-[13px]">
+        <div className="flex items-center gap-2 pt-2 text-[13px]">
           <div className={`rounded-full px-3 py-1 font-medium transition-colors ${step >= 1 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>1. Date</div>
           <div className={`rounded-full px-3 py-1 font-medium transition-colors ${step >= 2 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>2. Slot</div>
           <div className={`rounded-full px-3 py-1 font-medium transition-colors ${step >= 3 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>3. Contact</div>
         </div>
+      </CardHeader>
 
-        {step === 1 && (
-          <div className="space-y-4">
+      {step === 1 && (
+        <>
+          <CardContent className="flex-1 space-y-4 overflow-y-auto pb-4">
             <p className="text-sm text-muted-foreground">
               Select a day to see available times.
             </p>
@@ -189,14 +196,18 @@ export function VisitScheduler({ propertyId, propertyTitle }: VisitSchedulerProp
               fromDate={minDate}
               toDate={maxDate}
             />
-            <Button disabled={!date} onClick={() => setStep(2)} className="h-10 px-5 rounded-xl">
+          </CardContent>
+          <StepFooter>
+            <Button disabled={!date} onClick={() => setStep(2)} className="h-10 flex-1 rounded-xl">
               Continue to slots
             </Button>
-          </div>
-        )}
+          </StepFooter>
+        </>
+      )}
 
-        {step === 2 && (
-          <div className="space-y-4">
+      {step === 2 && (
+        <>
+          <CardContent className="flex-1 space-y-4 overflow-y-auto pb-4">
             {date && (
               <p className="text-base font-semibold text-foreground">
                 {format(date, "EEEE, MMM d, yyyy")}
@@ -222,20 +233,21 @@ export function VisitScheduler({ propertyId, propertyTitle }: VisitSchedulerProp
             ) : (
               <SlotGrid slots={availableSlots} selectedSlot={slot} onSelect={setSlot} />
             )}
+          </CardContent>
+          <StepFooter>
+            <Button variant="outline" onClick={() => setStep(1)} className="h-10 rounded-xl">
+              Back
+            </Button>
+            <Button disabled={!slot} onClick={() => setStep(3)} className="h-10 flex-1 rounded-xl">
+              Continue to details
+            </Button>
+          </StepFooter>
+        </>
+      )}
 
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setStep(1)} className="h-10 rounded-xl">
-                Back
-              </Button>
-              <Button disabled={!slot} onClick={() => setStep(3)} className="h-10 px-5 rounded-xl">
-                Continue to details
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {step === 3 && (
-          <form onSubmit={handleSubmit(onContactSubmit)} className="space-y-4">
+      {step === 3 && (
+        <form onSubmit={handleSubmit(onContactSubmit)} className="flex min-h-0 flex-1 flex-col">
+          <CardContent className="flex-1 space-y-4 overflow-y-auto pb-4">
             {date && slot && (
               <p className="text-sm font-medium text-muted-foreground">
                 You&apos;re booking: {format(date, "EEEE, MMM d")} at {slot.slice(0, 5)}
@@ -278,18 +290,17 @@ export function VisitScheduler({ propertyId, propertyTitle }: VisitSchedulerProp
               <Label htmlFor="visitor-message">Message (optional)</Label>
               <Textarea id="visitor-message" {...register("visitor_message")} disabled={createVisit.isPending} />
             </div>
-
-            <div className="flex gap-2">
-              <Button type="button" variant="outline" onClick={() => setStep(2)} className="h-10 rounded-xl">
-                Back
-              </Button>
-              <Button type="submit" disabled={createVisit.isPending} className="h-10 px-5 rounded-xl">
-                {createVisit.isPending ? "Submitting..." : "Submit visit request"}
-              </Button>
-            </div>
-          </form>
-        )}
-      </CardContent>
+          </CardContent>
+          <StepFooter>
+            <Button type="button" variant="outline" onClick={() => setStep(2)} className="h-10 rounded-xl">
+              Back
+            </Button>
+            <Button type="submit" disabled={createVisit.isPending} className="h-10 flex-1 rounded-xl">
+              {createVisit.isPending ? "Submitting..." : "Submit visit request"}
+            </Button>
+          </StepFooter>
+        </form>
+      )}
     </Card>
   );
 }
