@@ -221,7 +221,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
         </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
+      <div className="grid gap-6 lg:grid-cols-[1fr_380px] lg:items-start">
         <div className="space-y-6 min-w-0">
           <PropertyGallery
             images={property.images || []}
@@ -401,17 +401,19 @@ export default async function PropertyDetailPage({ params }: PageProps) {
         </div>
 
         {/* Right Column: Sticky Sidebar for Action / Booking */}
-        <div className="space-y-5 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-6rem)]">
-          {isAvailable ? (
-            <div id="visit-scheduler" className="rounded-2xl border border-[#eff3f4] bg-white shadow-sm overflow-hidden lg:flex lg:flex-col lg:max-h-[calc(100vh-7rem)]">
-              <VisitScheduler propertyId={property.id} propertyTitle={property.title} />
-            </div>
-          ) : (
-            <div className="rounded-2xl border border-[#eff3f4] p-5 text-center bg-white shadow-sm">
-              <p className="text-[15px] font-bold text-[#0f1419]">This property is currently {property.status}</p>
-              <p className="mt-1 text-[13px] text-[#536471]">Visit scheduling is not available for {property.status} properties.</p>
-            </div>
-          )}
+        <aside className="flex flex-col gap-5 lg:self-start">
+          <div className="lg:sticky lg:top-24 lg:z-10">
+            {isAvailable ? (
+              <div id="visit-scheduler" className="rounded-2xl border border-[#eff3f4] bg-white shadow-sm overflow-hidden">
+                <VisitScheduler propertyId={property.id} propertyTitle={property.title} />
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-[#eff3f4] p-5 text-center bg-white shadow-sm">
+                <p className="text-[15px] font-bold text-[#0f1419]">This property is currently {property.status}</p>
+                <p className="mt-1 text-[13px] text-[#536471]">Visit scheduling is not available for {property.status} properties.</p>
+              </div>
+            )}
+          </div>
 
           <div className="rounded-2xl border border-[#eff3f4] p-5 bg-white shadow-sm">
             <h2 className="text-[15px] font-bold text-[#0f1419]">Agent</h2>
@@ -428,7 +430,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
               )}
             </div>
           </div>
-        </div>
+        </aside>
       </div>
     </div>
   );

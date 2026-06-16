@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col bg-background font-sans text-foreground">
-      <header className="w-full border-b border-border bg-background/95 py-6 backdrop-blur">
+      <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 py-6 backdrop-blur">
         <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-4 sm:px-5 lg:px-12">
           <div className="flex items-center gap-2">
             <MobileNav />
