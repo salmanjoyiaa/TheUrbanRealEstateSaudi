@@ -15,6 +15,7 @@ export async function fetchVisitingAgentDashboardData(userId: string, agentId: s
       id, property_id, visitor_name, visitor_email, visitor_phone, visitor_message,
       visit_date, visit_time, status, visiting_status, customer_remarks, admin_notes,
       commission_received_amount, commission_received_at, cancellation_reason,
+      cancellation_requested_at, cancellation_reviewed_at,
       properties:property_id (
         title, property_ref, location_url, visiting_agent_instructions, visiting_agent_image,
         images, cover_image_index,

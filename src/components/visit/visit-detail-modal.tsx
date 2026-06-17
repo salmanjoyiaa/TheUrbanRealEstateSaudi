@@ -3,13 +3,10 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import {
-  MapPin,
-  Phone,
   Mail,
   User,
   FileText,
   Image as ImageIcon,
-  MessageCircle,
   ExternalLink,
   CheckCircle2,
 } from "lucide-react";
@@ -22,12 +19,12 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { formatDate, formatTime } from "@/lib/format";
 import { VisitPipelineProgress } from "@/components/visit/visit-pipeline-progress";
 import { VisitCommentsSection } from "@/components/visit/visit-comments-section";
 import { VisitCancelDialog } from "@/components/visit/visit-cancel-dialog";
 import { VisitReschedulePanel } from "@/components/visit/visit-reschedule-panel";
 import { VisitCompleteForm, type CompleteVisitPayload } from "@/components/visit/visit-complete-form";
+import { VisitQuickInfoBar } from "@/components/visit/visit-quick-info-bar";
 import {
   type AssignmentRow,
   type AssignmentHistoryItem,
@@ -35,6 +32,7 @@ import {
   VISITING_STATUS_BADGE_CLASSES,
   getPropertyCoverImage,
   isTerminalVisit,
+  isCancelRequestPending,
 } from "@/types/visit-assignment";
 import { getVisitStatusBadgeClass, getVisitStatusLabel } from "@/lib/visit-status";
 
@@ -48,11 +46,6 @@ export type VisitDetailModalProps = {
   onCompleteVisit: (visitId: string, payload: CompleteVisitPayload) => Promise<void>;
   loading?: boolean;
 };
-
-function whatsAppUrl(phone: string) {
-  const digits = phone.replace(/\D/g, "");
-  return `https://wa.me/${digits}`;
-}
 
 export function VisitDetailModal({
   visit,
@@ -71,6 +64,7 @@ export function VisitDetailModal({
 
   const coverImage = getPropertyCoverImage(visit);
   const terminal = isTerminalVisit(visit);
+  const cancelPending = isCancelRequestPending(visit);
   const statusBadgeClass = VISITING_STATUS_BADGE_CLASSES[visit.visiting_status] || getVisitStatusBadgeClass(visit.status);
 
   const handleClose = (nextOpen: boolean) => {
@@ -84,9 +78,12 @@ export function VisitDetailModal({
   return (
     <>
       <Dialog open={open} onOpenChange={handleClose}>
-        <DialogContent className="flex max-h-[90vh] max-w-2xl flex-col gap-0 overflow-hidden p-0">
+        <DialogContent
+          className="flex max-h-[100dvh] w-[100vw] max-w-[100vw] flex-col gap-0 overflow-hidden rounded-none p-0 sm:max-h-[90vh] sm:max-w-2xl sm:rounded-lg"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
           {coverImage && (
-            <div className="relative h-44 w-full shrink-0 overflow-hidden bg-muted">
+            <div className="relative h-40 w-full shrink-0 overflow-hidden bg-muted sm:h-44">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={coverImage}
@@ -97,20 +94,24 @@ export function VisitDetailModal({
           )}
 
           <div className="flex min-h-0 flex-1 flex-col">
-            <DialogHeader className="shrink-0 space-y-2 px-6 pt-5 pb-3">
+            <DialogHeader className="shrink-0 space-y-3 px-4 pt-4 pb-3 sm:px-6 sm:pt-5">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <DialogTitle className="text-lg leading-snug text-navy">
                     {visit.properties?.title || "Unknown Property"}
                   </DialogTitle>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {formatDate(visit.visit_date)} at {formatTime(visit.visit_time)}
-                    {visit.properties?.property_ref && (
-                      <span className="ml-2 font-mono text-xs">ID {visit.properties.property_ref}</span>
-                    )}
-                  </p>
+                  {visit.properties?.property_ref && (
+                    <p className="mt-1 font-mono text-xs text-muted-foreground">
+                      ID {visit.properties.property_ref}
+                    </p>
+                  )}
                 </div>
                 <div className="flex shrink-0 flex-col items-end gap-1">
+                  {cancelPending && (
+                    <Badge variant="outline" className="border-orange-200 bg-orange-50 text-orange-800">
+                      Cancel pending
+                    </Badge>
+                  )}
                   <Badge variant="outline" className={statusBadgeClass}>
                     {PIPELINE_STEPS[visit.visiting_status] || visit.visiting_status}
                   </Badge>
@@ -120,26 +121,10 @@ export function VisitDetailModal({
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2">
-                {visit.properties?.location_url && (
-                  <Button variant="outline" size="sm" asChild className="h-8">
-                    <a href={visit.properties.location_url} target="_blank" rel="noreferrer">
-                      <MapPin className="mr-1.5 h-3.5 w-3.5" />
-                      Map
-                      <ExternalLink className="ml-1 h-3 w-3" />
-                    </a>
-                  </Button>
-                )}
-                <Button variant="outline" size="sm" asChild className="h-8 text-green-700">
-                  <a href={whatsAppUrl(visit.visitor_phone)} target="_blank" rel="noreferrer">
-                    <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
-                    WhatsApp customer
-                  </a>
-                </Button>
-              </div>
+              <VisitQuickInfoBar visit={visit} />
             </DialogHeader>
 
-            <div className="flex-1 space-y-4 overflow-y-auto px-6 pb-4">
+            <div className="flex-1 space-y-4 overflow-y-auto px-4 pb-4 sm:px-6">
               {mode === "reschedule" && (
                 <VisitReschedulePanel
                   propertyId={visit.property_id}
@@ -172,11 +157,7 @@ export function VisitDetailModal({
                   />
 
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <InfoBlock title="Customer" icon={User}>
-                      <p>{visit.visitor_name}</p>
-                      <p className="flex items-center gap-1 text-muted-foreground">
-                        <Phone className="h-3 w-3" /> {visit.visitor_phone}
-                      </p>
+                    <InfoBlock title="Customer details" icon={User}>
                       {visit.visitor_email && (
                         <p className="flex items-center gap-1 text-muted-foreground">
                           <Mail className="h-3 w-3" /> {visit.visitor_email}
@@ -187,14 +168,15 @@ export function VisitDetailModal({
                           &ldquo;{visit.visitor_message}&rdquo;
                         </p>
                       )}
+                      {!visit.visitor_email && !visit.visitor_message && (
+                        <p className="text-muted-foreground">No additional details.</p>
+                      )}
                     </InfoBlock>
 
                     <InfoBlock title="Property agent" icon={User}>
                       <p>{visit.properties?.agents?.profiles?.full_name || "—"}</p>
                       {visit.properties?.agents?.profiles?.phone && (
-                        <p className="flex items-center gap-1 text-muted-foreground">
-                          <Phone className="h-3 w-3" /> {visit.properties.agents.profiles.phone}
-                        </p>
+                        <p className="text-muted-foreground">{visit.properties.agents.profiles.phone}</p>
                       )}
                     </InfoBlock>
                   </div>
@@ -218,6 +200,13 @@ export function VisitDetailModal({
                       View layout / door photo
                       <ExternalLink className="h-3 w-3" />
                     </a>
+                  )}
+
+                  {cancelPending && visit.cancellation_reason && (
+                    <InfoBlock title="Cancel request">
+                      <p className="text-muted-foreground">{visit.cancellation_reason}</p>
+                      <p className="mt-1 text-xs text-orange-700">Awaiting admin approval.</p>
+                    </InfoBlock>
                   )}
 
                   {visit.customer_remarks && (
@@ -270,27 +259,28 @@ export function VisitDetailModal({
             </div>
 
             {!terminal && mode === "view" && (
-              <div className="shrink-0 border-t bg-muted/20 px-6 py-4">
+              <div className="shrink-0 border-t bg-muted/20 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6 sm:py-4">
                 <div className="flex gap-2">
                   <Button
                     variant="outline"
-                    className="flex-1 text-destructive hover:text-destructive"
+                    className="min-h-11 flex-1 text-destructive hover:text-destructive"
                     onClick={() => setCancelOpen(true)}
-                    disabled={loading}
+                    disabled={loading || cancelPending}
+                    title={cancelPending ? "Cancel request already pending" : undefined}
                   >
-                    Cancel
+                    {cancelPending ? "Cancel pending" : "Cancel"}
                   </Button>
                   <Button
                     variant="outline"
-                    className="flex-1"
+                    className="min-h-11 flex-1"
                     onClick={() => setMode("reschedule")}
-                    disabled={loading}
+                    disabled={loading || cancelPending}
                   >
                     Reschedule
                   </Button>
-                  <Button className="flex-1" onClick={() => setMode("complete")} disabled={loading}>
+                  <Button className="min-h-11 flex-1" onClick={() => setMode("complete")} disabled={loading}>
                     <CheckCircle2 className="mr-1.5 h-4 w-4" />
-                    Complete visit
+                    Complete
                   </Button>
                 </div>
               </div>

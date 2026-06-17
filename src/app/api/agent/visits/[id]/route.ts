@@ -5,9 +5,8 @@ import { createRouteClient } from "@/lib/supabase/route";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { cacheDel } from "@/lib/redis";
 import { sendWhatsApp } from "@/lib/twilio";
-import { sendEmail } from "@/lib/resend";
-import { visitCancelled, visitRescheduled } from "@/lib/whatsapp-templates";
-import { visitCancelledCustomerEmail } from "@/lib/email-templates";
+import { visitRescheduled } from "@/lib/whatsapp-templates";
+import { notifyAdmins } from "@/lib/admin";
 import { formatMessageDate, formatMessageTime } from "@/lib/format";
 
 const statusUpdateSchema = z.object({
@@ -105,6 +104,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     .select(`
       id, property_id, visitor_name, visitor_email, visitor_phone,
       visiting_agent_id, status, visiting_status, visit_date, visit_time,
+      cancellation_requested_at, cancellation_reviewed_at,
       properties:property_id (title)
     `)
     .eq("id", context.params.id)
@@ -121,6 +121,8 @@ export async function PATCH(request: Request, context: { params: { id: string } 
         visiting_status: string;
         visit_date: string;
         visit_time: string;
+        cancellation_requested_at: string | null;
+        cancellation_reviewed_at: string | null;
         properties: { title: string } | null;
       } | null;
     };
@@ -141,16 +143,23 @@ export async function PATCH(request: Request, context: { params: { id: string } 
 
   if ("action" in parsed.data && parsed.data.action === "cancel") {
     const { cancellation_reason } = parsed.data;
-    const oldDate = currentVisit.visit_date;
-    const oldTime = String(currentVisit.visit_time).slice(0, 5);
+
+    if (
+      currentVisit.cancellation_requested_at &&
+      !currentVisit.cancellation_reviewed_at
+    ) {
+      return NextResponse.json({ error: "A cancel request is already pending admin review" }, { status: 409 });
+    }
 
     const { error } = await adminDb
       .from("visit_requests")
       .update({
-        status: "cancelled",
         cancellation_reason,
-        cancelled_by: user.id,
-        cancelled_at: new Date().toISOString(),
+        cancellation_requested_by: user.id,
+        cancellation_requested_at: new Date().toISOString(),
+        cancellation_reviewed_by: null,
+        cancellation_reviewed_at: null,
+        cancellation_review_note: null,
       } as never)
       .eq("id", context.params.id)
       .eq("visiting_agent_id", user.id);
@@ -159,40 +168,21 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    await adminDb
-      .from("blocked_slots")
-      .delete()
-      .eq("property_id", currentVisit.property_id)
-      .eq("date", oldDate)
-      .eq("time", oldTime);
-
-    await cacheDel(`slots:${currentVisit.property_id}:${oldDate}`);
-
     await supabase.from("visit_comments").insert({
       visit_id: context.params.id,
       author_id: user.id,
-      content: `Visit cancelled by visiting agent. Reason: ${cancellation_reason}`,
+      content: `Cancel requested by visiting agent. Reason: ${cancellation_reason}`,
     } as never);
 
-    const templateParams = {
-      visitorName: currentVisit.visitor_name,
-      propertyTitle,
-      visitDate: formatMessageDate(oldDate),
-      visitTime: formatMessageTime(currentVisit.visit_time),
-    };
-
-    await Promise.allSettled([
-      sendWhatsApp(currentVisit.visitor_phone, visitCancelled(templateParams), context.params.id),
-      currentVisit.visitor_email
-        ? sendEmail({
-            to: currentVisit.visitor_email,
-            ...visitCancelledCustomerEmail(templateParams),
-            visitId: context.params.id,
-          })
-        : Promise.resolve(),
-    ]);
+    await notifyAdmins({
+      title: "Visit cancel request",
+      body: `${currentVisit.visitor_name} — ${propertyTitle} on ${formatMessageDate(currentVisit.visit_date)}. Reason: ${cancellation_reason}`,
+      type: "visit_cancel_request",
+      metadata: { visit_id: context.params.id, property_id: currentVisit.property_id },
+    });
 
     revalidateAgentSurfaces();
+    revalidatePath("/admin/visits", "page");
     return NextResponse.json({ success: true });
   }
 

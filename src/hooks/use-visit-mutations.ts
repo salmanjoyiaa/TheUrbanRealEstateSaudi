@@ -24,7 +24,7 @@ export function useVisitMutations() {
         const data = await res.json();
         throw new Error(data.error || "Failed to cancel visit");
       }
-      toast.success("Visit cancelled");
+      toast.success("Cancel request submitted");
       refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An error occurred");

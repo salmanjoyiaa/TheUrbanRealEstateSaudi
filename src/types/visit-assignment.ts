@@ -14,6 +14,8 @@ export type AssignmentRow = {
   commission_received_at?: string | null;
   admin_notes?: string | null;
   cancellation_reason?: string | null;
+  cancellation_requested_at?: string | null;
+  cancellation_reviewed_at?: string | null;
   properties: {
     title: string;
     property_ref?: string | null;
@@ -84,6 +86,14 @@ export function getPropertyCoverImage(visit: AssignmentRow): string | null {
   const idx = props.cover_image_index ?? 0;
   if (images.length > 0 && images[idx]) return images[idx];
   return props.visiting_agent_image;
+}
+
+export function isCancelRequestPending(visit: AssignmentRow): boolean {
+  return Boolean(
+    visit.cancellation_requested_at &&
+    !visit.cancellation_reviewed_at &&
+    visit.status !== "cancelled"
+  );
 }
 
 export function isTerminalVisit(visit: AssignmentRow): boolean {

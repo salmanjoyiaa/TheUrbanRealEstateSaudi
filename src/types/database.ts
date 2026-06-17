@@ -129,6 +129,11 @@ export interface VisitRequest {
   reschedule_date: string | null;
   reschedule_time: string | null;
   cancellation_reason: string | null;
+  cancellation_requested_by: string | null;
+  cancellation_requested_at: string | null;
+  cancellation_reviewed_by: string | null;
+  cancellation_reviewed_at: string | null;
+  cancellation_review_note: string | null;
   cancelled_by: string | null;
   cancelled_at: string | null;
   commission_received_amount: number | null;

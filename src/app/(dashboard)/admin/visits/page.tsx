@@ -84,7 +84,9 @@ export default async function AdminVisitsPage({
     .from("visit_requests")
     .select(
       `
-      id, visitor_name, visitor_email, visitor_phone, visitor_message, request_source, parent_visit_id, reschedule_reason, visit_date, visit_time, status, visiting_status, customer_remarks, admin_notes,
+      id, visitor_name, visitor_email, visitor_phone, visitor_message, request_source, parent_visit_id, reschedule_reason,
+      cancellation_reason, cancellation_requested_at, cancellation_reviewed_at,
+      visit_date, visit_time, status, visiting_status, customer_remarks, admin_notes,
       visiting_agent:visiting_agent_id(id, full_name, phone),
       properties:property_id (
         id, title, property_ref, location_url, visiting_agent_image, visiting_agent_instructions,

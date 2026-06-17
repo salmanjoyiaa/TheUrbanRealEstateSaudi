@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/dashboard/data-table";
 import { VisitRowActions } from "@/components/admin/visit-row-actions";
 import { RescheduleReviewActions } from "@/components/admin/reschedule-review-actions";
+import { CancelReviewActions } from "@/components/admin/cancel-review-actions";
 import {
   formatDate,
   formatTime,
@@ -28,6 +29,9 @@ export type AdminVisitRow = {
   request_source?: string | null;
   parent_visit_id?: string | null;
   reschedule_reason?: string | null;
+  cancellation_reason?: string | null;
+  cancellation_requested_at?: string | null;
+  cancellation_reviewed_at?: string | null;
   visit_date: string;
   visit_time: string;
   status: string;
@@ -235,6 +239,22 @@ function useVisitColumns(visitingAgents: VisitingAgentOption[]) {
             {VISIT_STATUS_LABELS[row.status] || row.status}
           </Badge>
         ),
+      },
+      {
+        key: "cancel_request",
+        title: "Cancel Request",
+        render: (row: AdminVisitRow) =>
+          row.cancellation_requested_at && !row.cancellation_reviewed_at && row.status !== "cancelled" ? (
+            <div className="space-y-1">
+              <Badge variant="outline" className="border-red-200 bg-red-50 text-[10px] text-red-800">
+                Cancel Request
+              </Badge>
+              <div className="text-xs text-muted-foreground">{row.cancellation_reason || "No reason"}</div>
+              <CancelReviewActions visitId={row.id} />
+            </div>
+          ) : (
+            "—"
+          ),
       },
       {
         key: "reschedule",

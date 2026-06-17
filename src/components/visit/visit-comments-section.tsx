@@ -11,6 +11,7 @@ export function VisitCommentsSection({ visitId }: { visitId: string }) {
   const [comments, setComments] = useState<VisitCommentRow[]>([]);
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showInput, setShowInput] = useState(false);
 
   const fetchComments = useCallback(async () => {
     try {
@@ -26,7 +27,9 @@ export function VisitCommentsSection({ visitId }: { visitId: string }) {
 
   useEffect(() => {
     fetchComments();
-  }, [fetchComments]);
+    setShowInput(false);
+    setNewComment("");
+  }, [fetchComments, visitId]);
 
   const handleAdd = async () => {
     if (!newComment.trim()) return;
@@ -39,6 +42,7 @@ export function VisitCommentsSection({ visitId }: { visitId: string }) {
       });
       if (res.ok) {
         setNewComment("");
+        setShowInput(false);
         await fetchComments();
       }
     } catch {
@@ -65,18 +69,24 @@ export function VisitCommentsSection({ visitId }: { visitId: string }) {
       ) : (
         <p className="text-xs italic text-muted-foreground">No comments yet.</p>
       )}
-      <div className="flex gap-1.5">
-        <Input
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Add a comment..."
-          className="h-9 text-sm"
-          onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-        />
-        <Button size="icon" variant="outline" className="h-9 w-9 shrink-0" onClick={handleAdd} disabled={!newComment.trim() || loading}>
-          <Send className="h-4 w-4" />
+      {showInput ? (
+        <div className="flex gap-1.5">
+          <Input
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="Add a comment..."
+            className="h-10 text-sm"
+            onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+          />
+          <Button size="icon" variant="outline" className="h-10 w-10 shrink-0" onClick={handleAdd} disabled={!newComment.trim() || loading}>
+            <Send className="h-4 w-4" />
+          </Button>
+        </div>
+      ) : (
+        <Button variant="outline" size="sm" className="min-h-10 w-full" onClick={() => setShowInput(true)}>
+          Add comment
         </Button>
-      </div>
+      )}
     </div>
   );
 }

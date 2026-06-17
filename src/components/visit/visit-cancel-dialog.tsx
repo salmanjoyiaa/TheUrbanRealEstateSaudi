@@ -34,9 +34,9 @@ export function VisitCancelDialog({ open, onOpenChange, onConfirm, loading }: Vi
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Cancel visit</DialogTitle>
+          <DialogTitle>Request visit cancellation</DialogTitle>
           <DialogDescription>
-            This will cancel the visit and notify the customer. Please provide a reason.
+            Your request will be sent to admin for review. The visit stays active until approved.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-2">
@@ -55,7 +55,7 @@ export function VisitCancelDialog({ open, onOpenChange, onConfirm, loading }: Vi
             Back
           </Button>
           <Button variant="destructive" onClick={handleConfirm} disabled={reason.trim().length < 3 || loading}>
-            {loading ? "Cancelling..." : "Cancel visit"}
+            {loading ? "Submitting..." : "Submit request"}
           </Button>
         </DialogFooter>
       </DialogContent>
