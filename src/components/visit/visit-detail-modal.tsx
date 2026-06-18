@@ -25,6 +25,7 @@ import { VisitCancelDialog } from "@/components/visit/visit-cancel-dialog";
 import { VisitReschedulePanel } from "@/components/visit/visit-reschedule-panel";
 import { VisitCompleteForm, type CompleteVisitPayload } from "@/components/visit/visit-complete-form";
 import { VisitQuickInfoBar } from "@/components/visit/visit-quick-info-bar";
+import { formatDate, formatTime } from "@/lib/format";
 import {
   type AssignmentRow,
   type AssignmentHistoryItem,
@@ -35,6 +36,7 @@ import {
   isCancelRequestPending,
 } from "@/types/visit-assignment";
 import { getVisitStatusBadgeClass, getVisitStatusLabel } from "@/lib/visit-status";
+import { cn } from "@/lib/utils";
 
 export type VisitDetailModalProps = {
   visit: AssignmentRow | null;
@@ -66,6 +68,9 @@ export function VisitDetailModal({
   const terminal = isTerminalVisit(visit);
   const cancelPending = isCancelRequestPending(visit);
   const statusBadgeClass = VISITING_STATUS_BADGE_CLASSES[visit.visiting_status] || getVisitStatusBadgeClass(visit.status);
+  const primaryStatusLabel = cancelPending
+    ? "Cancel pending"
+    : PIPELINE_STEPS[visit.visiting_status] || visit.visiting_status;
 
   const handleClose = (nextOpen: boolean) => {
     if (!nextOpen) {
@@ -75,56 +80,118 @@ export function VisitDetailModal({
     onOpenChange(nextOpen);
   };
 
+  const showActionFooter = !terminal && mode === "view";
+
   return (
     <>
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent
-          className="flex max-h-[100dvh] w-[100vw] max-w-[100vw] flex-col gap-0 overflow-hidden rounded-none p-0 sm:max-h-[90vh] sm:max-w-2xl sm:rounded-lg"
+          className={cn(
+            "flex h-[100dvh] max-h-[100dvh] w-full max-w-[100vw] flex-col gap-0 overflow-hidden rounded-none border-0 p-0",
+            "max-sm:fixed max-sm:inset-0 max-sm:left-0 max-sm:top-0 max-sm:translate-x-0 max-sm:translate-y-0",
+            "sm:h-auto sm:max-h-[90vh] sm:max-w-2xl sm:rounded-lg sm:border"
+          )}
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
-          {coverImage && (
-            <div className="relative h-40 w-full shrink-0 overflow-hidden bg-muted sm:h-44">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={coverImage}
-                alt={visit.properties?.title || "Property"}
-                className="h-full w-full object-cover"
-              />
+          {/* Mobile sticky header */}
+          <div className="shrink-0 border-b bg-background pr-12 sm:hidden">
+            <DialogTitle className="sr-only">
+              {visit.visitor_name} — {visit.properties?.title || "Visit details"}
+            </DialogTitle>
+            <div className="flex items-center gap-2 px-4 py-3">
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-bold text-navy">{visit.visitor_name}</p>
+                <p className="truncate text-xs text-muted-foreground">
+                  {formatDate(visit.visit_date)} · {formatTime(visit.visit_time)}
+                </p>
+              </div>
+              <Badge
+                variant="outline"
+                className={cn(
+                  "shrink-0 text-[10px]",
+                  cancelPending ? "border-orange-200 bg-orange-50 text-orange-800" : statusBadgeClass
+                )}
+              >
+                {primaryStatusLabel}
+              </Badge>
             </div>
-          )}
+          </div>
 
           <div className="flex min-h-0 flex-1 flex-col">
-            <DialogHeader className="shrink-0 space-y-3 px-4 pt-4 pb-3 sm:px-6 sm:pt-5">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <DialogTitle className="text-lg leading-snug text-navy">
+            {/* Desktop fixed header */}
+            <div className="hidden sm:block">
+              {coverImage && (
+                <div className="relative h-44 w-full shrink-0 overflow-hidden bg-muted">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={coverImage}
+                    alt={visit.properties?.title || "Property"}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              )}
+              <DialogHeader className="shrink-0 space-y-3 px-6 pt-5 pb-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <DialogTitle className="text-lg leading-snug text-navy">
+                      {visit.properties?.title || "Unknown Property"}
+                    </DialogTitle>
+                    {visit.properties?.property_ref && (
+                      <p className="mt-1 font-mono text-xs text-muted-foreground">
+                        ID {visit.properties.property_ref}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex shrink-0 flex-col items-end gap-1">
+                    {cancelPending && (
+                      <Badge variant="outline" className="border-orange-200 bg-orange-50 text-orange-800">
+                        Cancel pending
+                      </Badge>
+                    )}
+                    <Badge variant="outline" className={statusBadgeClass}>
+                      {PIPELINE_STEPS[visit.visiting_status] || visit.visiting_status}
+                    </Badge>
+                    <Badge variant="outline" className={getVisitStatusBadgeClass(visit.status)}>
+                      {getVisitStatusLabel(visit.status)}
+                    </Badge>
+                  </div>
+                </div>
+                <VisitQuickInfoBar visit={visit} variant="default" />
+              </DialogHeader>
+            </div>
+
+            {/* Scroll body */}
+            <div
+              className={cn(
+                "flex-1 space-y-4 overflow-y-auto overscroll-contain px-4 pb-6 sm:px-6",
+                "[-webkit-overflow-scrolling:touch]"
+              )}
+            >
+              {/* Mobile scroll content: thumbnail, title, quick info */}
+              <div className="space-y-3 pt-3 sm:hidden">
+                {coverImage && (
+                  <div className="aspect-[16/9] max-h-32 w-full overflow-hidden rounded-lg bg-muted">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={coverImage}
+                      alt={visit.properties?.title || "Property"}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                )}
+                <div>
+                  <h2 className="text-base font-semibold leading-snug text-navy">
                     {visit.properties?.title || "Unknown Property"}
-                  </DialogTitle>
+                  </h2>
                   {visit.properties?.property_ref && (
-                    <p className="mt-1 font-mono text-xs text-muted-foreground">
+                    <p className="mt-0.5 font-mono text-xs text-muted-foreground">
                       ID {visit.properties.property_ref}
                     </p>
                   )}
                 </div>
-                <div className="flex shrink-0 flex-col items-end gap-1">
-                  {cancelPending && (
-                    <Badge variant="outline" className="border-orange-200 bg-orange-50 text-orange-800">
-                      Cancel pending
-                    </Badge>
-                  )}
-                  <Badge variant="outline" className={statusBadgeClass}>
-                    {PIPELINE_STEPS[visit.visiting_status] || visit.visiting_status}
-                  </Badge>
-                  <Badge variant="outline" className={getVisitStatusBadgeClass(visit.status)}>
-                    {getVisitStatusLabel(visit.status)}
-                  </Badge>
-                </div>
+                <VisitQuickInfoBar visit={visit} variant="compact" />
               </div>
 
-              <VisitQuickInfoBar visit={visit} />
-            </DialogHeader>
-
-            <div className="flex-1 space-y-4 overflow-y-auto px-4 pb-4 sm:px-6">
               {mode === "reschedule" && (
                 <VisitReschedulePanel
                   propertyId={visit.property_id}
@@ -258,28 +325,37 @@ export function VisitDetailModal({
               )}
             </div>
 
-            {!terminal && mode === "view" && (
-              <div className="shrink-0 border-t bg-muted/20 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6 sm:py-4">
+            {showActionFooter && (
+              <div
+                className={cn(
+                  "shrink-0 border-t bg-background px-4 py-2 shadow-[0_-4px_12px_rgba(0,0,0,0.06)]",
+                  "pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:px-6 sm:py-4"
+                )}
+              >
                 <div className="flex gap-2">
                   <Button
                     variant="outline"
-                    className="min-h-11 flex-1 text-destructive hover:text-destructive"
+                    className="min-h-10 flex-1 text-xs text-destructive hover:text-destructive sm:min-h-11 sm:text-sm"
                     onClick={() => setCancelOpen(true)}
                     disabled={loading || cancelPending}
                     title={cancelPending ? "Cancel request already pending" : undefined}
                   >
-                    {cancelPending ? "Cancel pending" : "Cancel"}
+                    {cancelPending ? "Pending" : "Cancel"}
                   </Button>
                   <Button
                     variant="outline"
-                    className="min-h-11 flex-1"
+                    className="min-h-10 flex-1 text-xs sm:min-h-11 sm:text-sm"
                     onClick={() => setMode("reschedule")}
                     disabled={loading || cancelPending}
                   >
                     Reschedule
                   </Button>
-                  <Button className="min-h-11 flex-1" onClick={() => setMode("complete")} disabled={loading}>
-                    <CheckCircle2 className="mr-1.5 h-4 w-4" />
+                  <Button
+                    className="min-h-10 flex-1 text-xs sm:min-h-11 sm:text-sm"
+                    onClick={() => setMode("complete")}
+                    disabled={loading}
+                  >
+                    <CheckCircle2 className="mr-1 h-3.5 w-3.5 sm:mr-1.5 sm:h-4 sm:w-4" />
                     Complete
                   </Button>
                 </div>

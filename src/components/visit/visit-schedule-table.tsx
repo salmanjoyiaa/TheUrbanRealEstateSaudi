@@ -2,7 +2,8 @@
 
 import { useMemo } from "react";
 import { format, isSameDay, parseISO, addDays, subDays } from "date-fns";
-import { ChevronLeft, ChevronRight, CalendarDays, MapPin, MessageCircle, Phone, ChevronRight as ChevronRightIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, CalendarDays, ChevronRight as ChevronRightIcon } from "lucide-react";
+import { VisitActionIcons } from "@/components/visit/visit-action-icons";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
@@ -24,64 +25,6 @@ type VisitScheduleTableProps = {
   onSelectVisit: (visit: AssignmentRow) => void;
   showDateNav?: boolean;
 };
-
-function whatsAppUrl(phone: string) {
-  return `https://wa.me/${phone.replace(/\D/g, "")}`;
-}
-
-function telUrl(phone: string) {
-  return `tel:${phone.replace(/\s/g, "")}`;
-}
-
-function VisitActionIcons({
-  visit,
-  onDetails,
-}: {
-  visit: AssignmentRow;
-  onDetails?: () => void;
-}) {
-  return (
-    <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
-      {visit.properties?.location_url && (
-        <a
-          href={visit.properties.location_url}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border bg-white text-primary hover:bg-muted"
-          aria-label="Open map"
-        >
-          <MapPin className="h-4 w-4" />
-        </a>
-      )}
-      <a
-        href={whatsAppUrl(visit.visitor_phone)}
-        target="_blank"
-        rel="noreferrer"
-        className="inline-flex h-9 w-9 items-center justify-center rounded-lg border bg-white text-green-700 hover:bg-muted"
-        aria-label="WhatsApp customer"
-      >
-        <MessageCircle className="h-4 w-4" />
-      </a>
-      <a
-        href={telUrl(visit.visitor_phone)}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-lg border bg-white text-primary hover:bg-muted"
-        aria-label="Call customer"
-      >
-        <Phone className="h-4 w-4" />
-      </a>
-      {onDetails && (
-        <button
-          type="button"
-          onClick={onDetails}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border bg-white text-muted-foreground hover:bg-muted md:hidden"
-          aria-label="View details"
-        >
-          <ChevronRightIcon className="h-4 w-4" />
-        </button>
-      )}
-    </div>
-  );
-}
 
 function statusLabel(visit: AssignmentRow) {
   if (isCancelRequestPending(visit)) return "Cancel pending";

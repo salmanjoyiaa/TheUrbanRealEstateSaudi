@@ -5,9 +5,12 @@ import { formatDate, formatTime } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { MapPin, MessageCircle, Phone, Image as ImageIcon } from "lucide-react";
 import { getPropertyCoverImage } from "@/types/visit-assignment";
+import { VisitActionIcons } from "@/components/visit/visit-action-icons";
+import { cn } from "@/lib/utils";
 
 type VisitQuickInfoBarProps = {
   visit: AssignmentRow;
+  variant?: "default" | "compact";
 };
 
 function whatsAppUrl(phone: string) {
@@ -18,9 +21,24 @@ function telUrl(phone: string) {
   return `tel:${phone.replace(/\s/g, "")}`;
 }
 
-export function VisitQuickInfoBar({ visit }: VisitQuickInfoBarProps) {
+export function VisitQuickInfoBar({ visit, variant = "default" }: VisitQuickInfoBarProps) {
   const layoutPhoto = visit.properties?.visiting_agent_image;
   const coverImage = getPropertyCoverImage(visit);
+
+  if (variant === "compact") {
+    return (
+      <div className="space-y-2">
+        <a
+          href={telUrl(visit.visitor_phone)}
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+        >
+          <Phone className="h-3.5 w-3.5 shrink-0" />
+          {visit.visitor_phone}
+        </a>
+        <VisitActionIcons visit={visit} showLayoutPhoto />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-3 rounded-xl border border-[#eff3f4] bg-muted/30 p-4">
@@ -54,7 +72,12 @@ export function VisitQuickInfoBar({ visit }: VisitQuickInfoBarProps) {
           </a>
         </Button>
         {(layoutPhoto || coverImage) && (
-          <Button variant="outline" size="sm" asChild className="min-h-11 justify-start gap-2 col-span-2 sm:col-span-1">
+          <Button
+            variant="outline"
+            size="sm"
+            asChild
+            className={cn("min-h-11 justify-start gap-2 col-span-2 sm:col-span-1")}
+          >
             <a href={layoutPhoto || coverImage!} target="_blank" rel="noreferrer">
               <ImageIcon className="h-4 w-4 shrink-0" />
               Layout photo
