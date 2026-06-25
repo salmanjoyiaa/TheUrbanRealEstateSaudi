@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { propertySchema } from "@/lib/validators";
 import { createRouteClient } from "@/lib/supabase/route";
+import { syncPropertyPhotos } from "@/lib/property-photos";
+import { afterPropertySaved } from "@/lib/revalidate-property";
 
 async function getApprovedAgent() {
   const supabase = await createRouteClient();
@@ -79,20 +81,22 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   }
 
   if (parsed.data.images !== undefined) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await (supabase as any).from("property_photos").delete().eq("property_id", context.params.id);
-    if (parsed.data.images.length > 0) {
-      const photoRows = parsed.data.images.map((url, i) => ({
-        property_id: context.params.id,
-        url,
-        ordering_index: i,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        alt_text: (body as any)?.photo_alt_texts?.[url] || null
-      }));
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (supabase as any).from("property_photos").insert(photoRows);
+    try {
+      await syncPropertyPhotos(
+        supabase,
+        context.params.id,
+        parsed.data.images,
+        (body as { photo_alt_texts?: Record<string, string> })?.photo_alt_texts
+      );
+    } catch (syncError) {
+      return NextResponse.json(
+        { error: syncError instanceof Error ? syncError.message : "Failed to sync property photos" },
+        { status: 500 }
+      );
     }
   }
+
+  await afterPropertySaved(context.params.id);
 
   return NextResponse.json({ success: true });
 }

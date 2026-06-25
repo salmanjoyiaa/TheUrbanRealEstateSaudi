@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { propertySchema } from "@/lib/validators";
 import { createRouteClient } from "@/lib/supabase/route";
+import { syncPropertyPhotos } from "@/lib/property-photos";
+import { afterPropertySaved } from "@/lib/revalidate-property";
 
 import { writeAuditLog } from "@/lib/admin";
 
@@ -77,6 +79,24 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     if (updateError) {
         return NextResponse.json({ error: updateError.message }, { status: 500 });
     }
+
+    if (parsed.data.images !== undefined) {
+        try {
+            await syncPropertyPhotos(
+                supabase,
+                context.params.id,
+                parsed.data.images,
+                (body as { photo_alt_texts?: Record<string, string> })?.photo_alt_texts
+            );
+        } catch (syncError) {
+            return NextResponse.json(
+                { error: syncError instanceof Error ? syncError.message : "Failed to sync property photos" },
+                { status: 500 }
+            );
+        }
+    }
+
+    await afterPropertySaved(context.params.id);
 
     if (userId) {
         await writeAuditLog({

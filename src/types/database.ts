@@ -282,6 +282,17 @@ export interface AgentPropertyAssignment {
   created_at: string;
 }
 
+export interface PropertyPhoto {
+  id: string;
+  property_id: string;
+  url: string;
+  ordering_index: number;
+  is_cover: boolean;
+  alt_text: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 // Supabase Database type for client typing
 export interface Database {
   public: {
@@ -300,6 +311,11 @@ export interface Database {
         Row: Property;
         Insert: Omit<Property, "id" | "created_at" | "updated_at" | "views_count" | "featured" | "building_features" | "apartment_features" | "nearby_places" | "cover_image_index" | "blocked_dates" | "dining_areas" | "two_entrance" | "building_condition" | "is_video_featured"> & { id?: string; featured?: boolean; building_features?: string[]; apartment_features?: string[]; nearby_places?: string[]; cover_image_index?: number; blocked_dates?: string[]; dining_areas?: number; two_entrance?: number; building_condition?: string; is_video_featured?: boolean };
         Update: Partial<Omit<Property, "id" | "created_at">>;
+      };
+      property_photos: {
+        Row: PropertyPhoto;
+        Insert: Omit<PropertyPhoto, "id" | "created_at" | "updated_at" | "is_cover"> & { id?: string; is_cover?: boolean };
+        Update: Partial<Omit<PropertyPhoto, "id" | "created_at">>;
       };
       products: {
         Row: Product;

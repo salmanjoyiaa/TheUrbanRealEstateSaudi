@@ -15,7 +15,7 @@ export async function FeaturedSliders() {
   // Fetch 5 random available properties with images
   const { data: properties } = (await supabase
     .from("properties")
-    .select("id, title, images, price, city, purpose")
+    .select("id, title, images, price, city, purpose, cover_image_index")
     .eq("status", "available")
     .not("images", "eq", "{}")
     .order("created_at", { ascending: false })
@@ -27,6 +27,7 @@ export async function FeaturedSliders() {
         price: number;
         city: string;
         purpose: string;
+        cover_image_index: number | null;
       }> | null;
     };
 
@@ -61,14 +62,18 @@ export async function FeaturedSliders() {
   const propertySlides: SlideItem[] = shuffled(properties || [])
     .slice(0, 5)
     .filter((p) => p.images && p.images.length > 0)
-    .map((p) => ({
-      id: p.id,
-      title: p.title,
-      image: p.images[0],
-      href: `/properties/${p.id}`,
-      badge: p.purpose === "short_term" ? "Short-term" : p.purpose === "mid_term" ? "Mid-term" : p.purpose === "long_term" ? "Long-term" : "Rental",
-      price: formatPrice(p.price),
-    }));
+    .map((p) => {
+      const coverIdx = p.cover_image_index ?? 0;
+      const coverImage = p.images?.[coverIdx] || p.images?.[0];
+      return {
+        id: p.id,
+        title: p.title,
+        image: coverImage,
+        href: `/properties/${p.id}`,
+        badge: p.purpose === "short_term" ? "Short-term" : p.purpose === "mid_term" ? "Mid-term" : p.purpose === "long_term" ? "Long-term" : "Rental",
+        price: formatPrice(p.price),
+      };
+    });
 
   const productSlides: SlideItem[] = shuffled(products || [])
     .slice(0, 5)

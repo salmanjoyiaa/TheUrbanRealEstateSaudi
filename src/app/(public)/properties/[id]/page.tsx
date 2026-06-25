@@ -115,16 +115,24 @@ async function getProperty(id: string) {
     };
 
   const photoAltTexts: Record<string, string> = {};
-  const orderedImages = (photos || []).length > 0
-    ? [...(photos || [])].sort((a, b) => a.ordering_index - b.ordering_index).map((p) => {
-      if (p.alt_text) photoAltTexts[p.url] = p.alt_text;
-      return p.url;
-    })
-    : data.images || [];
+  for (const photo of photos || []) {
+    if (photo.alt_text) photoAltTexts[photo.url] = photo.alt_text;
+  }
+
+  const fallbackFromPhotos = (photos || [])
+    .sort((a, b) => a.ordering_index - b.ordering_index)
+    .map((p) => p.url);
+
+  const images =
+    data.images && data.images.length > 0
+      ? data.images
+      : fallbackFromPhotos.length > 0
+        ? fallbackFromPhotos
+        : [];
 
   return {
     ...data,
-    images: orderedImages.length > 0 ? orderedImages : data.images || [],
+    images,
     photoAltTexts,
   };
 }
@@ -142,6 +150,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
+  const coverIdx = property.cover_image_index ?? 0;
+  const ogImage = property.images?.[coverIdx] || property.images?.[0];
+
   return {
     title: `${property.title} | Properties`,
     description: property.description.slice(0, 140),
@@ -152,7 +163,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: `/properties/${params.id}`,
       type: "website",
       siteName: "The Urban Real Estate",
-      images: property.images?.[0] ? [property.images[0]] : undefined,
+      images: ogImage ? [ogImage] : undefined,
     },
   };
 }

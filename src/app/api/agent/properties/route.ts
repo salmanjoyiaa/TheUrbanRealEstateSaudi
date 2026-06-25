@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { propertySchema } from "@/lib/validators";
 import { createRouteClient } from "@/lib/supabase/route";
+import { syncPropertyPhotos } from "@/lib/property-photos";
+import { afterPropertySaved } from "@/lib/revalidate-property";
 import type { Database } from "@/types/database";
 
 async function getApprovedAgentId() {
@@ -119,16 +121,23 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: insertError.message }, { status: 500 });
   }
 
-  if (data?.id && parsed.data.images && parsed.data.images.length > 0) {
-    const photoRows = parsed.data.images.map((url, i) => ({
-      property_id: data.id,
-      url,
-      ordering_index: i,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      alt_text: (body as any)?.photo_alt_texts?.[url] || null
-    }));
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await (supabase as any).from("property_photos").insert(photoRows);
+  if (data?.id) {
+    if (parsed.data.images && parsed.data.images.length > 0) {
+      try {
+        await syncPropertyPhotos(
+          supabase,
+          data.id,
+          parsed.data.images,
+          (body as { photo_alt_texts?: Record<string, string> })?.photo_alt_texts
+        );
+      } catch (syncError) {
+        return NextResponse.json(
+          { error: syncError instanceof Error ? syncError.message : "Failed to sync property photos" },
+          { status: 500 }
+        );
+      }
+    }
+    await afterPropertySaved(data.id);
   }
 
   return NextResponse.json({ success: true, id: data?.id }, { status: 201 });

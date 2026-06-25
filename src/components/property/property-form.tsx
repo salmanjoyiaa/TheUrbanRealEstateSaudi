@@ -110,6 +110,11 @@ export function PropertyForm({ mode, initialData, submitEndpoint, redirectPath }
   const [amenities, setAmenities] = useState<string[]>(initialData?.amenities || []);
   const [images, setImages] = useState<string[]>(initialData?.images || []);
   const [photoAltTexts, setPhotoAltTexts] = useState<Record<string, string>>({});
+  const initialCoverIdx = initialData?.cover_image_index ?? 0;
+  const initialImageList = initialData?.images || [];
+  const [coverImageUrl, setCoverImageUrl] = useState<string | null>(
+    initialImageList[initialCoverIdx] ?? initialImageList[0] ?? null
+  );
   const [videoUrl, setVideoUrl] = useState<string | null>(initialData?.video_url || null);
   const [isVideoFeatured, setIsVideoFeatured] = useState<boolean>(initialData?.is_video_featured || false);
 
@@ -127,6 +132,24 @@ export function PropertyForm({ mode, initialData, submitEndpoint, redirectPath }
   const [coverImageIndex, setCoverImageIndex] = useState(initialData?.cover_image_index ?? 0);
   const [buildingCondition, setBuildingCondition] = useState(initialData?.building_condition || "");
   const [installments, setInstallments] = useState(initialData?.installments || "");
+
+  const handleImagesChange = (nextImages: string[]) => {
+    setImages(nextImages);
+    if (coverImageUrl && nextImages.includes(coverImageUrl)) {
+      setCoverImageIndex(nextImages.indexOf(coverImageUrl));
+    } else if (nextImages.length > 0) {
+      setCoverImageIndex(0);
+      setCoverImageUrl(nextImages[0]);
+    } else {
+      setCoverImageIndex(0);
+      setCoverImageUrl(null);
+    }
+  };
+
+  const selectCoverImage = (index: number, url: string) => {
+    setCoverImageIndex(index);
+    setCoverImageUrl(url);
+  };
 
   const toggleArrayItem = (
     setter: React.Dispatch<React.SetStateAction<string[]>>,
@@ -739,7 +762,7 @@ export function PropertyForm({ mode, initialData, submitEndpoint, redirectPath }
 
         {step === 4 && (
           <div className="space-y-6">
-            <ImageUploader bucket="property-images" values={images} onChange={setImages} />
+            <ImageUploader bucket="property-images" values={images} onChange={handleImagesChange} />
 
             {images.length > 0 && (
               <div className="space-y-2">
@@ -750,7 +773,7 @@ export function PropertyForm({ mode, initialData, submitEndpoint, redirectPath }
                     <div key={img} className="space-y-2">
                       <button
                         type="button"
-                        onClick={() => setCoverImageIndex(idx)}
+                        onClick={() => selectCoverImage(idx, img)}
                         className={`relative aspect-square w-full rounded-lg overflow-hidden border-2 transition-all ${coverImageIndex === idx
                           ? "border-primary ring-2 ring-primary/30"
                           : "border-transparent hover:border-muted-foreground/30"
