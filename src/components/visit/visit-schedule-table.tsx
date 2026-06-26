@@ -5,6 +5,7 @@ import { format, isSameDay, parseISO, addDays, subDays } from "date-fns";
 import { ChevronLeft, ChevronRight, CalendarDays, ChevronRight as ChevronRightIcon } from "lucide-react";
 import { VisitActionIcons } from "@/components/visit/visit-action-icons";
 import { Button } from "@/components/ui/button";
+import type { VisitMessageTemplate } from "@/lib/visit-message-template";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +25,9 @@ type VisitScheduleTableProps = {
   onDateChange: (date: Date) => void;
   onSelectVisit: (visit: AssignmentRow) => void;
   showDateNav?: boolean;
+  agentName: string;
+  templates: VisitMessageTemplate[];
+  templatesLoading?: boolean;
 };
 
 function statusLabel(visit: AssignmentRow) {
@@ -42,6 +46,9 @@ export function VisitScheduleTable({
   onDateChange,
   onSelectVisit,
   showDateNav = true,
+  agentName,
+  templates,
+  templatesLoading = false,
 }: VisitScheduleTableProps) {
   const dayVisits = useMemo(
     () =>
@@ -126,7 +133,12 @@ export function VisitScheduleTable({
                       </Badge>
                     </td>
                     <td className="px-4 py-3">
-                      <VisitActionIcons visit={visit} />
+                      <VisitActionIcons
+                        visit={visit}
+                        agentName={agentName}
+                        templates={templates}
+                        templatesLoading={templatesLoading}
+                      />
                     </td>
                   </tr>
                 ))}
@@ -162,7 +174,13 @@ export function VisitScheduleTable({
                   <p className="truncate text-sm text-muted-foreground">{visit.visitor_phone}</p>
                 </button>
                 <div className="mt-3 flex items-center justify-between gap-2 border-t pt-3">
-                  <VisitActionIcons visit={visit} onDetails={() => onSelectVisit(visit)} />
+                  <VisitActionIcons
+                    visit={visit}
+                    agentName={agentName}
+                    templates={templates}
+                    templatesLoading={templatesLoading}
+                    onDetails={() => onSelectVisit(visit)}
+                  />
                   <Button variant="ghost" size="sm" className="min-h-9 text-xs" onClick={() => onSelectVisit(visit)}>
                     Details
                     <ChevronRightIcon className="ml-1 h-4 w-4" />

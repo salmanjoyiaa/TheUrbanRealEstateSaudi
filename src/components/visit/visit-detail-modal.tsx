@@ -36,6 +36,7 @@ import {
   isCancelRequestPending,
 } from "@/types/visit-assignment";
 import { getVisitStatusBadgeClass, getVisitStatusLabel } from "@/lib/visit-status";
+import type { VisitMessageTemplate } from "@/lib/visit-message-template";
 import { cn } from "@/lib/utils";
 
 export type VisitDetailModalProps = {
@@ -43,6 +44,9 @@ export type VisitDetailModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   assignmentHistory?: AssignmentHistoryItem[];
+  agentName: string;
+  templates: VisitMessageTemplate[];
+  templatesLoading?: boolean;
   onCancel: (visitId: string, reason: string) => Promise<void>;
   onReschedule: (visitId: string, data: { reason: string; visit_date: string; visit_time: string }) => Promise<void>;
   onCompleteVisit: (visitId: string, payload: CompleteVisitPayload) => Promise<void>;
@@ -54,6 +58,9 @@ export function VisitDetailModal({
   open,
   onOpenChange,
   assignmentHistory = [],
+  agentName,
+  templates,
+  templatesLoading = false,
   onCancel,
   onReschedule,
   onCompleteVisit,
@@ -156,7 +163,13 @@ export function VisitDetailModal({
                     </Badge>
                   </div>
                 </div>
-                <VisitQuickInfoBar visit={visit} variant="default" />
+                <VisitQuickInfoBar
+                  visit={visit}
+                  agentName={agentName}
+                  templates={templates}
+                  templatesLoading={templatesLoading}
+                  variant="default"
+                />
               </DialogHeader>
             </div>
 
@@ -189,7 +202,13 @@ export function VisitDetailModal({
                     </p>
                   )}
                 </div>
-                <VisitQuickInfoBar visit={visit} variant="compact" />
+                <VisitQuickInfoBar
+                  visit={visit}
+                  agentName={agentName}
+                  templates={templates}
+                  templatesLoading={templatesLoading}
+                  variant="compact"
+                />
               </div>
 
               {mode === "reschedule" && (

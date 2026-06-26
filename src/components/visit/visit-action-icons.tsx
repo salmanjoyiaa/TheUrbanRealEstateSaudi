@@ -2,7 +2,9 @@
 
 import { MapPin, MessageCircle, Phone, Image as ImageIcon, ChevronRight } from "lucide-react";
 import type { AssignmentRow } from "@/types/visit-assignment";
+import type { VisitMessageTemplate } from "@/lib/visit-message-template";
 import { getPropertyCoverImage } from "@/types/visit-assignment";
+import { VisitTemplatePicker } from "@/components/visit/visit-template-picker";
 import { cn } from "@/lib/utils";
 
 function whatsAppUrl(phone: string) {
@@ -15,6 +17,9 @@ function telUrl(phone: string) {
 
 type VisitActionIconsProps = {
   visit: AssignmentRow;
+  agentName: string;
+  templates: VisitMessageTemplate[];
+  templatesLoading?: boolean;
   onDetails?: () => void;
   showLayoutPhoto?: boolean;
   className?: string;
@@ -22,6 +27,9 @@ type VisitActionIconsProps = {
 
 export function VisitActionIcons({
   visit,
+  agentName,
+  templates,
+  templatesLoading = false,
   onDetails,
   showLayoutPhoto = false,
   className,
@@ -59,6 +67,12 @@ export function VisitActionIcons({
       >
         <MessageCircle className="h-4 w-4" />
       </a>
+      <VisitTemplatePicker
+        visit={visit}
+        agentName={agentName}
+        templates={templates}
+        loading={templatesLoading}
+      />
       <a
         href={telUrl(visit.visitor_phone)}
         className={iconClass}

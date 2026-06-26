@@ -8,6 +8,7 @@ import { VisitDetailModal } from "@/components/visit/visit-detail-modal";
 import { VisitScheduleTable, VisitDateNav } from "@/components/visit/visit-schedule-table";
 import { VisitPropertyRefFilter } from "@/components/visit/visit-property-ref-filter";
 import { useVisitMutations } from "@/hooks/use-visit-mutations";
+import { useVisitMessageTemplates } from "@/hooks/use-visit-message-templates";
 import { matchesPropertyRef } from "@/lib/property-ref";
 import {
   type AssignmentRow,
@@ -21,15 +22,18 @@ export function VisitingAgentClient({
   rows,
   assignedProperties,
   assignmentHistoryByVisit,
+  agentName,
 }: {
   rows: AssignmentRow[];
   assignedProperties: AssignedPropertyRow[];
   assignmentHistoryByVisit: Record<string, AssignmentHistoryItem[]>;
+  agentName: string;
 }) {
   const [date, setDate] = useState(new Date());
   const [propertyRefQuery, setPropertyRefQuery] = useState("");
   const [selectedVisit, setSelectedVisit] = useState<AssignmentRow | null>(null);
   const { loading, cancelVisit, rescheduleVisit, completeVisit } = useVisitMutations();
+  const { templates, loading: templatesLoading } = useVisitMessageTemplates();
 
   const filteredRows = useMemo(
     () =>
@@ -83,6 +87,9 @@ export function VisitingAgentClient({
             onDateChange={setDate}
             onSelectVisit={setSelectedVisit}
             showDateNav={false}
+            agentName={agentName}
+            templates={templates}
+            templatesLoading={templatesLoading}
           />
         </div>
 
@@ -158,6 +165,9 @@ export function VisitingAgentClient({
             date={date}
             onDateChange={setDate}
             onSelectVisit={setSelectedVisit}
+            agentName={agentName}
+            templates={templates}
+            templatesLoading={templatesLoading}
           />
         </div>
       </div>
@@ -167,6 +177,9 @@ export function VisitingAgentClient({
         open={!!selectedVisit}
         onOpenChange={(open) => !open && setSelectedVisit(null)}
         assignmentHistory={selectedVisit ? assignmentHistoryByVisit[selectedVisit.id] || [] : []}
+        agentName={agentName}
+        templates={templates}
+        templatesLoading={templatesLoading}
         loading={loading}
         onCancel={cancelVisit}
         onReschedule={rescheduleVisit}

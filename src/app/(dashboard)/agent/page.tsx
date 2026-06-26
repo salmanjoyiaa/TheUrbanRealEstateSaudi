@@ -118,6 +118,16 @@ export default async function AgentOverviewPage() {
       ? await fetchVisitingAgentDashboardData(user.id, agent.id)
       : null;
 
+  const { data: profileData } =
+    agent.agent_type === "visiting"
+      ? await supabase.from("profiles").select("full_name").eq("id", user.id).single()
+      : { data: null };
+
+  const agentName =
+    agent.agent_type === "visiting"
+      ? (profileData as { full_name?: string } | null)?.full_name || "Agent"
+      : "";
+
   return (
     <div className="space-y-6">
       <div>
@@ -159,6 +169,7 @@ export default async function AgentOverviewPage() {
             rows={visitingDashboardData.rows}
             assignedProperties={visitingDashboardData.assignedProperties}
             assignmentHistoryByVisit={visitingDashboardData.assignmentHistoryByVisit}
+            agentName={agentName}
           />
         </div>
       )}

@@ -293,6 +293,15 @@ export interface PropertyPhoto {
   updated_at: string;
 }
 
+export interface VisitMessageTemplateRow {
+  id: string;
+  agent_profile_id: string;
+  name: string;
+  body: string;
+  created_at: string;
+  updated_at: string;
+}
+
 // Supabase Database type for client typing
 export interface Database {
   public: {
@@ -389,6 +398,11 @@ export interface Database {
           avatar_url?: string | null;
           is_active?: boolean;
         };
+      };
+      visit_message_templates: {
+        Row: VisitMessageTemplateRow;
+        Insert: Omit<VisitMessageTemplateRow, "id" | "created_at" | "updated_at"> & { id?: string };
+        Update: Partial<Omit<VisitMessageTemplateRow, "id" | "created_at" | "agent_profile_id">>;
       };
     };
   };

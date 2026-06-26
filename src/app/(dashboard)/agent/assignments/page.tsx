@@ -17,8 +17,15 @@ export default async function AgentAssignmentsPage() {
     .eq("profile_id", user.id)
     .single();
 
+  const { data: profileData } = await supabase
+    .from("profiles")
+    .select("full_name")
+    .eq("id", user.id)
+    .single();
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const agent = agentData as any;
+  const agentName = (profileData as { full_name?: string } | null)?.full_name || "Agent";
 
   if (!agent || agent.agent_type !== "visiting") {
     redirect("/agent");
@@ -40,6 +47,7 @@ export default async function AgentAssignmentsPage() {
         rows={rows}
         assignedProperties={assignedProperties}
         assignmentHistoryByVisit={assignmentHistoryByVisit}
+        agentName={agentName}
       />
     </div>
   );

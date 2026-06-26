@@ -1,15 +1,20 @@
 "use client";
 
 import type { AssignmentRow } from "@/types/visit-assignment";
+import type { VisitMessageTemplate } from "@/lib/visit-message-template";
 import { formatDate, formatTime } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { MapPin, MessageCircle, Phone, Image as ImageIcon } from "lucide-react";
 import { getPropertyCoverImage } from "@/types/visit-assignment";
 import { VisitActionIcons } from "@/components/visit/visit-action-icons";
+import { VisitTemplatePicker } from "@/components/visit/visit-template-picker";
 import { cn } from "@/lib/utils";
 
 type VisitQuickInfoBarProps = {
   visit: AssignmentRow;
+  agentName: string;
+  templates: VisitMessageTemplate[];
+  templatesLoading?: boolean;
   variant?: "default" | "compact";
 };
 
@@ -21,7 +26,13 @@ function telUrl(phone: string) {
   return `tel:${phone.replace(/\s/g, "")}`;
 }
 
-export function VisitQuickInfoBar({ visit, variant = "default" }: VisitQuickInfoBarProps) {
+export function VisitQuickInfoBar({
+  visit,
+  agentName,
+  templates,
+  templatesLoading = false,
+  variant = "default",
+}: VisitQuickInfoBarProps) {
   const layoutPhoto = visit.properties?.visiting_agent_image;
   const coverImage = getPropertyCoverImage(visit);
 
@@ -35,7 +46,13 @@ export function VisitQuickInfoBar({ visit, variant = "default" }: VisitQuickInfo
           <Phone className="h-3.5 w-3.5 shrink-0" />
           {visit.visitor_phone}
         </a>
-        <VisitActionIcons visit={visit} showLayoutPhoto />
+        <VisitActionIcons
+          visit={visit}
+          agentName={agentName}
+          templates={templates}
+          templatesLoading={templatesLoading}
+          showLayoutPhoto
+        />
       </div>
     );
   }
@@ -71,6 +88,14 @@ export function VisitQuickInfoBar({ visit, variant = "default" }: VisitQuickInfo
             WhatsApp
           </a>
         </Button>
+        <VisitTemplatePicker
+          visit={visit}
+          agentName={agentName}
+          templates={templates}
+          loading={templatesLoading}
+          variant="button"
+          className="col-span-2 sm:col-span-1"
+        />
         {(layoutPhoto || coverImage) && (
           <Button
             variant="outline"

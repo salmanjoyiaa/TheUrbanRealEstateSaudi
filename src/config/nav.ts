@@ -41,6 +41,7 @@ export const agentNav: NavItem[] = [
 export const visitingAgentNav: NavItem[] = [
   { title: "Overview", href: "/agent", icon: LayoutDashboard },
   { title: "My Assignments", href: "/agent/assignments", icon: MapPin },
+  { title: "Message Templates", href: "/agent/message-templates", icon: MessageSquare },
   { title: "My Properties", href: "/agent/properties-assigned", icon: Building2 },
   { title: "Profile", href: "/agent/profile", icon: User },
 ];

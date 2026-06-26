@@ -5,6 +5,7 @@ import { VisitScheduleTable } from "@/components/visit/visit-schedule-table";
 import { VisitDetailModal } from "@/components/visit/visit-detail-modal";
 import { VisitPropertyRefFilter } from "@/components/visit/visit-property-ref-filter";
 import { useVisitMutations } from "@/hooks/use-visit-mutations";
+import { useVisitMessageTemplates } from "@/hooks/use-visit-message-templates";
 import { matchesPropertyRef } from "@/lib/property-ref";
 import type {
   AssignmentRow,
@@ -16,16 +17,19 @@ type VisitDayBoardProps = {
   rows: AssignmentRow[];
   assignedProperties: AssignedPropertyRow[];
   assignmentHistoryByVisit: Record<string, AssignmentHistoryItem[]>;
+  agentName: string;
 };
 
 export function VisitDayBoard({
   rows,
   assignmentHistoryByVisit,
+  agentName,
 }: VisitDayBoardProps) {
   const [date, setDate] = useState(new Date());
   const [propertyRefQuery, setPropertyRefQuery] = useState("");
   const [selectedVisit, setSelectedVisit] = useState<AssignmentRow | null>(null);
   const { loading, cancelVisit, rescheduleVisit, completeVisit } = useVisitMutations();
+  const { templates, loading: templatesLoading } = useVisitMessageTemplates();
 
   const filteredRows = useMemo(
     () =>
@@ -53,12 +57,18 @@ export function VisitDayBoard({
         date={date}
         onDateChange={setDate}
         onSelectVisit={setSelectedVisit}
+        agentName={agentName}
+        templates={templates}
+        templatesLoading={templatesLoading}
       />
       <VisitDetailModal
         visit={selectedVisit}
         open={!!selectedVisit}
         onOpenChange={(open) => !open && setSelectedVisit(null)}
         assignmentHistory={selectedVisit ? assignmentHistoryByVisit[selectedVisit.id] || [] : []}
+        agentName={agentName}
+        templates={templates}
+        templatesLoading={templatesLoading}
         loading={loading}
         onCancel={cancelVisit}
         onReschedule={rescheduleVisit}
