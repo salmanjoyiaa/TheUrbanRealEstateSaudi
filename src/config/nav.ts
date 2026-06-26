@@ -15,6 +15,7 @@ import {
   ClipboardList,
   Settings,
   FileText,
+  FileDown,
   User,
 } from "lucide-react";
 
@@ -88,6 +89,7 @@ export const adminNavGroups: NavGroup[] = [
     label: "Requests",
     items: [
       { title: "Visit Requests", href: "/admin/visits", icon: Calendar },
+      { title: "Visit PDF", href: "/admin/visit-pdf", icon: FileDown },
       { title: "Product contacts", href: "/admin/leads", icon: ShoppingBag },
       { title: "Maintenance Requests", href: "/admin/maintenance", icon: ClipboardList },
     ],

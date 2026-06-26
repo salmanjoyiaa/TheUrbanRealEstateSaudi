@@ -1,12 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { AdminVisitsTable } from "@/components/admin/admin-visits-table";
-import { SendDayVisits } from "@/components/admin/send-day-visits";
-import { VisitExportPanel } from "@/components/admin/visit-export-panel";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sanitizePropertyRefQuery } from "@/lib/property-ref";
+import { fetchAdminVisitAgents } from "@/lib/server/admin-visit-agents";
 import {
   fetchAdminVisitsForPage,
   type AdminVisitRow,
@@ -82,40 +81,13 @@ export default async function AdminVisitsPage({
     completed: allTimeRows.filter((row) => row.status === "completed").length,
   };
 
-  const { data: agentsData } = await supabase
-    .from("agents")
-    .select("profile_id, profiles:profile_id(full_name)")
-    .eq("agent_type", "visiting")
-    .eq("status", "approved");
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const visitingAgents = (agentsData || []).map((agent: any) => ({
-    id: agent.profile_id,
-    name: agent.profiles?.full_name || "Unknown",
-  }));
-
-  const { data: propAgentsData } = await supabase
-    .from("agents")
-    .select("id, profiles:profile_id(full_name)")
-    .neq("agent_type", "visiting")
-    .eq("status", "approved");
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const propertyAgents = (propAgentsData || []).map((a: any) => ({
-    id: a.id,
-    name: a.profiles?.full_name || "Unknown",
-  }));
+  const { visitingAgents } = await fetchAdminVisitAgents(supabase);
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-navy">Visit Requests</h1>
         <p className="text-sm text-muted-foreground">Orchestrate and route scheduled visits.</p>
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <VisitExportPanel visitingAgents={visitingAgents} />
-        <SendDayVisits visitingAgents={visitingAgents} propertyAgents={propertyAgents} />
       </div>
 
       <div className="rounded-xl border bg-card p-4 shadow-sm">
