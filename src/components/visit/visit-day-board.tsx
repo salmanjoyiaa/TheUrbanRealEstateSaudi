@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { VisitScheduleTable } from "@/components/visit/visit-schedule-table";
 import { VisitDetailModal } from "@/components/visit/visit-detail-modal";
+import { VisitPropertyRefFilter } from "@/components/visit/visit-property-ref-filter";
 import { useVisitMutations } from "@/hooks/use-visit-mutations";
+import { matchesPropertyRef } from "@/lib/property-ref";
 import type {
   AssignmentRow,
   AssignedPropertyRow,
@@ -21,20 +23,33 @@ export function VisitDayBoard({
   assignmentHistoryByVisit,
 }: VisitDayBoardProps) {
   const [date, setDate] = useState(new Date());
+  const [propertyRefQuery, setPropertyRefQuery] = useState("");
   const [selectedVisit, setSelectedVisit] = useState<AssignmentRow | null>(null);
   const { loading, cancelVisit, rescheduleVisit, completeVisit } = useVisitMutations();
+
+  const filteredRows = useMemo(
+    () =>
+      rows.filter((row) => matchesPropertyRef(row.properties?.property_ref, propertyRefQuery)),
+    [rows, propertyRefQuery]
+  );
 
   useEffect(() => {
     setSelectedVisit((current) => {
       if (!current) return null;
-      return rows.find((r) => r.id === current.id) ?? null;
+      return filteredRows.find((r) => r.id === current.id) ?? null;
     });
-  }, [rows]);
+  }, [filteredRows]);
 
   return (
-    <>
+    <div className="space-y-4">
+      <VisitPropertyRefFilter
+        value={propertyRefQuery}
+        onChange={setPropertyRefQuery}
+        matchCount={filteredRows.length}
+        totalCount={rows.length}
+      />
       <VisitScheduleTable
-        rows={rows}
+        rows={filteredRows}
         date={date}
         onDateChange={setDate}
         onSelectVisit={setSelectedVisit}
@@ -49,6 +64,6 @@ export function VisitDayBoard({
         onReschedule={rescheduleVisit}
         onCompleteVisit={completeVisit}
       />
-    </>
+    </div>
   );
 }

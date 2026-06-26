@@ -6,7 +6,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { VisitDetailModal } from "@/components/visit/visit-detail-modal";
 import { VisitScheduleTable, VisitDateNav } from "@/components/visit/visit-schedule-table";
+import { VisitPropertyRefFilter } from "@/components/visit/visit-property-ref-filter";
 import { useVisitMutations } from "@/hooks/use-visit-mutations";
+import { matchesPropertyRef } from "@/lib/property-ref";
 import {
   type AssignmentRow,
   type AssignedPropertyRow,
@@ -25,29 +27,48 @@ export function VisitingAgentClient({
   assignmentHistoryByVisit: Record<string, AssignmentHistoryItem[]>;
 }) {
   const [date, setDate] = useState(new Date());
+  const [propertyRefQuery, setPropertyRefQuery] = useState("");
   const [selectedVisit, setSelectedVisit] = useState<AssignmentRow | null>(null);
   const { loading, cancelVisit, rescheduleVisit, completeVisit } = useVisitMutations();
 
-  const bookedDates = useMemo(() => rows.map((r) => parseISO(r.visit_date)), [rows]);
+  const filteredRows = useMemo(
+    () =>
+      rows.filter((row) => matchesPropertyRef(row.properties?.property_ref, propertyRefQuery)),
+    [rows, propertyRefQuery]
+  );
+
+  const filteredAssignedProperties = useMemo(
+    () =>
+      assignedProperties.filter((p) => matchesPropertyRef(p.property_ref, propertyRefQuery)),
+    [assignedProperties, propertyRefQuery]
+  );
+
+  const bookedDates = useMemo(() => filteredRows.map((r) => parseISO(r.visit_date)), [filteredRows]);
 
   const selectedDateVisits = useMemo(
     () =>
-      rows
+      filteredRows
         .filter((row) => isSameDay(parseISO(row.visit_date), date))
         .sort((a, b) => String(a.visit_time).localeCompare(String(b.visit_time))),
-    [rows, date]
+    [filteredRows, date]
   );
 
   useEffect(() => {
     setSelectedVisit((current) => {
       if (!current) return null;
-      return rows.find((r) => r.id === current.id) ?? null;
+      return filteredRows.find((r) => r.id === current.id) ?? null;
     });
-  }, [rows]);
+  }, [filteredRows]);
 
   return (
     <div className="space-y-4 md:space-y-6">
-      {/* Mobile: list-first with compact date nav */}
+      <VisitPropertyRefFilter
+        value={propertyRefQuery}
+        onChange={setPropertyRefQuery}
+        matchCount={filteredRows.length}
+        totalCount={rows.length}
+      />
+
       <div className="md:hidden">
         <VisitDateNav
           date={date}
@@ -57,7 +78,7 @@ export function VisitingAgentClient({
         />
         <div className="mt-4">
           <VisitScheduleTable
-            rows={rows}
+            rows={filteredRows}
             date={date}
             onDateChange={setDate}
             onSelectVisit={setSelectedVisit}
@@ -67,13 +88,13 @@ export function VisitingAgentClient({
 
         <details className="mt-6 rounded-xl border bg-white">
           <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-navy">
-            Assigned properties ({assignedProperties.length})
+            Assigned properties ({filteredAssignedProperties.length})
           </summary>
           <div className="space-y-2 border-t px-4 py-3 text-sm">
-            {assignedProperties.length === 0 ? (
+            {filteredAssignedProperties.length === 0 ? (
               <p className="text-muted-foreground">No assigned properties found.</p>
             ) : (
-              assignedProperties.map((property) => (
+              filteredAssignedProperties.map((property) => (
                 <div key={property.id} className="rounded-md border p-2">
                   <div className="font-medium">{property.title}</div>
                   <div className="text-xs text-muted-foreground">
@@ -86,7 +107,6 @@ export function VisitingAgentClient({
         </details>
       </div>
 
-      {/* Desktop: sidebar + table */}
       <div className="hidden md:grid md:grid-cols-12 md:gap-6">
         <div className="md:col-span-4 lg:col-span-4">
           <div className="space-y-4">
@@ -115,10 +135,10 @@ export function VisitingAgentClient({
                 <CardDescription>Properties currently assigned by admin.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
-                {assignedProperties.length === 0 ? (
+                {filteredAssignedProperties.length === 0 ? (
                   <p className="text-muted-foreground">No assigned properties found.</p>
                 ) : (
-                  assignedProperties.map((property) => (
+                  filteredAssignedProperties.map((property) => (
                     <div key={property.id} className="rounded-md border p-2">
                       <div className="font-medium">{property.title}</div>
                       <div className="text-xs text-muted-foreground">
@@ -134,7 +154,7 @@ export function VisitingAgentClient({
 
         <div className="md:col-span-8 lg:col-span-8">
           <VisitScheduleTable
-            rows={rows}
+            rows={filteredRows}
             date={date}
             onDateChange={setDate}
             onSelectVisit={setSelectedVisit}

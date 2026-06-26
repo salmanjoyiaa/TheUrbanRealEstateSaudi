@@ -1,10 +1,9 @@
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sanitizePropertyRefQuery } from "@/lib/property-ref";
 
 type AdminClient = ReturnType<typeof createAdminClient>;
 
-export function sanitizePropertyRefQuery(raw: string | undefined | null): string {
-  return (raw ?? "").trim().replace(/[%_]/g, "");
-}
+export { sanitizePropertyRefQuery };
 
 /** Resolve property UUIDs whose property_ref partially matches the query (case-insensitive). */
 export async function resolvePropertyIdsByRef(

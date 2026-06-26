@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CalendarDays, Send, Loader2, MessageCircle, FileDown } from "lucide-react";
+import { Send, Loader2, MessageCircle } from "lucide-react";
 
 type Agent = { id: string; name: string };
 
@@ -32,49 +32,6 @@ export function SendDayVisits({ visitingAgents, propertyAgents }: Props) {
   const [propertyAgentId, setPropertyAgentId] = useState("");
   const [sending, setSending] = useState<"visiting" | "property" | null>(null);
   const [opening, setOpening] = useState<"visiting" | "property" | null>(null);
-  const [downloading, setDownloading] = useState<"visiting" | "property" | null>(null);
-
-  async function downloadPdf(
-    recipientType: "visiting_agent" | "property_agent",
-    id: string
-  ) {
-    const key = recipientType === "visiting_agent" ? "visiting" : "property";
-    setDownloading(key);
-    try {
-      const payload: Record<string, string> = {
-        date,
-        recipientType,
-      };
-      if (recipientType === "visiting_agent") payload.profileId = id;
-      else payload.agentId = id;
-
-      const res = await fetch("/api/admin/visits/download-day-summary", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({ error: "Failed to generate PDF" }));
-        throw new Error(data.error || "Failed to generate PDF");
-      }
-
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `theurbanrealestate-daily-visits-${recipientType}-${date}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-      toast.success("PDF downloaded successfully");
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to download PDF");
-    } finally {
-      setDownloading(null);
-    }
-  }
 
   async function openOnDevice(
     recipientType: "visiting_agent" | "property_agent",
@@ -174,10 +131,7 @@ export function SendDayVisits({ visitingAgents, propertyAgents }: Props) {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <CalendarDays className="h-5 w-5" />
-          Send Day Visit Summary
-        </CardTitle>
+        <CardTitle className="text-lg">Send Day Visit Summary</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="mb-4">
@@ -191,7 +145,6 @@ export function SendDayVisits({ visitingAgents, propertyAgents }: Props) {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          {/* Visiting Agent */}
           <div className="space-y-2 rounded-md border p-4">
             <p className="text-sm font-semibold">Send to Visiting Agent</p>
             <Select value={visitingAgentId} onValueChange={setVisitingAgentId}>
@@ -206,7 +159,7 @@ export function SendDayVisits({ visitingAgents, propertyAgents }: Props) {
                 ))}
               </SelectContent>
             </Select>
-            <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-2">
               <Button
                 size="sm"
                 className="w-full"
@@ -218,46 +171,25 @@ export function SendDayVisits({ visitingAgents, propertyAgents }: Props) {
                 ) : (
                   <Send className="mr-2 h-4 w-4" />
                 )}
-                Send via email
+                Email
               </Button>
-              <div className="grid grid-cols-2 gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="w-full text-green-600 hover:text-green-700 focus-visible:ring-green-500"
-                  disabled={!visitingAgentId || !date || opening !== null}
-                  onClick={() => openOnDevice("visiting_agent", visitingAgentId)}
-                  title="Send via WhatsApp on your device"
-                  aria-label="Open in WhatsApp on your device"
-                >
-                  {opening === "visiting" ? (
-                    <Loader2 className="mr-1 h-4 w-4 animate-spin" />
-                  ) : (
-                    <MessageCircle className="mr-1 h-4 w-4" />
-                  )}
-                  WhatsApp
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="w-full"
-                  disabled={!visitingAgentId || !date || downloading !== null}
-                  onClick={() => downloadPdf("visiting_agent", visitingAgentId)}
-                  title="Download professional summary PDF"
-                  aria-label="Download visiting agent summary PDF"
-                >
-                  {downloading === "visiting" ? (
-                    <Loader2 className="mr-1 h-4 w-4 animate-spin" />
-                  ) : (
-                    <FileDown className="mr-1 h-4 w-4" />
-                  )}
-                  PDF
-                </Button>
-              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                className="w-full text-green-600 hover:text-green-700"
+                disabled={!visitingAgentId || !date || opening !== null}
+                onClick={() => openOnDevice("visiting_agent", visitingAgentId)}
+              >
+                {opening === "visiting" ? (
+                  <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                ) : (
+                  <MessageCircle className="mr-1 h-4 w-4" />
+                )}
+                WhatsApp
+              </Button>
             </div>
           </div>
 
-          {/* Property Agent */}
           <div className="space-y-2 rounded-md border p-4">
             <p className="text-sm font-semibold">Send to Property Agent</p>
             <Select value={propertyAgentId} onValueChange={setPropertyAgentId}>
@@ -272,7 +204,7 @@ export function SendDayVisits({ visitingAgents, propertyAgents }: Props) {
                 ))}
               </SelectContent>
             </Select>
-            <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-2">
               <Button
                 size="sm"
                 className="w-full"
@@ -284,42 +216,22 @@ export function SendDayVisits({ visitingAgents, propertyAgents }: Props) {
                 ) : (
                   <Send className="mr-2 h-4 w-4" />
                 )}
-                Send via email
+                Email
               </Button>
-              <div className="grid grid-cols-2 gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="w-full text-green-600 hover:text-green-700 focus-visible:ring-green-500"
-                  disabled={!propertyAgentId || !date || opening !== null}
-                  onClick={() => openOnDevice("property_agent", propertyAgentId)}
-                  title="Send via WhatsApp on your device"
-                  aria-label="Open in WhatsApp on your device"
-                >
-                  {opening === "property" ? (
-                    <Loader2 className="mr-1 h-4 w-4 animate-spin" />
-                  ) : (
-                    <MessageCircle className="mr-1 h-4 w-4" />
-                  )}
-                  WhatsApp
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="w-full"
-                  disabled={!propertyAgentId || !date || downloading !== null}
-                  onClick={() => downloadPdf("property_agent", propertyAgentId)}
-                  title="Download professional summary PDF"
-                  aria-label="Download property agent summary PDF"
-                >
-                  {downloading === "property" ? (
-                    <Loader2 className="mr-1 h-4 w-4 animate-spin" />
-                  ) : (
-                    <FileDown className="mr-1 h-4 w-4" />
-                  )}
-                  PDF
-                </Button>
-              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                className="w-full text-green-600 hover:text-green-700"
+                disabled={!propertyAgentId || !date || opening !== null}
+                onClick={() => openOnDevice("property_agent", propertyAgentId)}
+              >
+                {opening === "property" ? (
+                  <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                ) : (
+                  <MessageCircle className="mr-1 h-4 w-4" />
+                )}
+                WhatsApp
+              </Button>
             </div>
           </div>
         </div>

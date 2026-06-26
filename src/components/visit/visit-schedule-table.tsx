@@ -110,7 +110,14 @@ export function VisitScheduleTable({
                     onClick={() => onSelectVisit(visit)}
                   >
                     <td className="px-4 py-3 font-semibold text-navy whitespace-nowrap">{formatTime(visit.visit_time)}</td>
-                    <td className="max-w-[200px] truncate px-4 py-3">{visit.properties?.title || "—"}</td>
+                    <td className="max-w-[200px] px-4 py-3">
+                      <p className="truncate">{visit.properties?.title || "—"}</p>
+                      {visit.properties?.property_ref && (
+                        <p className="truncate font-mono text-xs text-muted-foreground">
+                          ID {visit.properties.property_ref}
+                        </p>
+                      )}
+                    </td>
                     <td className="px-4 py-3">{visit.visitor_name}</td>
                     <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">{visit.visitor_phone}</td>
                     <td className="px-4 py-3">
@@ -146,6 +153,11 @@ export function VisitScheduleTable({
                     </Badge>
                   </div>
                   <p className="mt-1 truncate font-medium text-navy">{visit.properties?.title || "Unknown Property"}</p>
+                  {visit.properties?.property_ref && (
+                    <p className="truncate font-mono text-xs text-muted-foreground">
+                      ID {visit.properties.property_ref}
+                    </p>
+                  )}
                   <p className="truncate text-sm text-muted-foreground">{visit.visitor_name}</p>
                   <p className="truncate text-sm text-muted-foreground">{visit.visitor_phone}</p>
                 </button>
