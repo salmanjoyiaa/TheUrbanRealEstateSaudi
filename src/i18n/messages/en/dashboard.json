@@ -1,0 +1,352 @@
+{
+  "nav": {
+    "groups": {
+      "overview": "Overview",
+      "teamManagement": "Team Management",
+      "listings": "Listings",
+      "requests": "Requests",
+      "operations": "Operations",
+      "content": "Content",
+      "system": "System",
+      "account": "Account"
+    },
+    "admin": {
+      "dashboard": "Dashboard",
+      "agents": "AQARI Team",
+      "sellers": "Sellers",
+      "visitingTeam": "Visiting Team",
+      "maintenanceAgents": "Maintenance Agents",
+      "properties": "Properties",
+      "products": "Products",
+      "locations": "Locations",
+      "maintenanceServices": "Maintenance Services",
+      "visits": "Visit Requests",
+      "visitPdf": "Visit PDF",
+      "leads": "Product contacts",
+      "maintenanceRequests": "Maintenance Requests",
+      "visitHours": "Visit Hours",
+      "visitPerformance": "Visit Performance",
+      "testimonials": "Testimonials",
+      "messageLogs": "Message Logs",
+      "auditLog": "Audit Log",
+      "settings": "Settings",
+      "profile": "Profile"
+    },
+    "agent": {
+      "overview": "Overview",
+      "myProperties": "My Properties",
+      "visits": "Visit Requests",
+      "assignments": "My Assignments",
+      "messageTemplates": "Message Templates",
+      "propertiesAssigned": "My Properties",
+      "myProducts": "My Products",
+      "leads": "Product contacts",
+      "myServices": "My Services",
+      "serviceRequests": "Service Requests",
+      "profile": "Profile"
+    },
+    "shell": {
+      "adminPanel": "Admin Panel",
+      "visitingTeam": "Visiting Team",
+      "agentDashboard": "Agent Dashboard",
+      "visitingAgent": "Visiting Agent"
+    }
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "filter": "Filter",
+    "reset": "Reset",
+    "search": "Search",
+    "loading": "Loading...",
+    "noResults": "No results found",
+    "actions": "Actions",
+    "status": "Status",
+    "date": "Date",
+    "time": "Time",
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "total": "Total",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "all": "All",
+    "submit": "Submit",
+    "saving": "Saving...",
+    "saved": "Saved successfully",
+    "error": "Something went wrong",
+    "propertyId": "Property ID",
+    "newestFirst": "Newest First",
+    "visitDateAsc": "Visit Date ↑",
+    "visitDateDesc": "Visit Date ↓"
+  },
+  "visitStatus": {
+    "pending": "Pending",
+    "assigned": "Assigned",
+    "confirmed": "Confirmed",
+    "cancelled": "Cancelled",
+    "completed": "Completed",
+    "cancelPending": "Cancel pending"
+  },
+  "pipeline": {
+    "view": "To Visit",
+    "contact_done": "Contact Done",
+    "customer_confirmed": "Customer Confirmed",
+    "customer_arrived": "Customer Arrived",
+    "visit_done": "Visit Done",
+    "customer_remarks": "Remarks Logged",
+    "deal_pending": "Deal Pending",
+    "deal_fail": "Deal Failed",
+    "commission_got": "Commission Got",
+    "deal_close": "Deal Closed",
+    "reschedule": "Reschedule Requested"
+  },
+  "admin": {
+    "overview": {
+      "title": "Admin Dashboard",
+      "subtitle": "Platform overview and quick stats",
+      "actionRequired": "Action Required",
+      "platformTotals": "Platform Totals",
+      "siteTraffic": "Site Traffic",
+      "pendingProperties": "Pending Properties",
+      "awaitingApproval": "Awaiting approval",
+      "pendingAgents": "Pending Agents",
+      "pendingVisiting": "Pending Visiting Agents",
+      "approvedAgents": "Approved Agents",
+      "approvedVisiting": "Approved Visiting Agents",
+      "pendingVisits": "Pending Visits",
+      "pendingMaintenance": "Pending Maintenance",
+      "activeProperties": "Active Properties",
+      "totalCount": "{count} total",
+      "propertyAgents": "Property Agents",
+      "approved": "Approved",
+      "visitingTeam": "Visiting Team",
+      "customers": "Customers",
+      "confirmedVisits": "Confirmed Visits",
+      "allTime": "All time",
+      "productContactClicks": "Product contact clicks",
+      "productContactDescription": "WhatsApp + call (all time)",
+      "today": "Today",
+      "last7Days": "Last 7 Days",
+      "uniqueVisitorsViews": "Unique visitors • {views} page views",
+      "recentVisits": "Recent Visit Requests"
+    },
+    "visits": {
+      "title": "Visit Requests",
+      "subtitle": "Orchestrate and route scheduled visits.",
+      "allTimeSummary": "All-time Visit Summary",
+      "summarySubtitle": "Overall status breakdown across all visit requests.",
+      "count": "Count",
+      "color": "Color",
+      "meaning": "Meaning",
+      "visitFrom": "Visit From",
+      "visitTo": "Visit To",
+      "sort": "Sort",
+      "visitsForProperty": "Visits for Property ID \"{ref}\" ({count} {unit})",
+      "request": "request",
+      "requests": "requests",
+      "statusVisits": "{status} visits",
+      "propertyIdPlaceholder": "e.g. 55"
+    },
+    "settings": {
+      "title": "Platform Settings",
+      "subtitle": "Configure platform-wide preferences",
+      "languageTitle": "Language",
+      "languageSubtitle": "Control the language for the public website and dashboards",
+      "publicLanguage": "Public website language",
+      "dashboardLanguage": "Dashboard language",
+      "english": "English",
+      "arabic": "Arabic (Saudi)",
+      "saveLanguages": "Save language settings",
+      "languagesSaved": "Language settings saved"
+    },
+    "visitPdf": {
+      "title": "Visit PDF",
+      "subtitle": "Download daily visit PDFs and send summaries to agents."
+    },
+    "properties": {
+      "title": "All Properties",
+      "subtitle": "Global listings overview for administrators.",
+      "editTitle": "Edit Property",
+      "editSubtitle": "Update property details as administrator."
+    },
+    "products": {
+      "title": "All Products",
+      "subtitle": "Global product listings overview for administrators.",
+      "editTitle": "Edit Product",
+      "editSubtitle": "Update product details as administrator."
+    },
+    "agents": {
+      "tabs": {
+        "property": "AQARI Team",
+        "seller": "Sellers",
+        "maintenance": "Maintenance"
+      },
+      "subtitleProperty": "Approve, reject, or suspend property agent accounts.",
+      "subtitleSeller": "Approve, reject, or suspend seller accounts.",
+      "subtitleMaintenance": "Approve, reject, or suspend maintenance agent accounts.",
+      "detailTitle": "Agent Detail",
+      "detailSubtitle": "Review submitted information and documents."
+    },
+    "maintenance": {
+      "title": "Maintenance Requests",
+      "subtitle": "Manage service requests before they are routed to agents."
+    },
+    "leads": {
+      "title": "Product contact activity",
+      "subtitle": "Anonymous WhatsApp and call taps on product pages (no customer details stored)."
+    },
+    "locations": {
+      "title": "Locations Manager",
+      "subtitle": "Manage cities and districts globally. Renaming or deleting a location here will automatically update all properties associated with it."
+    },
+    "slots": {
+      "title": "Visit Hours",
+      "subtitle": "Select a property and configure open days, start/end hours, and date-level blocked slots."
+    },
+    "visitingTeam": {
+      "title": "Visiting Team",
+      "subtitle": "Manage your internal visiting agents and dispatch routines."
+    },
+    "testimonials": {
+      "title": "Testimonials",
+      "subtitle": "Manage homepage testimonials and reviews."
+    },
+    "logs": {
+      "title": "Message Logs",
+      "subtitle": "Monitor system-generated WhatsApp messages and Emails."
+    },
+    "auditLog": {
+      "title": "Audit Log",
+      "subtitle": "Track all admin moderation actions."
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "Manage your account details and security settings."
+    },
+    "maintenanceServices": {
+      "title": "Maintenance Services",
+      "subtitle": "Manage service listings in the marketplace.",
+      "editTitle": "Edit maintenance service",
+      "editSubtitle": "Update listing fields for the marketplace."
+    },
+    "visitTeamPerformance": {
+      "title": "Visit Team Performance",
+      "subtitle": "Select a visiting agent to review confirmed/completed visits and deal progress."
+    },
+    "notifications": {
+      "title": "Notification Logs",
+      "subtitle": "Audit trail of all sent emails and WhatsApp messages."
+    }
+  },
+  "agent": {
+    "overview": {
+      "titleVisiting": "Visiting Team Overview",
+      "titleSeller": "Seller Overview",
+      "titleDefault": "Agent Overview",
+      "titleMaintenance": "Maintenance Overview",
+      "subtitle": "Track your listings, requests, and activity.",
+      "subtitleMaintenance": "Track your marketplace listings and customer service requests.",
+      "listedServices": "Listed services",
+      "activeListings": "Active listings",
+      "serviceRequests": "Service requests",
+      "todaySchedule": "Today's schedule",
+      "scheduleSubtitle": "Property-wise daily visits. Click a visit for details and actions.",
+      "confirmedVisits": "Confirmed Visits",
+      "confirmedDeals": "Confirmed Deals",
+      "failedDeals": "Failed Deals",
+      "products": "Products",
+      "contactClicks": "Product contact clicks",
+      "properties": "Properties",
+      "approvalStatus": "Approval Status",
+      "currentStatus": "Current account status: {status}"
+    },
+    "assignments": {
+      "title": "My Assignments",
+      "subtitle": "View your daily visits and manage each assignment.",
+      "calendar": "Calendar",
+      "calendarSubtitle": "Select a date to view assignments.",
+      "assignedProperties": "Assigned Properties",
+      "assignedSubtitle": "Properties currently assigned by admin.",
+      "noAssigned": "No assigned properties found.",
+      "propertyIdLabel": "Property ID: {ref}",
+      "notSet": "Not set"
+    },
+    "messageTemplates": {
+      "title": "Message Templates",
+      "subtitle": "Create named WhatsApp templates with placeholders. Use them from My Assignments when messaging customers.",
+      "newTemplate": "New template",
+      "noTemplates": "No templates yet",
+      "noTemplatesHint": "Create your first template with customer and property placeholders, then send it from any visit in My Assignments.",
+      "createFirst": "Create your first template",
+      "editTemplate": "Edit template",
+      "templateName": "Template name",
+      "message": "Message",
+      "insertPlaceholder": "Insert placeholder",
+      "saveChanges": "Save changes",
+      "createTemplate": "Create template",
+      "loadingTemplates": "Loading templates...",
+      "nameBodyRequired": "Name and message body are required",
+      "templateUpdated": "Template updated",
+      "templateCreated": "Template created",
+      "templateDeleted": "Template deleted",
+      "failedSave": "Failed to save template",
+      "failedDelete": "Failed to delete template",
+      "deleteConfirm": "Delete template \"{name}\"?",
+      "namePlaceholder": "e.g. Arrival reminder",
+      "bodyPlaceholder": "Hello {{customer_name}}, your visit for {{property_name}} (ID {{property_id}}) is on {{visit_date}} at {{visit_time}}."
+    },
+    "visits": {
+      "title": "Visit Requests",
+      "subtitle": "Manage your confirmed and completed property visits."
+    },
+    "properties": {
+      "title": "My Properties",
+      "subtitle": "Manage your property listings.",
+      "createTitle": "Create Property",
+      "editTitle": "Edit Property",
+      "blockDatesTitle": "Block dates",
+      "blockDatesSubtitle": "Manage when this property is unavailable for visit bookings."
+    },
+    "propertiesAssigned": {
+      "title": "My Properties",
+      "subtitle": "Properties assigned to you by the admin. These are the properties you are responsible for."
+    },
+    "products": {
+      "title": "My Products",
+      "subtitle": "Manage your product listings.",
+      "createTitle": "Create Product",
+      "editTitle": "Edit Product"
+    },
+    "leads": {
+      "title": "Product contact activity",
+      "subtitle": "WhatsApp and call taps on your listings (combined analytics; no customer details stored)."
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "Manage your account details and security settings."
+    },
+    "maintenanceServices": {
+      "title": "My Services",
+      "subtitle": "Manage the maintenance services you offer in the marketplace.",
+      "noServices": "No services added",
+      "addService": "Add Service",
+      "newTitle": "Add maintenance service",
+      "newSubtitle": "List a service on the marketplace. Customers will see it after it is live.",
+      "editTitle": "Edit service",
+      "editSubtitle": "Update your marketplace listing."
+    },
+    "maintenanceRequests": {
+      "title": "Service Requests",
+      "subtitle": "View customer requests that have been approved by UrbanSaudi admin."
+    }
+  }
+}

@@ -1,29 +1,32 @@
+"use client";
+
 import Link from "next/link";
 import { Phone } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { useLocale } from "@/providers/locale-provider";
 
 const legalLinks = [
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-  { href: "/privacy-policy", label: "Privacy Policy" },
-  { href: "/terms-of-service", label: "Terms of Service" },
-  { href: "/cookie-policy", label: "Cookie Policy" },
-  { href: "/advertising-disclosure", label: "Advertising Disclosure" },
-  { href: "/safety-and-listing-policy", label: "Safety & Listing Policy" },
+  { href: "/about", labelKey: "footer.about" },
+  { href: "/contact", labelKey: "footer.contact" },
+  { href: "/privacy-policy", labelKey: "footer.privacyPolicy" },
+  { href: "/terms-of-service", labelKey: "footer.termsOfService" },
+  { href: "/cookie-policy", labelKey: "footer.cookiePolicy" },
+  { href: "/advertising-disclosure", labelKey: "footer.advertisingDisclosure" },
+  { href: "/safety-and-listing-policy", labelKey: "footer.safetyPolicy" },
 ];
 
 const quickLinks = [
-  { href: "/properties", label: "Browse Properties" },
-  { href: "/products", label: "Browse Products" },
-  { href: "/maintenance", label: "Maintenance Services" },
-  { href: "/login", label: "Agent Login" },
+  { href: "/properties", labelKey: "common.browseProperties" },
+  { href: "/products", labelKey: "common.browseProducts" },
+  { href: "/maintenance", labelKey: "common.maintenanceServices" },
+  { href: "/login", labelKey: "nav.agentLogin" },
 ];
 
 const joinLinks = [
-  { href: "/signup/agent?type=property", label: "Become an Aqari Agent" },
-  { href: "/signup/agent?type=visiting", label: "Become a Team Agent" },
-  { href: "/signup/agent?type=seller", label: "Create a Product Seller Account" },
-  { href: "/signup/agent?type=maintenance", label: "Become a Maintenance Agent" },
+  { href: "/signup/agent?type=property", labelKey: "footer.becomeAqariAgent" },
+  { href: "/signup/agent?type=visiting", labelKey: "footer.becomeTeamAgent" },
+  { href: "/signup/agent?type=seller", labelKey: "footer.createSellerAccount" },
+  { href: "/signup/agent?type=maintenance", labelKey: "footer.becomeMaintenanceAgent" },
 ];
 
 const socialLinks = [
@@ -70,8 +73,10 @@ type SiteFooterProps = {
 };
 
 export function SiteFooter({ variant = "default" }: SiteFooterProps) {
+  const { t } = useLocale();
   const isHomepage = variant === "homepage";
   const phoneDisplay = "+966 549 586 498";
+  const year = new Date().getFullYear();
 
   if (isHomepage) {
     return (
@@ -83,8 +88,7 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
                 TheUrbanRealEstate<span className="text-xl font-black">Saudi</span>
               </span>
               <p className="mb-4 max-w-xs text-sm leading-snug text-white/70">
-                Saudi Arabia&apos;s trusted platform for verified property rentals, quality products, and reliable
-                maintenance services. Serving Al Khobar, Thuqbah, Al Janubiyah, and nearby areas.
+                {t("footer.description")}
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 {socialLinks.map((social) => (
@@ -94,7 +98,7 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white/90 transition-transform duration-300 hover:scale-110 hover:bg-white/20 hover:text-white"
-                    aria-label={`Visit our ${social.name}`}
+                    aria-label={t("footer.visitSocial", { name: social.name })}
                   >
                     {social.icon}
                   </a>
@@ -103,12 +107,12 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
             </div>
 
             <div>
-              <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-white/90">Quick Links</h4>
+              <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-white/90">{t("footer.quickLinks")}</h4>
               <ul className="space-y-0.5">
                 {quickLinks.map((link) => (
                   <li key={link.href}>
                     <Link href={link.href} className="inline-flex min-h-[36px] items-center py-1.5 text-sm text-white/70 transition-colors hover:text-white">
-                      {link.label}
+                      {t(link.labelKey)}
                     </Link>
                   </li>
                 ))}
@@ -116,12 +120,12 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
             </div>
 
             <div>
-              <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-white/90">Legal &amp; Trust</h4>
+              <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-white/90">{t("footer.legalAndTrust")}</h4>
               <ul className="space-y-0.5">
                 {legalLinks.map((link) => (
                   <li key={link.href}>
                     <Link href={link.href} className="inline-flex min-h-[36px] items-center py-1.5 text-sm text-white/70 transition-colors hover:text-white">
-                      {link.label}
+                      {t(link.labelKey)}
                     </Link>
                   </li>
                 ))}
@@ -129,12 +133,12 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
             </div>
 
             <div>
-              <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-white/90">Join Our Team</h4>
+              <h4 className="mb-2 text-sm font-bold uppercase tracking-wider text-white/90">{t("footer.joinTeam")}</h4>
               <ul className="space-y-0.5">
                 {joinLinks.map((link) => (
                   <li key={link.href}>
                     <Link href={link.href} className="inline-flex min-h-[36px] items-center py-1.5 text-sm text-white/70 transition-colors hover:text-white">
-                      {link.label}
+                      {t(link.labelKey)}
                     </Link>
                   </li>
                 ))}
@@ -144,13 +148,13 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
 
           <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row">
             <p className="text-center text-[12px] font-medium uppercase tracking-widest text-white/50 sm:text-left">
-              &copy; {new Date().getFullYear()} TheUrbanRealEstateSaudi. All rights reserved.
+              {t("footer.copyright", { year })}
             </p>
             <div className="flex items-center gap-3">
               <a
                 href={`tel:${siteConfig.links.phone}`}
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white transition-transform hover:scale-110"
-                aria-label="Call us"
+                aria-label={t("footer.callUs")}
               >
                 <Phone className="h-4 w-4" />
               </a>
@@ -177,7 +181,7 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
         </span>
 
         <p className="max-w-lg text-center text-sm text-muted-foreground">
-          Serving Saudi Arabia — Al Khobar, Thuqbah, Al Janubiyah, and nearby Eastern Province areas.
+          {t("footer.defaultDescription")}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
@@ -188,7 +192,7 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform hover:scale-110 hover:bg-primary/20"
-              aria-label={`Visit our ${social.name}`}
+              aria-label={t("footer.visitSocial", { name: social.name })}
             >
               {social.icon}
             </a>
@@ -196,18 +200,18 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
           <a
             href={`tel:${siteConfig.links.phone}`}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-110"
-            aria-label="Call us"
+            aria-label={t("footer.callUs")}
           >
             <Phone className="h-5 w-5" />
           </a>
         </div>
 
-        <nav className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm text-muted-foreground" aria-label="Legal and trust links">
+        <nav className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm text-muted-foreground" aria-label={t("footer.legalAndTrust")}>
           {legalLinks.map((link, i) => (
             <span key={link.href} className="inline-flex items-center gap-3">
               {i > 0 && <span className="text-border" aria-hidden>•</span>}
               <Link href={link.href} className="transition-colors hover:text-foreground">
-                {link.label}
+                {t(link.labelKey)}
               </Link>
             </span>
           ))}
@@ -216,13 +220,13 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
         <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-muted-foreground">
           {joinLinks.map((link) => (
             <Link key={link.href} href={link.href} className="transition-colors hover:text-foreground">
-              {link.label}
+              {t(link.labelKey)}
             </Link>
           ))}
         </div>
 
         <p className="text-[12px] font-medium uppercase tracking-widest text-muted-foreground">
-          &copy; {new Date().getFullYear()} TheUrbanRealEstateSaudi. All rights reserved.
+          {t("footer.copyright", { year })}
         </p>
       </div>
     </footer>

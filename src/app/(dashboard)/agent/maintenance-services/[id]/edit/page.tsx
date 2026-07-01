@@ -2,12 +2,14 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { MaintenanceServiceForm } from "@/components/agent/maintenance-service-form";
 import type { MaintenanceService } from "@/types/database";
+import { getDashboardTranslator } from "@/i18n/server";
 
 type PageProps = {
   params: { id: string };
 };
 
 export default async function AgentEditMaintenanceServicePage({ params }: PageProps) {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 
   const {
@@ -38,8 +40,8 @@ export default async function AgentEditMaintenanceServicePage({ params }: PagePr
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Edit service</h1>
-        <p className="text-sm text-muted-foreground mt-1">Update your marketplace listing.</p>
+        <h1 className="text-2xl font-bold text-navy">{t("agent.maintenanceServices.editTitle")}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t("agent.maintenanceServices.editSubtitle")}</p>
       </div>
       <MaintenanceServiceForm mode="edit" initialData={data} />
     </div>

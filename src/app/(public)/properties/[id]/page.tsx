@@ -9,6 +9,7 @@ import { PropertyGallery } from "@/components/property/property-gallery";
 import { VisitScheduler } from "@/components/visit/visit-scheduler";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildBreadcrumbJsonLd } from "@/lib/seo";
+import { getPublicTranslator } from "@/i18n/server";
 
 type PropertyDetail = {
   id: string;
@@ -169,6 +170,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function PropertyDetailPage({ params }: PageProps) {
+  const { t } = await getPublicTranslator();
   const property = await getProperty(params.id);
 
   if (!property) {
@@ -205,8 +207,8 @@ export default async function PropertyDetailPage({ params }: PageProps) {
   const otherAmenities = (property.amenities || []).filter((a) => !kitchenFeaturesSet.has(a) && !utilitiesSet.has(a));
 
   const breadcrumbData = buildBreadcrumbJsonLd([
-    { name: "Home", path: "/" },
-    { name: "Properties", path: "/properties" },
+    { name: t("propertyDetail.breadcrumbHome"), path: "/" },
+    { name: t("propertyDetail.breadcrumbProperties"), path: "/properties" },
     { name: property.title, path: `/properties/${property.id}` },
   ]);
 

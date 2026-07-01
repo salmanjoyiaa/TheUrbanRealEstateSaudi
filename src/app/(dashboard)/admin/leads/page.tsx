@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { DataTable } from "@/components/dashboard/data-table";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { formatDate } from "@/lib/format";
+import { getDashboardTranslator } from "@/i18n/server";
 
 type ContactRow = {
   id: string;
@@ -13,6 +14,7 @@ type ContactRow = {
 };
 
 export default async function AdminProductContactsPage() {
+  const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
   const { data } = (await supabase
     .from("product_contact_events")
@@ -32,10 +34,8 @@ export default async function AdminProductContactsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Product contact activity</h1>
-        <p className="text-sm text-muted-foreground">
-          Anonymous WhatsApp and call taps on product pages (no customer details stored).
-        </p>
+        <h1 className="text-2xl font-bold text-navy">{t("admin.leads.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("admin.leads.subtitle")}</p>
       </div>
 
       <DataTable

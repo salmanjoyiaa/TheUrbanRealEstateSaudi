@@ -4,6 +4,7 @@ import { useRef, useState, useCallback } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ProductCard } from "@/components/product/product-card";
+import { useLocale } from "@/providers/locale-provider";
 
 type Product = {
   id: string;
@@ -15,6 +16,7 @@ type Product = {
 };
 
 export function ProductSlider({ products }: { products: Product[] }) {
+  const { t } = useLocale();
   const [current, setCurrent] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const total = products.length;
@@ -58,17 +60,17 @@ export function ProductSlider({ products }: { products: Product[] }) {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="font-display text-3xl font-bold text-foreground mb-1">
-              Products &amp; Household Items
+              {t("home.sliders.productsTitle")}
             </h2>
             <p className="text-muted-foreground text-sm">
-              Quality used items from trusted agents
+              {t("home.sliders.productsSubtitle")}
             </p>
           </div>
           <Link
             href="/products"
             className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
           >
-            View All
+            {t("home.sliders.viewAll")}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -132,7 +134,7 @@ export function ProductSlider({ products }: { products: Product[] }) {
             href="/products"
             className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
           >
-            View All Products
+            {t("home.sliders.viewAllProducts")}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

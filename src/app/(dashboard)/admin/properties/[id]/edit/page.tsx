@@ -2,8 +2,10 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { PropertyForm } from "@/components/property/property-form";
 import type { Property } from "@/types/database";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export default async function AdminEditPropertyPage({ params }: { params: { id: string } }) {
+    const { t } = await getDashboardTranslator();
     const supabase = await createClient();
     const {
         data: { user },
@@ -26,8 +28,8 @@ export default async function AdminEditPropertyPage({ params }: { params: { id: 
     return (
         <div className="mx-auto max-w-2xl space-y-6">
             <div>
-                <h1 className="text-2xl font-bold text-navy">Edit Property</h1>
-                <p className="text-sm text-muted-foreground">Update property details as administrator.</p>
+                <h1 className="text-2xl font-bold text-navy">{t("admin.properties.editTitle")}</h1>
+                <p className="text-sm text-muted-foreground">{t("admin.properties.editSubtitle")}</p>
             </div>
 
             <PropertyForm

@@ -8,6 +8,7 @@ import { PropertyGallery } from "@/components/property/property-gallery";
 import { ProductContactActions } from "@/components/product/product-contact-actions";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildBreadcrumbJsonLd } from "@/lib/seo";
+import { getPublicTranslator } from "@/i18n/server";
 
 type ProductDetail = {
   id: string;
@@ -106,6 +107,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ProductDetailPage({ params }: PageProps) {
+  const { t } = await getPublicTranslator();
   const supabase = await createClient();
   const product = await getProduct(supabase, params.id);
 
@@ -121,8 +123,8 @@ export default async function ProductDetailPage({ params }: PageProps) {
   const locationLine = [product.city, product.district?.trim()].filter(Boolean).join(", ");
 
   const breadcrumbData = buildBreadcrumbJsonLd([
-    { name: "Home", path: "/" },
-    { name: "Products", path: "/products" },
+    { name: t("productDetail.breadcrumbHome"), path: "/" },
+    { name: t("productDetail.breadcrumbProducts"), path: "/products" },
     { name: product.title, path: `/products/${product.id}` },
   ]);
 

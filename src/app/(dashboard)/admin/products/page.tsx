@@ -3,6 +3,7 @@ import { DataTable } from "@/components/dashboard/data-table";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { formatSAR } from "@/lib/format";
 import { ProductActions } from "@/components/admin/product-actions";
+import { getDashboardTranslator } from "@/i18n/server";
 
 type Row = {
   id: string;
@@ -19,6 +20,7 @@ type Row = {
 };
 
 export default async function AdminProductsPage() {
+  const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
   const { data } = (await supabase
     .from("products")
@@ -30,8 +32,8 @@ export default async function AdminProductsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">All Products</h1>
-        <p className="text-sm text-muted-foreground">Global product listings overview for administrators.</p>
+        <h1 className="text-2xl font-bold text-navy">{t("admin.products.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("admin.products.subtitle")}</p>
       </div>
 
       <DataTable

@@ -8,6 +8,7 @@ import { CreatePropertyAgentDialog } from "@/components/admin/create-property-ag
 import { createAdminClient } from "@/lib/supabase/admin";
 import { MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -30,14 +31,15 @@ type AgentRow = {
 };
 
 const tabs = [
-  { key: "property", label: "AQARI Team" },
-  { key: "seller", label: "Sellers" },
-  { key: "maintenance", label: "Maintenance" },
+  { key: "property", labelKey: "admin.agents.tabs.property" },
+  { key: "seller", labelKey: "admin.agents.tabs.seller" },
+  { key: "maintenance", labelKey: "admin.agents.tabs.maintenance" },
 ] as const;
 
 type AgentListType = (typeof tabs)[number]["key"];
 
 export default async function AdminAgentsPage({ searchParams }: { searchParams: SearchParams }) {
+  const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
   const rawType = searchParams.agent_type;
   const typeFilter: AgentListType =
@@ -57,14 +59,14 @@ export default async function AdminAgentsPage({ searchParams }: { searchParams: 
   const { data } = (await query) as { data: AgentRow[] | null };
   const rows = data || [];
 
-  const currentTab = tabs.find((t) => t.key === typeFilter) || tabs[0];
-  const pageTitle = currentTab.label;
+  const currentTab = tabs.find((tab) => tab.key === typeFilter) || tabs[0];
+  const pageTitle = t(currentTab.labelKey);
   const pageDescription =
     typeFilter === "seller"
-      ? "Approve, reject, or suspend seller accounts."
+      ? t("admin.agents.subtitleSeller")
       : typeFilter === "maintenance"
-        ? "Approve, reject, or suspend maintenance agent accounts."
-        : "Approve, reject, or suspend property agent accounts.";
+        ? t("admin.agents.subtitleMaintenance")
+        : t("admin.agents.subtitleProperty");
 
   const entityLabel = typeFilter === "seller" ? "Seller" : typeFilter === "maintenance" ? "Agent" : "Agent";
 
@@ -83,7 +85,7 @@ export default async function AdminAgentsPage({ searchParams }: { searchParams: 
                 : "border-transparent text-muted-foreground hover:text-foreground"
             )}
           >
-            {tab.label}
+            {t(tab.labelKey)}
           </Link>
         ))}
       </div>

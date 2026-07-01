@@ -7,6 +7,7 @@ import type { Product } from "@/types/database";
 import { ProductCard } from "@/components/product/product-card";
 import { ProductFilters } from "@/components/product/product-filters";
 import { Button } from "@/components/ui/button";
+import { getPublicTranslator } from "@/i18n/server";
 
 export const revalidate = 60;
 
@@ -40,6 +41,7 @@ export async function generateMetadata({ searchParams }: ProductsPageProps): Pro
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+  const { t } = await getPublicTranslator();
   const supabase = await createClient();
   const listProductHref = await getListProductFreeHref(supabase);
   const city = searchParams.city && searchParams.city !== "all" ? searchParams.city : undefined;
@@ -100,8 +102,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   return (
     <div className="container mx-auto space-y-6 px-4 py-8">
       <div>
-        <h1 className="text-[24px] font-extrabold text-foreground">Products</h1>
-        <p className="mt-1 text-[15px] text-muted-foreground">Find quality used household items from trusted agents.</p>
+        <h1 className="text-[24px] font-extrabold text-foreground">{t("products.title")}</h1>
+        <p className="mt-1 text-[15px] text-muted-foreground">{t("products.subtitle")}</p>
       </div>
 
       <div className="flex justify-center sm:justify-end">

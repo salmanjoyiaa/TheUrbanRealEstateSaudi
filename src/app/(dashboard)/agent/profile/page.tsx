@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AccountProfileForm } from "@/components/dashboard/account-profile-form";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +13,7 @@ const AGENT_ROLE_LABELS: Record<string, string> = {
 };
 
 export default async function AgentProfilePage() {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
   const {
     data: { user },
@@ -59,6 +61,8 @@ export default async function AgentProfilePage() {
         agent_type: agentType ?? null,
       }}
       roleLabel={roleLabel}
+      pageTitle={t("agent.profile.title")}
+      pageSubtitle={t("agent.profile.subtitle")}
     />
   );
 }

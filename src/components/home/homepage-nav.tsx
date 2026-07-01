@@ -11,17 +11,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-
-const navLinks = [
-  { title: "Home", href: "/" },
-  { title: "Properties", href: "/properties" },
-  { title: "Products", href: "/products" },
-  { title: "Maintenance", href: "/maintenance" },
-  { title: "About", href: "/about" },
-  { title: "Contact", href: "/contact" },
-];
+import { publicNavKeys } from "@/config/nav";
+import { useLocale } from "@/providers/locale-provider";
 
 export function HomepageNav() {
+  const { t } = useLocale();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -46,19 +40,19 @@ export function HomepageNav() {
               TheUrbanRealEstateSaudi
             </span>
             <span className="hidden sm:block text-[11px] sm:text-xs text-white/55 font-medium tracking-wide mt-0.5">
-              Properties, products & maintenance — verified agents
+              {t("nav.tagline")}
             </span>
           </Link>
 
           <nav className="hidden md:flex flex-1 min-w-0 justify-center px-2">
             <div className="flex items-center gap-6 lg:gap-8 flex-wrap justify-center">
-              {navLinks.map((link) => (
+              {publicNavKeys.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className="relative text-[15px] font-semibold tracking-wide text-white/90 hover:text-white transition-colors after:absolute after:left-0 after:bottom-[-2px] after:h-[2px] after:w-0 after:bg-current after:transition-[width] after:duration-200 hover:after:w-full whitespace-nowrap"
                 >
-                  {link.title}
+                  {t(link.titleKey)}
                 </Link>
               ))}
             </div>
@@ -72,30 +66,30 @@ export function HomepageNav() {
                   variant="outline"
                   className="hidden md:inline-flex min-h-11 rounded-xl border-2 border-white/85 bg-transparent text-white px-4 py-2.5 text-[14px] font-bold hover:bg-white/10 hover:text-white gap-1.5"
                 >
-                  Partner logins
+                  {t("nav.partnerLogins")}
                   <ChevronDown className="h-4 w-4 opacity-90" aria-hidden />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 z-[100]">
                 <DropdownMenuItem asChild>
                   <Link href="/login?type=property" className="cursor-pointer font-bold">
-                    AQARI Login
+                    {t("nav.aqariLogin")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link href="/login?type=visiting" className="cursor-pointer font-medium">
-                    Team Login
+                    {t("nav.teamLogin")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/login?type=seller" className="cursor-pointer font-medium">
-                    Seller Login
+                    {t("nav.sellerLogin")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/login?type=maintenance" className="cursor-pointer font-medium">
-                    Maintenance Login
+                    {t("nav.maintenanceLogin")}
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -117,47 +111,47 @@ export function HomepageNav() {
       {open && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-[#1a1a2e]/95 backdrop-blur-xl border-b border-white/10 shadow-2xl z-50 pb-5 animate-slide-down origin-top">
           <nav className="flex flex-col px-4 pt-3 pb-1 gap-0.5">
-            {navLinks.map((link) => (
+            {publicNavKeys.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
                 className="min-h-[48px] flex items-center py-3 px-4 text-[15px] font-semibold rounded-xl text-white/90 hover:bg-white/10 hover:text-white transition-colors active:scale-[0.98] touch-manipulation"
               >
-                {link.title}
+                {t(link.titleKey)}
               </Link>
             ))}
             <div className="pt-4 border-t border-white/10 mt-3 flex flex-col gap-2">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-white/45 px-1">
-                Partner logins
+                {t("nav.partnerLogins")}
               </p>
               <Link
                 href="/login?type=property"
                 onClick={() => setOpen(false)}
                 className="flex w-full items-center justify-center rounded-xl bg-white text-primary px-6 py-3 min-h-[48px] text-[14px] font-bold transition-all hover:bg-white/90 active:scale-[0.98] shadow-md"
               >
-                AQARI Login
+                {t("nav.aqariLogin")}
               </Link>
               <Link
                 href="/login?type=visiting"
                 onClick={() => setOpen(false)}
                 className="flex w-full items-center justify-center rounded-xl border border-white/30 text-white/90 px-6 py-3 min-h-[48px] text-[14px] font-bold transition-all hover:bg-white/10 hover:border-white/50 active:scale-[0.98]"
               >
-                Team Login
+                {t("nav.teamLogin")}
               </Link>
               <Link
                 href="/login?type=seller"
                 onClick={() => setOpen(false)}
                 className="flex w-full items-center justify-center rounded-xl border border-white/30 text-white/90 px-6 py-3 min-h-[48px] text-[14px] font-bold transition-all hover:bg-white/10 hover:border-white/50 active:scale-[0.98]"
               >
-                Seller Login
+                {t("nav.sellerLogin")}
               </Link>
               <Link
                 href="/login?type=maintenance"
                 onClick={() => setOpen(false)}
                 className="flex w-full items-center justify-center rounded-xl border border-white/30 text-white/90 px-6 py-3 min-h-[48px] text-[14px] font-bold transition-all hover:bg-white/10 hover:border-white/50 active:scale-[0.98]"
               >
-                Maintenance Login
+                {t("nav.maintenanceLogin")}
               </Link>
             </div>
           </nav>

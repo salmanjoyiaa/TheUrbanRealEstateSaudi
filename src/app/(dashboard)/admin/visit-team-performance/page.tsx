@@ -4,6 +4,7 @@ import { DataTable } from "@/components/dashboard/data-table";
 import { VisitRequestDialog } from "@/components/admin/visit-request-dialog";
 import { formatDate, formatTime } from "@/lib/format";
 import { getVisitStatusBadgeClass } from "@/lib/visit-status";
+import { getDashboardTranslator } from "@/i18n/server";
 
 type VisitingAgent = {
   id: string;
@@ -56,6 +57,7 @@ export default async function VisitTeamPerformancePage({
 }: {
   searchParams: { visiting_agent_id?: string };
 }) {
+  const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
 
   const { data: agentsData } = await supabase
@@ -97,8 +99,8 @@ export default async function VisitTeamPerformancePage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Visit Team Performance</h1>
-        <p className="text-sm text-muted-foreground">Select a visiting agent to review confirmed/completed visits and deal progress.</p>
+        <h1 className="text-2xl font-bold text-navy">{t("admin.visitTeamPerformance.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("admin.visitTeamPerformance.subtitle")}</p>
       </div>
 
       <form className="flex flex-wrap items-end gap-3" action="/admin/visit-team-performance" method="get">

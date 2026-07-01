@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -37,6 +38,7 @@ export default async function MessageLogsPage({
         date_to?: string;
     };
 }) {
+    const { t } = await getDashboardTranslator();
     const supabase = createAdminClient();
     let query = supabase
         .from("notification_logs")
@@ -64,10 +66,8 @@ export default async function MessageLogsPage({
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Message Logs</h1>
-                <p className="text-muted-foreground">
-                    Monitor system-generated WhatsApp messages and Emails.
-                </p>
+                <h1 className="text-3xl font-bold tracking-tight">{t("admin.logs.title")}</h1>
+                <p className="text-muted-foreground">{t("admin.logs.subtitle")}</p>
             </div>
 
             {/* Filters */}

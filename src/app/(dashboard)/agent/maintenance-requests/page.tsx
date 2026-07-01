@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Calendar, Clock, Phone, Mail } from "lucide-react";
 import { MaintenanceRequestMediaCell } from "@/components/maintenance/maintenance-request-media-preview";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export const metadata: Metadata = {
     title: "Service Requests - Agent Dashboard",
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export const revalidate = 0;
 
 export default async function AgentMaintenanceRequestsPage() {
+    const { t } = await getDashboardTranslator();
     const supabase = await createClient();
 
     const {
@@ -49,8 +51,8 @@ export default async function AgentMaintenanceRequestsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-bold tracking-tight">Service Requests</h1>
-                <p className="text-muted-foreground">View customer requests that have been approved by UrbanSaudi admin.</p>
+                <h1 className="text-2xl font-bold tracking-tight">{t("agent.maintenanceRequests.title")}</h1>
+                <p className="text-muted-foreground">{t("agent.maintenanceRequests.subtitle")}</p>
             </div>
 
             {(!requests || requests.length === 0) ? (

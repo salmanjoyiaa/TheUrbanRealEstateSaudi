@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { DataTable } from "@/components/dashboard/data-table";
 import { createClient } from "@/lib/supabase/server";
 import { formatDate, formatTime } from "@/lib/format";
+import { getDashboardTranslator } from "@/i18n/server";
 
 type LogRow = {
     id: string;
@@ -14,6 +15,7 @@ type LogRow = {
 };
 
 export default async function AdminNotificationsPage() {
+    const { t } = await getDashboardTranslator();
     const supabase = await createClient();
     const { data } = (await supabase
         .from("notification_logs")
@@ -25,8 +27,8 @@ export default async function AdminNotificationsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-bold text-navy">Notification Logs</h1>
-                <p className="text-sm text-muted-foreground">Audit trail of all sent emails and WhatsApp messages.</p>
+                <h1 className="text-2xl font-bold text-navy">{t("admin.notifications.title")}</h1>
+                <p className="text-sm text-muted-foreground">{t("admin.notifications.subtitle")}</p>
             </div>
 
             <DataTable

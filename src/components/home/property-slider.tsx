@@ -4,6 +4,7 @@ import { useRef, useState, useCallback } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { PropertyCard } from "@/components/property/property-card";
+import { useLocale } from "@/providers/locale-provider";
 
 type Property = {
   id: string;
@@ -35,6 +36,7 @@ type Property = {
 };
 
 export function PropertySlider({ properties, showAmenitiesAndBuildingFeatures = false }: { properties: Property[]; showAmenitiesAndBuildingFeatures?: boolean }) {
+  const { t } = useLocale();
   const [current, setCurrent] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const total = properties.length;
@@ -85,17 +87,17 @@ export function PropertySlider({ properties, showAmenitiesAndBuildingFeatures = 
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="font-display text-3xl font-bold text-foreground mb-1">
-              Available Properties
+              {t("home.sliders.propertiesTitle")}
             </h2>
             <p className="text-muted-foreground text-sm">
-              Explore verified rentals from our trusted agents
+              {t("home.sliders.propertiesSubtitle")}
             </p>
           </div>
           <Link
             href="/properties"
             className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
           >
-            View All
+            {t("home.sliders.viewAll")}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -165,7 +167,7 @@ export function PropertySlider({ properties, showAmenitiesAndBuildingFeatures = 
             href="/properties"
             className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
           >
-            View All Properties
+            {t("home.sliders.viewAllProperties")}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

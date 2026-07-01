@@ -54,6 +54,7 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         display: ["var(--font-outfit)", "system-ui", "sans-serif"],
+        arabic: ["var(--font-arabic)", "var(--font-inter)", "system-ui", "sans-serif"],
       },
       keyframes: {
         "fade-in": {

@@ -3,6 +3,7 @@ import { DataTable } from "@/components/dashboard/data-table";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { formatDate } from "@/lib/format";
+import { getDashboardTranslator } from "@/i18n/server";
 
 type ContactRow = {
   id: string;
@@ -14,6 +15,7 @@ type ContactRow = {
 };
 
 export default async function AgentProductContactsPage() {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 
   const {
@@ -58,10 +60,8 @@ export default async function AgentProductContactsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Product contact activity</h1>
-        <p className="text-sm text-muted-foreground">
-          WhatsApp and call taps on your listings (combined analytics; no customer details stored).
-        </p>
+        <h1 className="text-2xl font-bold text-navy">{t("agent.leads.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("agent.leads.subtitle")}</p>
       </div>
 
       <DataTable

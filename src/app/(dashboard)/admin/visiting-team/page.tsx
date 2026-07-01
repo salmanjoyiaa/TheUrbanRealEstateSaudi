@@ -5,6 +5,7 @@ import { CreateVisitingAgentDialog } from "@/components/admin/create-visiting-ag
 import { AgentRowActions } from "@/components/admin/agent-row-actions";
 import { AgentPropertyAssignmentDialog } from "@/components/admin/agent-property-assignment-dialog";
 import { MessageCircle } from "lucide-react";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -21,6 +22,7 @@ type AgentRow = {
 };
 
 export default async function AdminVisitingTeamPage() {
+    const { t } = await getDashboardTranslator();
     const supabase = createAdminClient();
 
     // Fetch only agents marked as 'visiting' program type
@@ -36,8 +38,8 @@ export default async function AdminVisitingTeamPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-navy">Visiting Team</h1>
-                    <p className="text-sm text-muted-foreground">Manage your internal visiting agents and dispatch routines.</p>
+                    <h1 className="text-2xl font-bold text-navy">{t("admin.visitingTeam.title")}</h1>
+                    <p className="text-sm text-muted-foreground">{t("admin.visitingTeam.subtitle")}</p>
                 </div>
                 <CreateVisitingAgentDialog />
             </div>

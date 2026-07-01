@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { Star } from "lucide-react";
 import { TestimonialDialog } from "@/components/admin/testimonial-dialog";
 import { ModerationActionButton } from "@/components/admin/moderation-action-button";
+import { getDashboardTranslator } from "@/i18n/server";
 
 type TestimonialRow = {
   id: string;
@@ -19,6 +20,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function AdminTestimonialsPage() {
+  const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
   const { data } = (await supabase
     .from("testimonials")
@@ -31,8 +33,8 @@ export default async function AdminTestimonialsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-navy">Testimonials</h1>
-          <p className="text-sm text-muted-foreground">Manage homepage testimonials and reviews.</p>
+          <h1 className="text-2xl font-bold text-navy">{t("admin.testimonials.title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("admin.testimonials.subtitle")}</p>
         </div>
         <TestimonialDialog />
       </div>

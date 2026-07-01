@@ -3,6 +3,7 @@ import { MessageCircle, Phone } from "lucide-react";
 import { createLegalMetadata } from "@/lib/legal-meta";
 import { LegalPageLayout } from "@/components/legal/legal-page-layout";
 import { siteConfig } from "@/config/site";
+import { getPublicTranslator } from "@/i18n/server";
 
 export const metadata = createLegalMetadata({
   title: "Contact Us",
@@ -11,12 +12,13 @@ export const metadata = createLegalMetadata({
   path: "/contact",
 });
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const { t } = await getPublicTranslator();
   const phoneDisplay = "+966 549 586 498";
   const businessEmail = process.env.NEXT_PUBLIC_BUSINESS_EMAIL?.trim();
 
   return (
-    <LegalPageLayout title="Contact Us" lastUpdated="June 2026">
+    <LegalPageLayout title={t("contactPage.title")} lastUpdated="June 2026">
       <p>
         We are here to help with questions about property listings, used products, maintenance services, agent
         applications, and account support. Please use the channels below.

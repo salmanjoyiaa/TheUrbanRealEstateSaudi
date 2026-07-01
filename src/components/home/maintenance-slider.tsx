@@ -19,6 +19,7 @@ import {
   ArrowRight,
   type LucideIcon,
 } from "lucide-react";
+import { useLocale } from "@/providers/locale-provider";
 
 type ServiceItem = {
   icon: LucideIcon;
@@ -95,6 +96,7 @@ const SERVICES: ServiceItem[] = [
 ];
 
 export function MaintenanceSlider() {
+  const { t } = useLocale();
   const [current, setCurrent] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const total = SERVICES.length;
@@ -137,13 +139,13 @@ export function MaintenanceSlider() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-700 text-sm font-medium mb-3 border border-emerald-200">
               <Star className="h-3.5 w-3.5" />
-              24-Hour Response Guarantee
+              {t("home.sliders.maintenanceBadge")}
             </div>
             <h2 className="font-display text-3xl font-bold text-foreground mb-1">
-              Maintenance Services
+              {t("home.sliders.maintenanceTitle")}
             </h2>
             <p className="text-muted-foreground text-sm">
-              Professional repairs and upkeep for every part of your property
+              {t("home.sliders.maintenanceSubtitle")}
             </p>
           </div>
           <Link
@@ -151,7 +153,7 @@ export function MaintenanceSlider() {
             className="inline-flex items-center gap-2 self-start px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-sm transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-emerald-500/25 whitespace-nowrap"
           >
             <Wrench className="h-5 w-5 shrink-0" />
-            Explore Services
+            {t("home.sliders.exploreServices")}
           </Link>
         </div>
 

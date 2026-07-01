@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { AgentVisitsClient } from "@/components/visit/agent-visits-client";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export type VisitRow = {
   id: string;
@@ -17,6 +18,7 @@ export type VisitRow = {
 };
 
 export default async function AgentVisitsPage() {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -58,8 +60,8 @@ export default async function AgentVisitsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Visit Requests</h1>
-        <p className="text-sm text-muted-foreground">Manage your confirmed and completed property visits.</p>
+        <h1 className="text-2xl font-bold text-navy">{t("agent.visits.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("agent.visits.subtitle")}</p>
       </div>
 
       <AgentVisitsClient rows={rows} />

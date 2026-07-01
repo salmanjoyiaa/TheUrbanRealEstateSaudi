@@ -8,10 +8,12 @@ import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/server";
 import { formatSAR } from "@/lib/format";
 import type { Product } from "@/types/database";
+import { getDashboardTranslator } from "@/i18n/server";
 
 type ProductRow = Product & { contact_clicks: number };
 
 export default async function AgentProductsPage() {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 
   const {
@@ -56,8 +58,8 @@ export default async function AgentProductsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-navy">My Products</h1>
-          <p className="text-sm text-muted-foreground">Manage your product listings.</p>
+          <h1 className="text-2xl font-bold text-navy">{t("agent.products.title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("agent.products.subtitle")}</p>
         </div>
         <Link href="/agent/products/new">
           <Button>Create Product</Button>

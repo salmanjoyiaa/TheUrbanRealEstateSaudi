@@ -11,124 +11,107 @@ import {
   MapPin,
   Star,
   Clock,
-  type LucideIcon,
   ClipboardList,
   Settings,
   FileText,
   FileDown,
   User,
 } from "lucide-react";
+import type { NavGroupDef, NavItemDef } from "@/i18n/nav-i18n";
 
-export interface NavItem {
-  title: string;
-  href: string;
-  icon: LucideIcon;
-  badge?: string;
-}
+export type { NavItem, NavGroup } from "@/i18n/nav-i18n";
 
-export interface NavGroup {
-  label: string;
-  items: NavItem[];
-}
-
-export const agentNav: NavItem[] = [
-  { title: "Overview", href: "/agent", icon: LayoutDashboard },
-  { title: "My Properties", href: "/agent/properties", icon: Building2 },
-  { title: "Visit Requests", href: "/agent/visits", icon: Calendar },
-  { title: "Profile", href: "/agent/profile", icon: User },
+export const agentNavDef: NavItemDef[] = [
+  { titleKey: "nav.agent.overview", href: "/agent", icon: LayoutDashboard },
+  { titleKey: "nav.agent.myProperties", href: "/agent/properties", icon: Building2 },
+  { titleKey: "nav.agent.visits", href: "/agent/visits", icon: Calendar },
+  { titleKey: "nav.agent.profile", href: "/agent/profile", icon: User },
 ];
 
-export const visitingAgentNav: NavItem[] = [
-  { title: "Overview", href: "/agent", icon: LayoutDashboard },
-  { title: "My Assignments", href: "/agent/assignments", icon: MapPin },
-  { title: "Message Templates", href: "/agent/message-templates", icon: MessageSquare },
-  { title: "My Properties", href: "/agent/properties-assigned", icon: Building2 },
-  { title: "Profile", href: "/agent/profile", icon: User },
+export const visitingAgentNavDef: NavItemDef[] = [
+  { titleKey: "nav.agent.overview", href: "/agent", icon: LayoutDashboard },
+  { titleKey: "nav.agent.assignments", href: "/agent/assignments", icon: MapPin },
+  { titleKey: "nav.agent.messageTemplates", href: "/agent/message-templates", icon: MessageSquare },
+  { titleKey: "nav.agent.propertiesAssigned", href: "/agent/properties-assigned", icon: Building2 },
+  { titleKey: "nav.agent.profile", href: "/agent/profile", icon: User },
 ];
 
-export const sellerNav: NavItem[] = [
-  { title: "Overview", href: "/agent", icon: LayoutDashboard },
-  { title: "My Products", href: "/agent/products", icon: Package },
-  { title: "Product contacts", href: "/agent/leads", icon: ShoppingBag },
-  { title: "Profile", href: "/agent/profile", icon: User },
+export const sellerNavDef: NavItemDef[] = [
+  { titleKey: "nav.agent.overview", href: "/agent", icon: LayoutDashboard },
+  { titleKey: "nav.agent.myProducts", href: "/agent/products", icon: Package },
+  { titleKey: "nav.agent.leads", href: "/agent/leads", icon: ShoppingBag },
+  { titleKey: "nav.agent.profile", href: "/agent/profile", icon: User },
 ];
 
-export const maintenanceNav: NavItem[] = [
-  { title: "Overview", href: "/agent", icon: LayoutDashboard },
-  { title: "My Services", href: "/agent/maintenance-services", icon: Wrench },
-  { title: "Service Requests", href: "/agent/maintenance-requests", icon: ScrollText },
-  { title: "Profile", href: "/agent/profile", icon: User },
+export const maintenanceNavDef: NavItemDef[] = [
+  { titleKey: "nav.agent.overview", href: "/agent", icon: LayoutDashboard },
+  { titleKey: "nav.agent.myServices", href: "/agent/maintenance-services", icon: Wrench },
+  { titleKey: "nav.agent.serviceRequests", href: "/agent/maintenance-requests", icon: ScrollText },
+  { titleKey: "nav.agent.profile", href: "/agent/profile", icon: User },
 ];
 
-// Grouped admin navigation
-export const adminNavGroups: NavGroup[] = [
+export const adminNavGroupsDef: NavGroupDef[] = [
   {
-    label: "Overview",
+    labelKey: "nav.groups.overview",
+    items: [{ titleKey: "nav.admin.dashboard", href: "/admin", icon: LayoutDashboard }],
+  },
+  {
+    labelKey: "nav.groups.teamManagement",
     items: [
-      { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
+      { titleKey: "nav.admin.agents", href: "/admin/agents", icon: Users },
+      { titleKey: "nav.admin.sellers", href: "/admin/agents?agent_type=seller", icon: ShoppingBag },
+      { titleKey: "nav.admin.visitingTeam", href: "/admin/visiting-team", icon: MapPin },
+      { titleKey: "nav.admin.maintenanceAgents", href: "/admin/agents?agent_type=maintenance", icon: Wrench },
     ],
   },
   {
-    label: "Team Management",
+    labelKey: "nav.groups.listings",
     items: [
-      { title: "AQARI Team", href: "/admin/agents", icon: Users },
-      { title: "Sellers", href: "/admin/agents?agent_type=seller", icon: ShoppingBag },
-      { title: "Visiting Team", href: "/admin/visiting-team", icon: MapPin },
-      { title: "Maintenance Agents", href: "/admin/agents?agent_type=maintenance", icon: Wrench },
+      { titleKey: "nav.admin.properties", href: "/admin/properties", icon: Building2 },
+      { titleKey: "nav.admin.products", href: "/admin/products", icon: Package },
+      { titleKey: "nav.admin.locations", href: "/admin/locations", icon: MapPin },
+      { titleKey: "nav.admin.maintenanceServices", href: "/admin/maintenance-services", icon: Settings },
     ],
   },
   {
-    label: "Listings",
+    labelKey: "nav.groups.requests",
     items: [
-      { title: "Properties", href: "/admin/properties", icon: Building2 },
-      { title: "Products", href: "/admin/products", icon: Package },
-      { title: "Locations", href: "/admin/locations", icon: MapPin },
-      { title: "Maintenance Services", href: "/admin/maintenance-services", icon: Settings },
+      { titleKey: "nav.admin.visits", href: "/admin/visits", icon: Calendar },
+      { titleKey: "nav.admin.visitPdf", href: "/admin/visit-pdf", icon: FileDown },
+      { titleKey: "nav.admin.leads", href: "/admin/leads", icon: ShoppingBag },
+      { titleKey: "nav.admin.maintenanceRequests", href: "/admin/maintenance", icon: ClipboardList },
     ],
   },
   {
-    label: "Requests",
+    labelKey: "nav.groups.operations",
     items: [
-      { title: "Visit Requests", href: "/admin/visits", icon: Calendar },
-      { title: "Visit PDF", href: "/admin/visit-pdf", icon: FileDown },
-      { title: "Product contacts", href: "/admin/leads", icon: ShoppingBag },
-      { title: "Maintenance Requests", href: "/admin/maintenance", icon: ClipboardList },
+      { titleKey: "nav.admin.visitHours", href: "/admin/slots", icon: Clock },
+      { titleKey: "nav.admin.visitPerformance", href: "/admin/visit-team-performance", icon: MapPin },
     ],
   },
   {
-    label: "Operations",
+    labelKey: "nav.groups.content",
+    items: [{ titleKey: "nav.admin.testimonials", href: "/admin/testimonials", icon: Star }],
+  },
+  {
+    labelKey: "nav.groups.system",
     items: [
-      { title: "Visit Hours", href: "/admin/slots", icon: Clock },
-      { title: "Visit Performance", href: "/admin/visit-team-performance", icon: MapPin },
+      { titleKey: "nav.admin.messageLogs", href: "/admin/logs", icon: MessageSquare },
+      { titleKey: "nav.admin.auditLog", href: "/admin/audit-log", icon: FileText },
+      { titleKey: "nav.admin.settings", href: "/admin/settings", icon: Settings },
     ],
   },
   {
-    label: "Content",
-    items: [
-      { title: "Testimonials", href: "/admin/testimonials", icon: Star },
-    ],
-  },
-  {
-    label: "System",
-    items: [
-      { title: "Message Logs", href: "/admin/logs", icon: MessageSquare },
-      { title: "Audit Log", href: "/admin/audit-log", icon: FileText },
-    ],
-  },
-  {
-    label: "Account",
-    items: [
-      { title: "Profile", href: "/admin/profile", icon: User },
-    ],
+    labelKey: "nav.groups.account",
+    items: [{ titleKey: "nav.admin.profile", href: "/admin/profile", icon: User }],
   },
 ];
 
-// Flat version for backward compatibility
-export const adminNav: NavItem[] = adminNavGroups.flatMap((g) => g.items);
-
-export const publicNav = [
-  { title: "Home", href: "/" },
-  { title: "Properties", href: "/properties" },
-  { title: "Products", href: "/products" },
-  { title: "Maintenance", href: "/maintenance" },
-];
+export const publicNavKeys = [
+  { titleKey: "nav.home", href: "/" },
+  { titleKey: "nav.properties", href: "/properties" },
+  { titleKey: "nav.products", href: "/products" },
+  { titleKey: "nav.maintenance", href: "/maintenance" },
+  { titleKey: "nav.about", href: "/about" },
+  { titleKey: "nav.contact", href: "/contact" },
+] as const;

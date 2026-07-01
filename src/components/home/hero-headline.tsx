@@ -1,14 +1,15 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useLocale } from "@/providers/locale-provider";
 
 export function HeroHeadline() {
+  const { t } = useLocale();
   const reduceMotion = useReducedMotion();
   const skip = !!reduceMotion;
 
   return (
     <div className="space-y-1">
-      {/* Line 1 — slide-up fade-in + soft glow pulse */}
       <motion.h1
         initial={{ opacity: skip ? 1 : 0, y: skip ? 0 : 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -19,10 +20,9 @@ export function HeroHeadline() {
         }}
         className="font-display text-[32px] sm:text-5xl lg:text-6xl font-bold text-white leading-tight animate-hero-text-glow"
       >
-        Find Your
+        {t("home.hero.titleLine1")}
       </motion.h1>
 
-      {/* Line 2 — slide-up + gradient shimmer */}
       <motion.div
         initial={{ opacity: skip ? 1 : 0, y: skip ? 0 : 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -38,7 +38,7 @@ export function HeroHeadline() {
             bg-clip-text text-transparent
             animate-shimmer"
         >
-          Perfect Rental
+          {t("home.hero.titleLine2")}
         </span>
       </motion.div>
     </div>

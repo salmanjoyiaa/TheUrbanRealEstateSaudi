@@ -1,10 +1,12 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AccountProfileForm } from "@/components/dashboard/account-profile-form";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminProfilePage() {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
   const {
     data: { user },
@@ -41,6 +43,8 @@ export default async function AdminProfilePage() {
         email: user.email ?? profile.email,
       }}
       roleLabel="Admin"
+      pageTitle={t("admin.profile.title")}
+      pageSubtitle={t("admin.profile.subtitle")}
     />
   );
 }

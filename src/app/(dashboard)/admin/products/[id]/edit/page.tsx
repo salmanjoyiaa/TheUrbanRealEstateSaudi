@@ -2,8 +2,10 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ProductForm } from "@/components/product/product-form";
 import type { Product } from "@/types/database";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export default async function AdminEditProductPage({ params }: { params: { id: string } }) {
+    const { t } = await getDashboardTranslator();
     const supabase = await createClient();
     const {
         data: { user },
@@ -26,8 +28,8 @@ export default async function AdminEditProductPage({ params }: { params: { id: s
     return (
         <div className="mx-auto max-w-2xl space-y-6">
             <div>
-                <h1 className="text-2xl font-bold text-navy">Edit Product</h1>
-                <p className="text-sm text-muted-foreground">Update product details as administrator.</p>
+                <h1 className="text-2xl font-bold text-navy">{t("admin.products.editTitle")}</h1>
+                <p className="text-sm text-muted-foreground">{t("admin.products.editSubtitle")}</p>
             </div>
 
             <ProductForm

@@ -1,0 +1,238 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "properties": "العقارات",
+    "products": "المنتجات",
+    "maintenance": "الصيانة",
+    "about": "من نحن",
+    "contact": "تواصل معنا",
+    "agentLogin": "دخول الوكيل",
+    "partnerLogin": "دخول الشريك",
+    "partnerLogins": "دخول الشركاء",
+    "aqariLogin": "دخول AQARI",
+    "teamLogin": "دخول الفريق",
+    "sellerLogin": "دخول البائع",
+    "maintenanceLogin": "دخول الصيانة",
+    "tagline": "عقارات ومنتجات وصيانة — وكلاء معتمدون"
+  },
+  "common": {
+    "browseProperties": "تصفح العقارات",
+    "browseProducts": "تصفح المنتجات",
+    "maintenanceServices": "خدمات الصيانة",
+    "viewAll": "عرض الكل",
+    "learnMore": "اعرف المزيد",
+    "submit": "إرسال",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "search": "بحث",
+    "filter": "تصفية",
+    "reset": "إعادة تعيين",
+    "loading": "جاري التحميل...",
+    "noResults": "لا توجد نتائج",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "close": "إغلاق",
+    "yes": "نعم",
+    "no": "لا"
+  },
+  "home": {
+    "hero": {
+      "title": "اعثر على عقارك المثالي في المملكة العربية السعودية",
+      "titleLine1": "اعثر على",
+      "titleLine2": "إيجارك المثالي",
+      "badge": "موثوق من أكثر من 500 مستأجر",
+      "subtitle": "اكتشف شققاً ومنازل ووحدات سكنية مميزة من وكلاء معتمدين. احجز مباشرة عبر واتساب — بدون وسطاء وبدون عناء.",
+      "searchPlaceholder": "البحث برقم العقار",
+      "browseProperties": "تصفح العقارات",
+      "listProperty": "أضف عقارك"
+    },
+    "stats": {
+      "propertiesListed": "عقارات مدرجة",
+      "propertyAgents": "وكلاء العقارات",
+      "visitTeamAgents": "فريق الزيارات",
+      "propertiesRentOut": "عقارات مؤجرة"
+    },
+    "maintenance": {
+      "title": "تحتاج مساعدة في الصيانة؟",
+      "subtitle": "قدّم طلباً عاماً بنص أو صوت أو صور أو فيديو قصير. سنوجّهه إلى المختص المناسب — دون الحاجة لاختيار مزود الخدمة مسبقاً."
+    },
+    "valueProps": {
+      "title": "لماذا UrbanSaudi؟",
+      "subtitle": "أسهل طريقة للعثور على عقارات للإيجار وحجزها",
+      "verifiedListings": {
+        "title": "قوائم معتمدة",
+        "description": "كل عقار مدرج من وكيل معتمد مع صور وتفاصيل وأسعار وتوفر محدّث."
+      },
+      "trustedAgents": {
+        "title": "وكلاء موثوقون",
+        "description": "تواصل مع وكلاء عقارات محترفين وفريق زيارات في أنحاء المملكة."
+      },
+      "easyBooking": {
+        "title": "حجز زيارات سهل",
+        "description": "جدول زيارات العقارات عبر الإنترنت مع توفر فوري وتأكيد سريع."
+      }
+    },
+    "cta": {
+      "title": "مستعد للعثور على منزلك القادم؟",
+      "subtitle": "تصفح آلاف العقارات المعتمدة في المملكة العربية السعودية",
+      "button": "ابدأ التصفح"
+    },
+    "agentCta": {
+      "title": "هل أنت وكيل عقاري؟",
+      "subtitle": "أدرج عقاراتك، وأدِر التوفر، وتواصل مع مستأجرين جادين — كل ذلك من لوحة التحكم.",
+      "button": "ابدأ مجاناً"
+    },
+    "sliders": {
+      "propertiesTitle": "عقارات متاحة",
+      "propertiesSubtitle": "استكشف إيجارات موثقة من وكلائنا المعتمدين",
+      "productsTitle": "منتجات وأدوات منزلية",
+      "productsSubtitle": "منتجات مستعملة عالية الجودة من وكلاء موثوقين",
+      "maintenanceTitle": "خدمات الصيانة",
+      "maintenanceSubtitle": "إصلاحات وصيانة احترافية لكل جزء من عقارك",
+      "maintenanceBadge": "ضمان الرد خلال 24 ساعة",
+      "exploreServices": "استكشف الخدمات",
+      "viewAll": "عرض الكل",
+      "viewAllProperties": "عرض جميع العقارات",
+      "viewAllProducts": "عرض جميع المنتجات"
+    }
+  },
+  "footer": {
+    "legal": "قانوني",
+    "legalAndTrust": "قانوني وثقة",
+    "description": "منصة موثوقة في المملكة للإيجارات المعتمدة والمنتجات الجيدة وخدمات الصيانة الموثوقة. نخدم الخبر والثقبة والجنوبية والمناطق المجاورة.",
+    "defaultDescription": "نخدم المملكة العربية السعودية — الخبر والثقبة والجنوبية ومناطق المنطقة الشرقية المجاورة.",
+    "callUs": "اتصل بنا",
+    "visitSocial": "زيارة {name}",
+    "quickLinks": "روابط سريعة",
+    "joinTeam": "انضم لفريقنا",
+    "followUs": "تابعنا",
+    "contactUs": "تواصل معنا",
+    "copyright": "© {year} The Urban Real Estate. جميع الحقوق محفوظة.",
+    "about": "من نحن",
+    "contact": "تواصل معنا",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsOfService": "شروط الخدمة",
+    "cookiePolicy": "سياسة ملفات تعريف الارتباط",
+    "advertisingDisclosure": "إفصاح إعلاني",
+    "safetyPolicy": "سياسة السلامة والقوائم",
+    "becomeAqariAgent": "كن وكيل عقاري",
+    "becomeTeamAgent": "كن وكيل زيارات",
+    "createSellerAccount": "إنشاء حساب بائع منتجات",
+    "becomeMaintenanceAgent": "كن وكيل صيانة"
+  },
+  "auth": {
+    "login": {
+      "title": "دخول الوكيل",
+      "subtitle": "سجّل الدخول للوصول إلى لوحة التحكم",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "submit": "تسجيل الدخول",
+      "submitting": "جاري تسجيل الدخول...",
+      "noAccount": "ليس لديك حساب؟",
+      "signup": "سجّل كوكيل",
+      "aqariTitle": "دخول AQARI",
+      "teamTitle": "دخول الفريق",
+      "sellerTitle": "دخول بائع المنتجات",
+      "maintenanceTitle": "دخول الصيانة",
+      "description": "الوصول إلى حساب UrbanSaudi.",
+      "signInAsSeller": "تسجيل الدخول كبائع منتجات",
+      "signInAsAqari": "تسجيل الدخول كوكيل AQARI",
+      "signInAsTeam": "تسجيل الدخول كوكيل فريق",
+      "signInAsMaintenance": "تسجيل الدخول كوكيل صيانة",
+      "applyAqari": "قدّم للانضمام كوكيل AQARI",
+      "applyTeam": "قدّم للانضمام كوكيل فريق",
+      "applySeller": "إنشاء حساب بائع منتجات",
+      "applyMaintenance": "قدّم للانضمام كوكيل صيانة",
+      "applyAgent": "قدّم للانضمام كوكيل"
+    },
+    "signup": {
+      "title": "تسجيل الوكيل",
+      "subtitle": "انضم إلى شبكة The Urban Real Estate",
+      "sellerTitle": "إنشاء حساب بائع منتجات",
+      "sellerSubtitle": "أدخل اسمك وبريدك الإلكتروني ورقم واتساب وكلمة المرور. يمكنك إدراج المنتجات فور تسجيل الدخول (أو بعد تأكيد البريد إذا لزم).",
+      "agentTitle": "تسجيل الوكيل",
+      "agentSubtitle": "قدّم ملفك الشخصي وتفاصيل الترخيص. سيتم تحويلك بعد الموافقة."
+    },
+    "pending": {
+      "title": "في انتظار الموافقة",
+      "subtitle": "حسابك قيد مراجعة الإدارة"
+    }
+  },
+  "properties": {
+    "title": "العقارات",
+    "subtitle": "تصفح العقارات المتاحة في المملكة العربية السعودية",
+    "noResults": "لا توجد عقارات مطابقة لمعايير البحث",
+    "propertyId": "رقم العقار",
+    "price": "السعر",
+    "bedrooms": "غرف النوم",
+    "bathrooms": "دورات المياه",
+    "area": "المساحة",
+    "location": "الموقع",
+    "bookVisit": "احجز زيارة",
+    "contactAgent": "تواصل مع الوكيل"
+  },
+  "products": {
+    "title": "المنتجات",
+    "subtitle": "تصفح الأثاث والمنتجات المنزلية المعروضة للبيع",
+    "noResults": "لا توجد منتجات",
+    "contactSeller": "تواصل مع البائع"
+  },
+  "maintenancePage": {
+    "title": "خدمات الصيانة",
+    "subtitle": "اعثر على متخصصي صيانة موثوقين",
+    "requestService": "طلب خدمة"
+  },
+  "about": {
+    "title": "من نحن"
+  },
+  "contactPage": {
+    "title": "تواصل معنا",
+    "subtitle": "تواصل مع فريقنا"
+  },
+  "sell": {
+    "title": "أدرج منتجك مجاناً",
+    "subtitle": "أضف قائمتك وأنشئ حساب بائع في خطوة واحدة. إذا كان تأكيد البريد مطلوباً، يُحفظ نصك ويمكنك إضافة الصور بعد تسجيل الدخول."
+  },
+  "privacyPolicy": {
+    "title": "سياسة الخصوصية"
+  },
+  "termsOfService": {
+    "title": "شروط الخدمة"
+  },
+  "cookiePolicy": {
+    "title": "سياسة ملفات تعريف الارتباط"
+  },
+  "propertyDetail": {
+    "breadcrumbHome": "الرئيسية",
+    "breadcrumbProperties": "العقارات"
+  },
+  "productDetail": {
+    "breadcrumbHome": "الرئيسية",
+    "breadcrumbProducts": "المنتجات"
+  },
+  "maintenanceDetail": {
+    "backToMarketplace": "العودة إلى السوق"
+  },
+  "cookie": {
+    "message": "نستخدم ملفات تعريف الارتباط لتحسين تجربتك.",
+    "accept": "قبول",
+    "decline": "رفض",
+    "dialogLabel": "موافقة ملفات تعريف الارتباط",
+    "preferencesTitle": "تفضيلات ملفات تعريف الارتباط",
+    "detailedMessage": "نستخدم ملفات تعريف الارتباط الأساسية لتسجيل الدخول وعمل الموقع. بموافقتك، قد نستخدم أيضاً ملفات التحليلات والإعلانات. راجع {policyLink}.",
+    "managePreferences": "إدارة التفضيلات",
+    "rejectNonEssential": "رفض غير الأساسية",
+    "manageTitle": "إدارة تفضيلات ملفات تعريف الارتباط",
+    "essentialTitle": "ملفات أساسية",
+    "essentialDescription": "مطلوبة لتسجيل الدخول وميزات الموقع الأساسية. مفعّلة دائماً.",
+    "essentialAria": "ملفات تعريف الارتباط الأساسية مفعّلة دائماً",
+    "analyticsTitle": "ملفات التحليلات",
+    "analyticsDescription": "تساعدنا على فهم كيفية استخدام الزوار للموقع (مثل Google Analytics).",
+    "analyticsAria": "ملفات تحليلات",
+    "advertisingTitle": "ملفات الإعلانات",
+    "advertisingDescription": "تُستخدم لعرض إعلانات ذات صلة إذا كان الإعلان مفعّلاً.",
+    "advertisingAria": "ملفات إعلانات",
+    "savePreferences": "حفظ التفضيلات"
+  }
+}

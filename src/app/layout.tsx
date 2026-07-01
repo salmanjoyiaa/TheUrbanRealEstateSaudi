@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Inter, Outfit } from "next/font/google";
+import { Noto_Sans_Arabic, Inter, Outfit } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
@@ -12,6 +12,7 @@ import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { AdSenseScript } from "@/components/analytics/adsense-script";
 import { CookieConsent } from "@/components/consent/cookie-consent";
+import { PublicLocaleShell } from "@/components/layout/locale-shells";
 
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
 const adsenseVerificationMeta = process.env.NEXT_PUBLIC_ADSENSE_VERIFICATION_META?.trim();
@@ -24,6 +25,11 @@ const inter = Inter({
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
+});
+
+const notoSansArabic = Noto_Sans_Arabic({
+  subsets: ["arabic"],
+  variable: "--font-arabic",
 });
 
 export const metadata: Metadata = {
@@ -95,7 +101,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="light" suppressHydrationWarning>
-      <body className={`${inter.variable} ${outfit.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${outfit.variable} ${notoSansArabic.variable} font-sans antialiased`}>
         <ThemeProvider>
           <NextTopLoader color="hsl(224 76% 24%)" showSpinner={false} />
           <QueryProvider>
@@ -106,7 +112,9 @@ export default function RootLayout({
               </Suspense>
               <AdSenseScript />
               {children}
-              <CookieConsent />
+              <PublicLocaleShell>
+                <CookieConsent />
+              </PublicLocaleShell>
               <ToastProvider />
               <Analytics />
             </AuthProvider>

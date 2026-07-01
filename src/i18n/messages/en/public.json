@@ -1,0 +1,238 @@
+{
+  "nav": {
+    "home": "Home",
+    "properties": "Properties",
+    "products": "Products",
+    "maintenance": "Maintenance",
+    "about": "About",
+    "contact": "Contact",
+    "agentLogin": "Agent Login",
+    "partnerLogin": "Partner Login",
+    "partnerLogins": "Partner logins",
+    "aqariLogin": "AQARI Login",
+    "teamLogin": "Team Login",
+    "sellerLogin": "Seller Login",
+    "maintenanceLogin": "Maintenance Login",
+    "tagline": "Properties, products & maintenance — verified agents"
+  },
+  "common": {
+    "browseProperties": "Browse Properties",
+    "browseProducts": "Browse Products",
+    "maintenanceServices": "Maintenance Services",
+    "viewAll": "View all",
+    "learnMore": "Learn more",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "search": "Search",
+    "filter": "Filter",
+    "reset": "Reset",
+    "loading": "Loading...",
+    "noResults": "No results found",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "home": {
+    "hero": {
+      "title": "Find Your Perfect Property in Saudi Arabia",
+      "titleLine1": "Find Your",
+      "titleLine2": "Perfect Rental",
+      "badge": "Trusted by 500+ tenants",
+      "subtitle": "Discover premium apartments, houses, and flats from verified agents. Book directly via WhatsApp — no middlemen, no hassle.",
+      "searchPlaceholder": "Search by Property ID",
+      "browseProperties": "Browse Properties",
+      "listProperty": "List Your Property"
+    },
+    "stats": {
+      "propertiesListed": "Properties Listed",
+      "propertyAgents": "Property Agents",
+      "visitTeamAgents": "Visit Team Agents",
+      "propertiesRentOut": "Properties Rent Out"
+    },
+    "maintenance": {
+      "title": "Need a hand with maintenance?",
+      "subtitle": "Submit a general request with text, voice, photos, or a short video. We will route it to the right professional — you do not have to choose a provider first."
+    },
+    "valueProps": {
+      "title": "Why Choose UrbanSaudi?",
+      "subtitle": "The simplest way to find and book rental properties",
+      "verifiedListings": {
+        "title": "Verified Listings",
+        "description": "Every property is listed by a verified agent with detailed photos, pricing, and availability."
+      },
+      "trustedAgents": {
+        "title": "Trusted Agents",
+        "description": "Connect with professional property agents and visiting team members across Saudi Arabia."
+      },
+      "easyBooking": {
+        "title": "Easy Visit Booking",
+        "description": "Schedule property visits online with real-time availability and instant confirmation."
+      }
+    },
+    "cta": {
+      "title": "Ready to find your next home?",
+      "subtitle": "Browse thousands of verified properties across Saudi Arabia",
+      "button": "Start Browsing"
+    },
+    "agentCta": {
+      "title": "Are You a Property Agent?",
+      "subtitle": "List your properties, manage availability, and connect with quality tenants — all from your dashboard.",
+      "button": "Get Started Free"
+    },
+    "sliders": {
+      "propertiesTitle": "Available Properties",
+      "propertiesSubtitle": "Explore verified rentals from our trusted agents",
+      "productsTitle": "Products & Household Items",
+      "productsSubtitle": "Quality used items from trusted agents",
+      "maintenanceTitle": "Maintenance Services",
+      "maintenanceSubtitle": "Professional repairs and upkeep for every part of your property",
+      "maintenanceBadge": "24-Hour Response Guarantee",
+      "exploreServices": "Explore Services",
+      "viewAll": "View All",
+      "viewAllProperties": "View All Properties",
+      "viewAllProducts": "View All Products"
+    }
+  },
+  "footer": {
+    "legal": "Legal",
+    "legalAndTrust": "Legal & Trust",
+    "description": "Saudi Arabia's trusted platform for verified property rentals, quality products, and reliable maintenance services. Serving Al Khobar, Thuqbah, Al Janubiyah, and nearby areas.",
+    "defaultDescription": "Serving Saudi Arabia — Al Khobar, Thuqbah, Al Janubiyah, and nearby Eastern Province areas.",
+    "callUs": "Call us",
+    "visitSocial": "Visit our {name}",
+    "quickLinks": "Quick Links",
+    "joinTeam": "Join Our Team",
+    "followUs": "Follow Us",
+    "contactUs": "Contact Us",
+    "copyright": "© {year} The Urban Real Estate. All rights reserved.",
+    "about": "About",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "cookiePolicy": "Cookie Policy",
+    "advertisingDisclosure": "Advertising Disclosure",
+    "safetyPolicy": "Safety & Listing Policy",
+    "becomeAqariAgent": "Become an Aqari Agent",
+    "becomeTeamAgent": "Become a Team Agent",
+    "createSellerAccount": "Create a Product Seller Account",
+    "becomeMaintenanceAgent": "Become a Maintenance Agent"
+  },
+  "auth": {
+    "login": {
+      "title": "Agent Login",
+      "subtitle": "Sign in to access your dashboard",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "submitting": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "signup": "Sign up as an agent",
+      "aqariTitle": "AQARI Login",
+      "teamTitle": "Team Login",
+      "sellerTitle": "Product seller login",
+      "maintenanceTitle": "Maintenance Login",
+      "description": "Access your UrbanSaudi account.",
+      "signInAsSeller": "Sign In as Product Seller",
+      "signInAsAqari": "Sign In as AQARI Agent",
+      "signInAsTeam": "Sign In as Team Agent",
+      "signInAsMaintenance": "Sign In as Maintenance Agent",
+      "applyAqari": "Apply to become an AQARI agent",
+      "applyTeam": "Apply to become a Team Agent",
+      "applySeller": "Create a product seller account",
+      "applyMaintenance": "Apply to become a Maintenance Agent",
+      "applyAgent": "Apply to become an agent"
+    },
+    "signup": {
+      "title": "Agent Registration",
+      "subtitle": "Join The Urban Real Estate network",
+      "sellerTitle": "Create a Product Seller Account",
+      "sellerSubtitle": "Enter your name, email, WhatsApp number, and password. You can list products as soon as you are signed in (or after you verify your email if confirmation is required).",
+      "agentTitle": "Agent registration",
+      "agentSubtitle": "Submit your profile and license details. You will be redirected once approved."
+    },
+    "pending": {
+      "title": "Pending Approval",
+      "subtitle": "Your account is awaiting admin approval"
+    }
+  },
+  "properties": {
+    "title": "Properties",
+    "subtitle": "Browse available properties across Saudi Arabia",
+    "noResults": "No properties found matching your criteria",
+    "propertyId": "Property ID",
+    "price": "Price",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "area": "Area",
+    "location": "Location",
+    "bookVisit": "Book a Visit",
+    "contactAgent": "Contact Agent"
+  },
+  "products": {
+    "title": "Products",
+    "subtitle": "Browse household items and products for sale",
+    "noResults": "No products found",
+    "contactSeller": "Contact Seller"
+  },
+  "maintenancePage": {
+    "title": "Maintenance Services",
+    "subtitle": "Find trusted maintenance professionals",
+    "requestService": "Request Service"
+  },
+  "about": {
+    "title": "About Us"
+  },
+  "contactPage": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with our team"
+  },
+  "sell": {
+    "title": "List your product free",
+    "subtitle": "Add your listing and create a seller account in one step. If email confirmation is required, your text is saved and you can add photos after you sign in."
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy"
+  },
+  "termsOfService": {
+    "title": "Terms of Service"
+  },
+  "cookiePolicy": {
+    "title": "Cookie Policy"
+  },
+  "propertyDetail": {
+    "breadcrumbHome": "Home",
+    "breadcrumbProperties": "Properties"
+  },
+  "productDetail": {
+    "breadcrumbHome": "Home",
+    "breadcrumbProducts": "Products"
+  },
+  "maintenanceDetail": {
+    "backToMarketplace": "Back to Marketplace"
+  },
+  "cookie": {
+    "message": "We use cookies to improve your experience.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "dialogLabel": "Cookie consent",
+    "preferencesTitle": "Cookie preferences",
+    "detailedMessage": "We use essential cookies for login and site functionality. With your consent, we may also use analytics and advertising cookies. See our {policyLink}.",
+    "managePreferences": "Manage Preferences",
+    "rejectNonEssential": "Reject Non-Essential",
+    "manageTitle": "Manage cookie preferences",
+    "essentialTitle": "Essential cookies",
+    "essentialDescription": "Required for login and core site features. Always on.",
+    "essentialAria": "Essential cookies always enabled",
+    "analyticsTitle": "Analytics cookies",
+    "analyticsDescription": "Help us understand how visitors use the site (e.g. Google Analytics).",
+    "analyticsAria": "Analytics cookies",
+    "advertisingTitle": "Advertising cookies",
+    "advertisingDescription": "Used to show relevant ads if advertising is enabled.",
+    "advertisingAria": "Advertising cookies",
+    "savePreferences": "Save Preferences"
+  }
+}

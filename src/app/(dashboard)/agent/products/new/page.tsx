@@ -2,8 +2,10 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ProductForm } from "@/components/product/product-form";
 import { SELL_LISTING_DRAFT_STORAGE_KEY } from "@/lib/validators";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export default async function AgentNewProductPage() {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -20,7 +22,7 @@ export default async function AgentNewProductPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-navy">Create Product</h1>
+      <h1 className="text-2xl font-bold text-navy">{t("agent.products.createTitle")}</h1>
       <ProductForm mode="create" restoreDraftStorageKey={SELL_LISTING_DRAFT_STORAGE_KEY} />
     </div>
   );

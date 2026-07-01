@@ -20,12 +20,14 @@ import {
   type VisitMessageTemplate,
 } from "@/lib/visit-message-template";
 import { useVisitMessageTemplates } from "@/hooks/use-visit-message-templates";
+import { useLocale } from "@/providers/locale-provider";
 
 type FormState = { name: string; body: string };
 
 const emptyForm: FormState = { name: "", body: "" };
 
 export function VisitMessageTemplateManager() {
+  const { t } = useLocale();
   const { templates, loading, refresh } = useVisitMessageTemplates();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<VisitMessageTemplate | null>(null);
@@ -69,7 +71,7 @@ export function VisitMessageTemplateManager() {
     const name = form.name.trim();
     const body = form.body.trim();
     if (!name || !body) {
-      toast.error("Name and message body are required");
+      toast.error(t("agent.messageTemplates.nameBodyRequired"));
       return;
     }
 
@@ -85,23 +87,25 @@ export function VisitMessageTemplateManager() {
       );
       const json = await res.json();
       if (!res.ok) {
-        throw new Error(json.error || "Failed to save template");
+        throw new Error(json.error || t("agent.messageTemplates.failedSave"));
       }
 
-      toast.success(editing ? "Template updated" : "Template created");
+      toast.success(
+        editing ? t("agent.messageTemplates.templateUpdated") : t("agent.messageTemplates.templateCreated")
+      );
       setDialogOpen(false);
       setEditing(null);
       setForm(emptyForm);
       await refresh();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to save template");
+      toast.error(err instanceof Error ? err.message : t("agent.messageTemplates.failedSave"));
     } finally {
       setSaving(false);
     }
   }
 
   async function handleDelete(template: VisitMessageTemplate) {
-    if (!window.confirm(`Delete template "${template.name}"?`)) return;
+    if (!window.confirm(t("agent.messageTemplates.deleteConfirm", { name: template.name }))) return;
 
     setDeletingId(template.id);
     try {
@@ -110,12 +114,12 @@ export function VisitMessageTemplateManager() {
       });
       const json = await res.json();
       if (!res.ok) {
-        throw new Error(json.error || "Failed to delete template");
+        throw new Error(json.error || t("agent.messageTemplates.failedDelete"));
       }
-      toast.success("Template deleted");
+      toast.success(t("agent.messageTemplates.templateDeleted"));
       await refresh();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to delete template");
+      toast.error(err instanceof Error ? err.message : t("agent.messageTemplates.failedDelete"));
     } finally {
       setDeletingId(null);
     }
@@ -125,33 +129,31 @@ export function VisitMessageTemplateManager() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-navy">Message Templates</h1>
-          <p className="text-sm text-muted-foreground">
-            Create named WhatsApp templates with placeholders. Use them from My Assignments when messaging customers.
-          </p>
+          <h1 className="text-2xl font-bold text-navy">{t("agent.messageTemplates.title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("agent.messageTemplates.subtitle")}</p>
         </div>
         <Button onClick={openCreate}>
           <Plus className="mr-2 h-4 w-4" />
-          New template
+          {t("agent.messageTemplates.newTemplate")}
         </Button>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground">
           <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-          Loading templates...
+          {t("agent.messageTemplates.loadingTemplates")}
         </div>
       ) : templates.length === 0 ? (
         <Card className="border-dashed">
           <CardContent className="flex flex-col items-center justify-center py-12 text-center">
             <MessageSquare className="mb-4 h-12 w-12 text-muted-foreground/50" />
-            <h3 className="text-lg font-medium">No templates yet</h3>
+            <h3 className="text-lg font-medium">{t("agent.messageTemplates.noTemplates")}</h3>
             <p className="mb-4 max-w-md text-sm text-muted-foreground">
-              Create your first template with customer and property placeholders, then send it from any visit in My Assignments.
+              {t("agent.messageTemplates.noTemplatesHint")}
             </p>
             <Button variant="outline" onClick={openCreate}>
               <Plus className="mr-2 h-4 w-4" />
-              Create your first template
+              {t("agent.messageTemplates.createFirst")}
             </Button>
           </CardContent>
         </Card>
@@ -173,7 +175,7 @@ export function VisitMessageTemplateManager() {
                       size="icon"
                       className="h-8 w-8"
                       onClick={() => openEdit(template)}
-                      aria-label={`Edit ${template.name}`}
+                      aria-label={`${t("common.edit")} ${template.name}`}
                     >
                       <Pencil className="h-4 w-4" />
                     </Button>
@@ -183,7 +185,7 @@ export function VisitMessageTemplateManager() {
                       className="h-8 w-8 text-destructive hover:text-destructive"
                       onClick={() => handleDelete(template)}
                       disabled={deletingId === template.id}
-                      aria-label={`Delete ${template.name}`}
+                      aria-label={`${t("common.delete")} ${template.name}`}
                     >
                       {deletingId === template.id ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -202,36 +204,38 @@ export function VisitMessageTemplateManager() {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>{editing ? "Edit template" : "New template"}</DialogTitle>
+            <DialogTitle>
+              {editing ? t("agent.messageTemplates.editTemplate") : t("agent.messageTemplates.newTemplate")}
+            </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="template-name">Template name</Label>
+              <Label htmlFor="template-name">{t("agent.messageTemplates.templateName")}</Label>
               <Input
                 id="template-name"
                 value={form.name}
                 onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
-                placeholder="e.g. Arrival reminder"
+                placeholder={t("agent.messageTemplates.namePlaceholder")}
                 maxLength={80}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="template-body">Message</Label>
+              <Label htmlFor="template-body">{t("agent.messageTemplates.message")}</Label>
               <Textarea
                 id="template-body"
                 ref={bodyRef}
                 value={form.body}
                 onChange={(e) => setForm((prev) => ({ ...prev, body: e.target.value }))}
-                placeholder="Hello {{customer_name}}, your visit for {{property_name}} (ID {{property_id}}) is on {{visit_date}} at {{visit_time}}."
+                placeholder={t("agent.messageTemplates.bodyPlaceholder")}
                 rows={8}
                 maxLength={4000}
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Insert placeholder</Label>
+              <Label>{t("agent.messageTemplates.insertPlaceholder")}</Label>
               <div className="flex flex-wrap gap-2">
                 {VISIT_MESSAGE_PLACEHOLDERS.map(({ token, label }) => (
                   <Button
@@ -251,11 +255,11 @@ export function VisitMessageTemplateManager() {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialogOpen(false)} disabled={saving}>
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button onClick={handleSave} disabled={saving}>
               {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              {editing ? "Save changes" : "Create template"}
+              {editing ? t("agent.messageTemplates.saveChanges") : t("agent.messageTemplates.createTemplate")}
             </Button>
           </DialogFooter>
         </DialogContent>

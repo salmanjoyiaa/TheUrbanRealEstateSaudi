@@ -2,10 +2,14 @@ import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { VisitMessageTemplateManager } from "@/components/visit/visit-message-template-manager";
+import { getDashboardTranslator } from "@/i18n/server";
 
-export const metadata: Metadata = {
-  title: "Message Templates - Agent Dashboard",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getDashboardTranslator();
+  return {
+    title: `${t("agent.messageTemplates.title")} - ${t("nav.shell.agentDashboard")}`,
+  };
+}
 
 export const revalidate = 0;
 

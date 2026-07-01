@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AgentShell } from "@/components/layout/agent-shell";
+import { DashboardLocaleShell } from "@/components/layout/locale-shells";
 
 export default async function AgentLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -29,12 +30,14 @@ export default async function AgentLayout({ children }: { children: React.ReactN
     .single()) as { data: { full_name: string; avatar_url: string | null } | null };
 
   return (
-    <AgentShell
-      agentType={agent?.agent_type}
-      userName={profile?.full_name}
-      avatarUrl={profile?.avatar_url}
-    >
-      {children}
-    </AgentShell>
+    <DashboardLocaleShell>
+      <AgentShell
+        agentType={agent?.agent_type}
+        userName={profile?.full_name}
+        avatarUrl={profile?.avatar_url}
+      >
+        {children}
+      </AgentShell>
+    </DashboardLocaleShell>
   );
 }

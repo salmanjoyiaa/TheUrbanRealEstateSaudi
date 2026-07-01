@@ -1,8 +1,10 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { MaintenanceServiceForm } from "@/components/agent/maintenance-service-form";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export default async function AgentNewMaintenanceServicePage() {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 
   const {
@@ -22,10 +24,8 @@ export default async function AgentNewMaintenanceServicePage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Add maintenance service</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          List a service on the marketplace. Customers will see it after it is live.
-        </p>
+        <h1 className="text-2xl font-bold text-navy">{t("agent.maintenanceServices.newTitle")}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t("agent.maintenanceServices.newSubtitle")}</p>
       </div>
       <MaintenanceServiceForm mode="create" />
     </div>

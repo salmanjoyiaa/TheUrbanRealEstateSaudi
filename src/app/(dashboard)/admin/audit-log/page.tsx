@@ -2,6 +2,7 @@ import { DataTable } from "@/components/dashboard/data-table";
 import { Button } from "@/components/ui/button";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { formatDate, formatTime } from "@/lib/format";
+import { getDashboardTranslator } from "@/i18n/server";
 
 type SearchParams = {
   action?: string;
@@ -19,6 +20,7 @@ type Row = {
 };
 
 export default async function AdminAuditLogPage({ searchParams }: { searchParams: SearchParams }) {
+  const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
   const action = searchParams.action || "";
   const page = Math.max(Number(searchParams.page || 1), 1);
@@ -53,8 +55,8 @@ export default async function AdminAuditLogPage({ searchParams }: { searchParams
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-navy">Audit Log</h1>
-          <p className="text-sm text-muted-foreground">Track all admin moderation actions.</p>
+          <h1 className="text-2xl font-bold text-navy">{t("admin.auditLog.title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("admin.auditLog.subtitle")}</p>
         </div>
         <form method="get" className="flex items-center gap-2">
           <input

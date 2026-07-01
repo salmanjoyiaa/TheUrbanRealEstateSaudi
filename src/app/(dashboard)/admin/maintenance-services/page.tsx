@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { MaintenanceServiceActions } from "@/components/admin/maintenance-service-actions";
 import { Building2, User, Wrench } from "lucide-react";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export const metadata: Metadata = {
     title: "Admin - Maintenance Services",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 export const revalidate = 0;
 
 export default async function AdminMaintenanceServicesPage() {
+    const { t } = await getDashboardTranslator();
     const supabase = await createClient();
 
     const { data: servicesData, error } = await supabase
@@ -30,8 +32,8 @@ export default async function AdminMaintenanceServicesPage() {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Maintenance Services</h1>
-                    <p className="text-muted-foreground">Manage service listings in the marketplace.</p>
+                    <h1 className="text-2xl font-bold tracking-tight">{t("admin.maintenanceServices.title")}</h1>
+                    <p className="text-muted-foreground">{t("admin.maintenanceServices.subtitle")}</p>
                 </div>
                 {/* Could add a 'Add Service' button here if admin acts on behalf of agent, but usually agents add them. */}
             </div>

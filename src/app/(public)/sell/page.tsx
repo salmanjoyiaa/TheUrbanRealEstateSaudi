@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Metadata } from "next";
 import { Loader2 } from "lucide-react";
 import { SellListingForm } from "@/components/sell/sell-listing-form";
+import { getPublicTranslator } from "@/i18n/server";
 
 export const metadata: Metadata = {
   title: "List Your Product Free",
@@ -18,15 +19,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function SellPage() {
+export default async function SellPage() {
+  const { t } = await getPublicTranslator();
+
   return (
     <div className="container mx-auto max-w-2xl space-y-6 px-4 py-10">
       <div className="space-y-2 text-center sm:text-left">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">List your product free</h1>
-        <p className="text-muted-foreground">
-          Add your listing and create a seller account in one step. If email confirmation is required, your text is saved
-          and you can add photos after you sign in.
-        </p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">{t("sell.title")}</h1>
+        <p className="text-muted-foreground">{t("sell.subtitle")}</p>
       </div>
       <Suspense
         fallback={

@@ -5,8 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Building2, MapPin, ExternalLink, Eye } from "lucide-react";
 import Link from "next/link";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export default async function AgentPropertiesAssignedPage() {
+    const { t } = await getDashboardTranslator();
     const supabase = await createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
@@ -48,10 +50,8 @@ export default async function AgentPropertiesAssignedPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-bold text-navy">My Properties</h1>
-                <p className="text-sm text-muted-foreground">
-                    Properties assigned to you by the admin. These are the properties you are responsible for.
-                </p>
+                <h1 className="text-2xl font-bold text-navy">{t("agent.propertiesAssigned.title")}</h1>
+                <p className="text-sm text-muted-foreground">{t("agent.propertiesAssigned.subtitle")}</p>
             </div>
 
             {assignmentsError ? (

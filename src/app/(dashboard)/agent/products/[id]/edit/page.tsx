@@ -2,12 +2,14 @@ import { notFound, redirect } from "next/navigation";
 import { ProductForm } from "@/components/product/product-form";
 import { createClient } from "@/lib/supabase/server";
 import type { Product } from "@/types/database";
+import { getDashboardTranslator } from "@/i18n/server";
 
 type PageProps = {
   params: { id: string };
 };
 
 export default async function AgentEditProductPage({ params }: PageProps) {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -34,7 +36,7 @@ export default async function AgentEditProductPage({ params }: PageProps) {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-navy">Edit Product</h1>
+      <h1 className="text-2xl font-bold text-navy">{t("agent.products.editTitle")}</h1>
       <ProductForm mode="edit" initialData={data} />
     </div>
   );

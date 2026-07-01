@@ -28,6 +28,8 @@ export type AccountProfileData = {
 type AccountProfileFormProps = {
   initial: AccountProfileData;
   roleLabel: string;
+  pageTitle?: string;
+  pageSubtitle?: string;
 };
 
 function getInitials(name?: string) {
@@ -40,7 +42,7 @@ function getInitials(name?: string) {
     .toUpperCase();
 }
 
-export function AccountProfileForm({ initial, roleLabel }: AccountProfileFormProps) {
+export function AccountProfileForm({ initial, roleLabel, pageTitle, pageSubtitle }: AccountProfileFormProps) {
   const router = useRouter();
   const supabase = useMemo(() => createClient(), []);
 
@@ -121,8 +123,8 @@ export function AccountProfileForm({ initial, roleLabel }: AccountProfileFormPro
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Profile</h1>
-        <p className="text-sm text-muted-foreground">Manage your account details and security settings.</p>
+        <h1 className="text-2xl font-bold text-navy">{pageTitle ?? "Profile"}</h1>
+        <p className="text-sm text-muted-foreground">{pageSubtitle ?? "Manage your account details and security settings."}</p>
       </div>
 
       <Card>

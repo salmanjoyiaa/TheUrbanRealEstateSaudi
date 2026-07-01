@@ -4,7 +4,9 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import Link from "next/link";
 import { Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { VISIT_STATUS_LABELS, getVisitStatusBadgeClass } from "@/lib/visit-status";
+import { getVisitStatusBadgeClass } from "@/lib/visit-status";
+import { getDashboardTranslator } from "@/i18n/server";
+import { getTranslatedVisitStatusLabel } from "@/lib/visit-status-i18n";
 
 export const revalidate = 0;
 
@@ -28,6 +30,7 @@ type SiteTrafficSummary = {
 };
 
 export default async function AdminOverviewPage() {
+  const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
 
   const [
@@ -87,114 +90,152 @@ export default async function AdminOverviewPage() {
   const weekUnique = Number(traffic?.week_unique || 0);
   const totalUnique = Number(traffic?.total_unique || 0);
 
+  const visitStatuses = Object.keys(summaryCounts);
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Admin Overview</h1>
-        <p className="text-sm text-muted-foreground">Real-time platform metrics and activity.</p>
+        <h1 className="text-2xl font-bold text-navy">{t("admin.overview.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("admin.overview.subtitle")}</p>
       </div>
 
-      {/* Pending / Action Required */}
       <div>
-        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Action Required</h2>
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+          {t("admin.overview.actionRequired")}
+        </h2>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
           <Link href="/admin/properties?status=pending" className="block">
-            <StatCard title="Pending Properties" value={pendingProperties || 0} description="Awaiting approval" />
+            <StatCard
+              title={t("admin.overview.pendingProperties")}
+              value={pendingProperties || 0}
+              description={t("admin.overview.awaitingApproval")}
+            />
           </Link>
-          <StatCard title="Pending Property Agents" value={pendingPropertyAgents || 0} />
-          <StatCard title="Pending Visiting Agents" value={pendingVisitingAgents || 0} />
-          <StatCard title="Pending Visits" value={pendingVisits || 0} />
-          <StatCard title="Pending Maintenance" value={pendingMaintenance || 0} />
+          <StatCard title={t("admin.overview.pendingAgents")} value={pendingPropertyAgents || 0} />
+          <StatCard title={t("admin.overview.pendingVisiting")} value={pendingVisitingAgents || 0} />
+          <StatCard title={t("admin.overview.pendingVisits")} value={pendingVisits || 0} />
+          <StatCard title={t("admin.overview.pendingMaintenance")} value={pendingMaintenance || 0} />
         </div>
       </div>
 
-      {/* Totals */}
       <div>
-        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Platform Totals</h2>
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+          {t("admin.overview.platformTotals")}
+        </h2>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
-          <StatCard title="Active Properties" value={activeProperties || 0} description={`${totalProperties || 0} total`} />
-          <StatCard title="Property Agents" value={approvedPropertyAgents || 0} description="Approved" />
-          <StatCard title="Visiting Team" value={approvedVisitingAgents || 0} description="Approved" />
-          <StatCard title="Customers" value={totalCustomers || 0} />
+          <StatCard
+            title={t("admin.overview.activeProperties")}
+            value={activeProperties || 0}
+            description={t("admin.overview.totalCount", { count: totalProperties || 0 })}
+          />
+          <StatCard
+            title={t("admin.overview.propertyAgents")}
+            value={approvedPropertyAgents || 0}
+            description={t("admin.overview.approved")}
+          />
+          <StatCard
+            title={t("admin.overview.visitingTeam")}
+            value={approvedVisitingAgents || 0}
+            description={t("admin.overview.approved")}
+          />
+          <StatCard title={t("admin.overview.customers")} value={totalCustomers || 0} />
           <Link href="/admin/visits?status=confirmed" className="block">
-            <StatCard title="Confirmed Visits" value={totalConfirmedVisits || 0} description="All time" />
+            <StatCard
+              title={t("admin.overview.confirmedVisits")}
+              value={totalConfirmedVisits || 0}
+              description={t("admin.overview.allTime")}
+            />
           </Link>
           <Link href="/admin/leads" className="block">
             <StatCard
-              title="Product contact clicks"
+              title={t("admin.overview.productContactClicks")}
               value={productContactClicks || 0}
-              description="WhatsApp + call (all time)"
+              description={t("admin.overview.productContactDescription")}
             />
           </Link>
         </div>
       </div>
 
-      {/* Site Traffic */}
       <div>
         <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">
           <Eye className="h-4 w-4" />
-          Site Traffic
+          {t("admin.overview.siteTraffic")}
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          <StatCard title="Today" value={todayUnique || 0} description={`Unique visitors • ${todayViews.toLocaleString()} page views`} />
-          <StatCard title="Last 7 Days" value={weekUnique || 0} description={`Unique visitors • ${weekViews.toLocaleString()} page views`} />
-          <StatCard title="All Time" value={totalUnique || 0} description={`Unique visitors • ${totalViews.toLocaleString()} page views`} />
+          <StatCard
+            title={t("admin.overview.today")}
+            value={todayUnique || 0}
+            description={t("admin.overview.uniqueVisitorsViews", { views: todayViews.toLocaleString() })}
+          />
+          <StatCard
+            title={t("admin.overview.last7Days")}
+            value={weekUnique || 0}
+            description={t("admin.overview.uniqueVisitorsViews", { views: weekViews.toLocaleString() })}
+          />
+          <StatCard
+            title={t("common.total")}
+            value={totalUnique || 0}
+            description={t("admin.overview.uniqueVisitorsViews", { views: totalViews.toLocaleString() })}
+          />
         </div>
       </div>
 
-      {/* Visit Summary */}
       <div>
-        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">All-time Visit Summary</h2>
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+          {t("admin.visits.allTimeSummary")}
+        </h2>
         <div className="grid gap-4 md:grid-cols-2">
-            <div className="overflow-hidden rounded-md border bg-card shadow-sm">
-              <table className="w-full text-sm">
-                <thead className="bg-muted/50">
-                  <tr>
-                    <th className="px-4 py-3 text-left font-medium">Status</th>
-                    <th className="px-4 py-3 text-right font-medium">Count</th>
+          <div className="overflow-hidden rounded-md border bg-card shadow-sm">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/50">
+                <tr>
+                  <th className="px-4 py-3 text-left font-medium">{t("common.status")}</th>
+                  <th className="px-4 py-3 text-right font-medium">{t("admin.visits.count")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(summaryCounts).map(([status, count]) => (
+                  <tr key={status} className="border-t">
+                    <td className="px-4 py-3">
+                      <Badge variant="outline" className={getVisitStatusBadgeClass(status)}>
+                        {getTranslatedVisitStatusLabel(t, status)}
+                      </Badge>
+                    </td>
+                    <td className="px-4 py-3 text-right font-semibold">{count}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(summaryCounts).map(([status, count]) => (
-                    <tr key={status} className="border-t">
-                      <td className="px-4 py-3">
-                        <Badge variant="outline" className={getVisitStatusBadgeClass(status)}>
-                          {VISIT_STATUS_LABELS[status] || status}
-                        </Badge>
-                      </td>
-                      <td className="px-4 py-3 text-right font-semibold">{count}</td>
-                    </tr>
-                  ))}
-                  <tr className="border-t bg-muted/20">
-                    <td className="px-4 py-3 font-semibold">Total</td>
-                    <td className="px-4 py-3 text-right font-semibold">{allTimeRows.length}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                ))}
+                <tr className="border-t bg-muted/20">
+                  <td className="px-4 py-3 font-semibold">{t("common.total")}</td>
+                  <td className="px-4 py-3 text-right font-semibold">{allTimeRows.length}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-            <div className="overflow-hidden rounded-md border bg-card shadow-sm">
-              <table className="w-full text-sm">
-                <thead className="bg-muted/50">
-                  <tr>
-                    <th className="px-4 py-3 text-left font-medium">Color</th>
-                    <th className="px-4 py-3 text-left font-medium">Meaning</th>
+          <div className="overflow-hidden rounded-md border bg-card shadow-sm">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/50">
+                <tr>
+                  <th className="px-4 py-3 text-left font-medium">{t("admin.visits.color")}</th>
+                  <th className="px-4 py-3 text-left font-medium">{t("admin.visits.meaning")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visitStatuses.map((status) => (
+                  <tr key={status} className="border-t">
+                    <td className="px-4 py-3">
+                      <Badge variant="outline" className={getVisitStatusBadgeClass(status)}>
+                        {getTranslatedVisitStatusLabel(t, status)}
+                      </Badge>
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {t("admin.visits.statusVisits", { status: getTranslatedVisitStatusLabel(t, status) })}
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {Object.keys(VISIT_STATUS_LABELS).map((status) => (
-                    <tr key={status} className="border-t">
-                      <td className="px-4 py-3">
-                        <Badge variant="outline" className={getVisitStatusBadgeClass(status)}>
-                          {VISIT_STATUS_LABELS[status]}
-                        </Badge>
-                      </td>
-                      <td className="px-4 py-3 text-muted-foreground">{VISIT_STATUS_LABELS[status]} visits</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 

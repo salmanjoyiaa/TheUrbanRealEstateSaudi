@@ -1,9 +1,11 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { LocationsClient } from "./locations-client";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function LocationsPage() {
+  const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
 
   // Fetch cities
@@ -24,10 +26,8 @@ export default async function LocationsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Locations Manager</h1>
-        <p className="text-sm text-muted-foreground">
-          Manage cities and districts globally. Renaming or deleting a location here will automatically update all properties associated with it.
-        </p>
+        <h1 className="text-2xl font-bold text-navy">{t("admin.locations.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("admin.locations.subtitle")}</p>
       </div>
       
       <LocationsClient initialCities={cities} initialDistricts={districts} />

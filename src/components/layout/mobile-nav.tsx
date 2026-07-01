@@ -11,17 +11,11 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-
-const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/properties", label: "Properties" },
-    { href: "/products", label: "Products" },
-    { href: "/maintenance", label: "Maintenance" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
-];
+import { publicNavKeys } from "@/config/nav";
+import { useLocale } from "@/providers/locale-provider";
 
 export function MobileNav() {
+    const { t } = useLocale();
     const [open, setOpen] = useState(false);
 
     return (
@@ -41,14 +35,14 @@ export function MobileNav() {
                         </SheetTitle>
                     </SheetHeader>
                     <nav className="mt-8 flex flex-col gap-2 px-2" aria-label="Mobile navigation">
-                        {navLinks.map((link) => (
+                        {publicNavKeys.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
                                 onClick={() => setOpen(false)}
                                 className="rounded-xl px-4 py-3.5 text-[16px] font-bold tracking-wide text-foreground transition-all hover:bg-foreground/5 active:scale-95"
                             >
-                                {link.label}
+                                {t(link.titleKey)}
                             </Link>
                         ))}
 
@@ -58,21 +52,21 @@ export function MobileNav() {
                                 onClick={() => setOpen(false)}
                                 className="flex w-full items-center justify-center rounded-xl bg-primary px-4 py-3.5 text-[15px] font-bold text-primary-foreground shadow-md transition-all hover:bg-primary/90 active:scale-95"
                             >
-                                AQARI Login
+                                {t("nav.aqariLogin")}
                             </Link>
                             <Link
                                 href="/login?type=visiting"
                                 onClick={() => setOpen(false)}
                                 className="flex w-full items-center justify-center rounded-xl border-2 border-primary px-4 py-3.5 text-[15px] font-bold text-primary shadow-sm transition-all hover:bg-primary/5 active:scale-95"
                             >
-                                Team Login
+                                {t("nav.teamLogin")}
                             </Link>
                             <Link
                                 href="/login?type=maintenance"
                                 onClick={() => setOpen(false)}
                                 className="flex w-full items-center justify-center rounded-xl border-2 border-primary px-4 py-3.5 text-[15px] font-bold text-primary shadow-sm transition-all hover:bg-primary/5 active:scale-95"
                             >
-                                Maintenance Login
+                                {t("nav.maintenanceLogin")}
                             </Link>
                         </div>
                     </nav>

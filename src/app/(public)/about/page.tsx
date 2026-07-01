@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createLegalMetadata } from "@/lib/legal-meta";
 import { LegalPageLayout } from "@/components/legal/legal-page-layout";
+import { getPublicTranslator } from "@/i18n/server";
 
 export const metadata = createLegalMetadata({
   title: "About Us",
@@ -9,9 +10,11 @@ export const metadata = createLegalMetadata({
   path: "/about",
 });
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { t } = await getPublicTranslator();
+
   return (
-    <LegalPageLayout title="About The Urban Real Estate" lastUpdated="June 2026">
+    <LegalPageLayout title={t("about.title")} lastUpdated="June 2026">
       <p>
         The Urban Real Estate (also known as UrbanSaudi) is a Saudi Arabia-based marketplace connecting tenants,
         buyers, sellers, and verified property agents. We help people find rental properties, quality used household

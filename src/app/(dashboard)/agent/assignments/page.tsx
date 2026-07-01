@@ -2,8 +2,10 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { VisitingAgentClient } from "@/components/visit/visiting-agent-client";
 import { fetchVisitingAgentDashboardData } from "@/lib/visiting-agent-data";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export default async function AgentAssignmentsPage() {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 
   const {
@@ -37,10 +39,8 @@ export default async function AgentAssignmentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">My Assignments</h1>
-        <p className="text-sm text-muted-foreground">
-          View your daily visits and manage each assignment.
-        </p>
+        <h1 className="text-2xl font-bold text-navy">{t("agent.assignments.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("agent.assignments.subtitle")}</p>
       </div>
 
       <VisitingAgentClient

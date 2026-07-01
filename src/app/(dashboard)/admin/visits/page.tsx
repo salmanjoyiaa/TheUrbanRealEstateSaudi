@@ -10,7 +10,9 @@ import {
   fetchAdminVisitsForPage,
   type AdminVisitRow,
 } from "@/lib/server/admin-visits-query";
-import { VISIT_STATUS_LABELS, getVisitStatusBadgeClass } from "@/lib/visit-status";
+import { getVisitStatusBadgeClass } from "@/lib/visit-status";
+import { getDashboardTranslator } from "@/i18n/server";
+import { getTranslatedVisitStatusLabel } from "@/lib/visit-status-i18n";
 
 type AssignedVisitSlot = {
   id: string;
@@ -22,6 +24,8 @@ type AssignedVisitSlot = {
 function normalizeVisitTime(time: string): string {
   return String(time || "").slice(0, 5);
 }
+
+const VISIT_STATUSES = ["pending", "assigned", "confirmed", "cancelled", "completed"] as const;
 
 export default async function AdminVisitsPage({
   searchParams,
@@ -35,6 +39,7 @@ export default async function AdminVisitsPage({
     view?: string;
   };
 }) {
+  const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
   const propertyRefQ = sanitizePropertyRefQuery(searchParams.property_ref);
 
@@ -86,14 +91,14 @@ export default async function AdminVisitsPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Visit Requests</h1>
-        <p className="text-sm text-muted-foreground">Orchestrate and route scheduled visits.</p>
+        <h1 className="text-2xl font-bold text-navy">{t("admin.visits.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("admin.visits.subtitle")}</p>
       </div>
 
       <div className="rounded-xl border bg-card p-4 shadow-sm">
         <div className="mb-3">
-          <h2 className="text-base font-semibold text-navy">All-time Visit Summary</h2>
-          <p className="text-xs text-muted-foreground">Overall status breakdown across all visit requests.</p>
+          <h2 className="text-base font-semibold text-navy">{t("admin.visits.allTimeSummary")}</h2>
+          <p className="text-xs text-muted-foreground">{t("admin.visits.summarySubtitle")}</p>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
@@ -101,8 +106,8 @@ export default async function AdminVisitsPage({
             <table className="w-full text-sm">
               <thead className="bg-muted/50">
                 <tr>
-                  <th className="px-3 py-2 text-left font-medium">Status</th>
-                  <th className="px-3 py-2 text-right font-medium">Count</th>
+                  <th className="px-3 py-2 text-left font-medium">{t("common.status")}</th>
+                  <th className="px-3 py-2 text-right font-medium">{t("admin.visits.count")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -110,14 +115,14 @@ export default async function AdminVisitsPage({
                   <tr key={status} className="border-t">
                     <td className="px-3 py-2">
                       <Badge variant="outline" className={getVisitStatusBadgeClass(status)}>
-                        {VISIT_STATUS_LABELS[status] || status}
+                        {getTranslatedVisitStatusLabel(t, status)}
                       </Badge>
                     </td>
                     <td className="px-3 py-2 text-right font-semibold">{count}</td>
                   </tr>
                 ))}
                 <tr className="border-t bg-muted/20">
-                  <td className="px-3 py-2 font-semibold">Total</td>
+                  <td className="px-3 py-2 font-semibold">{t("common.total")}</td>
                   <td className="px-3 py-2 text-right font-semibold">{allTimeRows.length}</td>
                 </tr>
               </tbody>
@@ -128,19 +133,21 @@ export default async function AdminVisitsPage({
             <table className="w-full text-sm">
               <thead className="bg-muted/50">
                 <tr>
-                  <th className="px-3 py-2 text-left font-medium">Color</th>
-                  <th className="px-3 py-2 text-left font-medium">Meaning</th>
+                  <th className="px-3 py-2 text-left font-medium">{t("admin.visits.color")}</th>
+                  <th className="px-3 py-2 text-left font-medium">{t("admin.visits.meaning")}</th>
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(VISIT_STATUS_LABELS).map((status) => (
+                {VISIT_STATUSES.map((status) => (
                   <tr key={status} className="border-t">
                     <td className="px-3 py-2">
                       <Badge variant="outline" className={getVisitStatusBadgeClass(status)}>
-                        {VISIT_STATUS_LABELS[status]}
+                        {getTranslatedVisitStatusLabel(t, status)}
                       </Badge>
                     </td>
-                    <td className="px-3 py-2 text-muted-foreground">{VISIT_STATUS_LABELS[status]} visits</td>
+                    <td className="px-3 py-2 text-muted-foreground">
+                      {t("admin.visits.statusVisits", { status: getTranslatedVisitStatusLabel(t, status) })}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -151,32 +158,38 @@ export default async function AdminVisitsPage({
 
       <form className="flex flex-wrap gap-3 items-end">
         <div>
-          <label className="text-xs font-medium text-muted-foreground block mb-1">Property ID</label>
+          <label className="text-xs font-medium text-muted-foreground block mb-1">
+            {t("common.propertyId")}
+          </label>
           <input
             type="search"
             name="property_ref"
             defaultValue={searchParams.property_ref || ""}
-            placeholder="e.g. 55"
+            placeholder={t("admin.visits.propertyIdPlaceholder")}
             className="h-9 w-28 rounded-md border border-input bg-background px-3 text-sm sm:w-36"
           />
         </div>
         <div>
-          <label className="text-xs font-medium text-muted-foreground block mb-1">Status</label>
+          <label className="text-xs font-medium text-muted-foreground block mb-1">
+            {t("common.status")}
+          </label>
           <select
             name="status"
             defaultValue={searchParams.status || ""}
             className="h-9 rounded-md border border-input bg-background px-3 text-sm"
           >
-            <option value="">All</option>
-            <option value="pending">Pending</option>
-            <option value="assigned">Assigned</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="cancelled">Cancelled</option>
-            <option value="completed">Completed</option>
+            <option value="">{t("common.all")}</option>
+            {VISIT_STATUSES.map((status) => (
+              <option key={status} value={status}>
+                {getTranslatedVisitStatusLabel(t, status)}
+              </option>
+            ))}
           </select>
         </div>
         <div>
-          <label className="text-xs font-medium text-muted-foreground block mb-1">Visit From</label>
+          <label className="text-xs font-medium text-muted-foreground block mb-1">
+            {t("admin.visits.visitFrom")}
+          </label>
           <input
             type="date"
             name="date_from"
@@ -185,7 +198,9 @@ export default async function AdminVisitsPage({
           />
         </div>
         <div>
-          <label className="text-xs font-medium text-muted-foreground block mb-1">Visit To</label>
+          <label className="text-xs font-medium text-muted-foreground block mb-1">
+            {t("admin.visits.visitTo")}
+          </label>
           <input
             type="date"
             name="date_to"
@@ -194,35 +209,40 @@ export default async function AdminVisitsPage({
           />
         </div>
         <div>
-          <label className="text-xs font-medium text-muted-foreground block mb-1">Sort</label>
+          <label className="text-xs font-medium text-muted-foreground block mb-1">
+            {t("admin.visits.sort")}
+          </label>
           <select
             name="sort"
             defaultValue={searchParams.sort || ""}
             className="h-9 rounded-md border border-input bg-background px-3 text-sm"
           >
-            <option value="">Newest First</option>
-            <option value="visit_date_asc">Visit Date ↑</option>
-            <option value="visit_date_desc">Visit Date ↓</option>
+            <option value="">{t("common.newestFirst")}</option>
+            <option value="visit_date_asc">{t("common.visitDateAsc")}</option>
+            <option value="visit_date_desc">{t("common.visitDateDesc")}</option>
           </select>
         </div>
         <button
           type="submit"
           className="h-9 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
         >
-          Filter
+          {t("common.filter")}
         </button>
         <a
           href="/admin/visits"
           className="h-9 rounded-md border border-input bg-background px-4 text-sm font-medium inline-flex items-center hover:bg-muted"
         >
-          Reset
+          {t("common.reset")}
         </a>
       </form>
 
       {propertyRefQ ? (
         <p className="text-sm text-muted-foreground">
-          Visits for Property ID &quot;{propertyRefQ}&quot; ({rowsWithBusy.length}{" "}
-          {rowsWithBusy.length === 1 ? "request" : "requests"})
+          {t("admin.visits.visitsForProperty", {
+            ref: propertyRefQ,
+            count: rowsWithBusy.length,
+            unit: rowsWithBusy.length === 1 ? t("admin.visits.request") : t("admin.visits.requests"),
+          })}
         </p>
       ) : null}
 

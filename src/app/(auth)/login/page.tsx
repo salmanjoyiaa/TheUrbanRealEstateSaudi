@@ -13,8 +13,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { useLocale } from "@/providers/locale-provider";
 
 function LoginContent() {
+  const { t } = useLocale();
   const searchParams = useSearchParams();
   const supabase = createClient();
 
@@ -100,26 +102,51 @@ function LoginContent() {
     window.location.href = redirect || "/";
   };
 
+  const loginTitle =
+    loginType === "property"
+      ? t("auth.login.aqariTitle")
+      : loginType === "visiting"
+        ? t("auth.login.teamTitle")
+        : loginType === "seller"
+          ? t("auth.login.sellerTitle")
+          : loginType === "maintenance"
+            ? t("auth.login.maintenanceTitle")
+            : t("auth.login.title");
+
+  const signInLabel =
+    loginType === "seller"
+      ? t("auth.login.signInAsSeller")
+      : loginType === "property"
+        ? t("auth.login.signInAsAqari")
+        : loginType === "visiting"
+          ? t("auth.login.signInAsTeam")
+          : loginType === "maintenance"
+            ? t("auth.login.signInAsMaintenance")
+            : t("auth.login.submit");
+
+  const signupLabel =
+    loginType === "property"
+      ? t("auth.login.applyAqari")
+      : loginType === "visiting"
+        ? t("auth.login.applyTeam")
+        : loginType === "seller"
+          ? t("auth.login.applySeller")
+          : loginType === "maintenance"
+            ? t("auth.login.applyMaintenance")
+            : t("auth.login.applyAgent");
+
   return (
     <Card className="border-border bg-card shadow-xl shadow-foreground/5 dark:shadow-background/5">
       <CardHeader className="space-y-2">
         <CardTitle className="text-2xl font-extrabold text-foreground">
-          {loginType === "property"
-            ? "AQARI Login"
-            : loginType === "visiting"
-              ? "Team Login"
-              : loginType === "seller"
-                ? "Product seller login"
-                : loginType === "maintenance"
-                  ? "Maintenance Login"
-                  : "Agent Login"}
+          {loginTitle}
         </CardTitle>
-        <CardDescription className="text-muted-foreground">Access your UrbanSaudi account.</CardDescription>
+        <CardDescription className="text-muted-foreground">{t("auth.login.description")}</CardDescription>
       </CardHeader>
       <CardContent>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t("auth.login.email")}</Label>
             <Input
               id="email"
               type="email"
@@ -132,7 +159,7 @@ function LoginContent() {
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t("auth.login.password")}</Label>
             <Input
               id="password"
               type="password"
@@ -147,32 +174,18 @@ function LoginContent() {
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
+                {t("auth.login.submitting")}
               </>
             ) : (
-              `Sign In${
-                loginType
-                  ? loginType === "seller"
-                    ? " as Product Seller"
-                    : ` as ${loginType === "property" ? "AQARI" : loginType === "visiting" ? "Team" : "Maintenance"} Agent`
-                  : ""
-              }`
+              signInLabel
             )}
           </Button>
         </form>
 
         <div className="mt-6 text-center text-sm text-muted-foreground">
-          Don&apos;t have an account?{" "}
+          {t("auth.login.noAccount")}{" "}
           <Link href={`/signup/agent${loginType ? `?type=${loginType}` : ""}`} className="font-bold text-primary hover:underline">
-            {loginType === "property" 
-              ? "Apply to become an AQARI agent"
-              : loginType === "visiting"
-                ? "Apply to become a Team Agent"
-                : loginType === "seller"
-                  ? "Create a product seller account"
-                  : loginType === "maintenance"
-                    ? "Apply to become a Maintenance Agent"
-                    : "Apply to become an agent"}
+            {signupLabel}
           </Link>
         </div>
       </CardContent>

@@ -22,6 +22,7 @@ import {
 import { PhoneInput } from "@/components/ui/phone-input";
 import { toast } from "sonner";
 import { COUNTRIES, getCountryByCode } from "@/lib/country-data";
+import { useLocale } from "@/providers/locale-provider";
 
 function sanitizeFileName(name: string) {
   return name.replace(/[^a-zA-Z0-9._-]/g, "_");
@@ -36,6 +37,7 @@ export default function AgentSignupPageWrapper() {
 }
 
 function AgentSignupPage() {
+  const { t } = useLocale();
   const searchParams = useSearchParams();
   const supabase = createClient();
   const [selectedCountry, setSelectedCountry] = useState("SA");
@@ -230,11 +232,9 @@ function AgentSignupPage() {
   return (
     <Card className="shadow-sm">
       <CardHeader>
-        <CardTitle>{isSellerMinimal ? "Create a Product Seller Account" : "Agent registration"}</CardTitle>
+        <CardTitle>{isSellerMinimal ? t("auth.signup.sellerTitle") : t("auth.signup.agentTitle")}</CardTitle>
         <CardDescription>
-          {isSellerMinimal
-            ? "Enter your name, email, WhatsApp number, and password. You can list products as soon as you are signed in (or after you verify your email if confirmation is required)."
-            : "Submit your profile and license details. You will be redirected once approved."}
+          {isSellerMinimal ? t("auth.signup.sellerSubtitle") : t("auth.signup.agentSubtitle")}
         </CardDescription>
       </CardHeader>
       <CardContent>

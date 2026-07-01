@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Wrench, MapPin, Building2, User, Star } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { getPublicTranslator } from "@/i18n/server";
 
 export const metadata: Metadata = {
     title: "Maintenance Services Marketplace",
@@ -23,6 +24,7 @@ export default async function MaintenanceMarketplacePage({
 }: {
   searchParams: { category?: string; city?: string };
 }) {
+    const { t } = await getPublicTranslator();
     const supabase = await createClient();
 
     let query = supabase
@@ -66,10 +68,10 @@ export default async function MaintenanceMarketplacePage({
                     <Wrench className="w-8 h-8 text-emerald-600" />
                 </div>
                 <h1 className="text-[36px] md:text-[48px] font-extrabold text-foreground leading-tight mb-4">
-                    Maintenance Marketplace
+                    {t("maintenancePage.title")}
                 </h1>
                 <p className="text-[17px] text-muted-foreground leading-relaxed">
-                    Browse verified professionals and companies for your property maintenance needs. Book securely with UrbanSaudi.
+                    {t("maintenancePage.subtitle")}
                 </p>
             </div>
 

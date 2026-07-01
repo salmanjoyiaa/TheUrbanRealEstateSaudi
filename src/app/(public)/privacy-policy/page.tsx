@@ -3,6 +3,8 @@ import { createLegalMetadata } from "@/lib/legal-meta";
 import { LegalPageLayout } from "@/components/legal/legal-page-layout";
 import { siteConfig } from "@/config/site";
 
+import { getPublicTranslator } from "@/i18n/server";
+
 export const metadata = createLegalMetadata({
   title: "Privacy Policy",
   description:
@@ -10,9 +12,11 @@ export const metadata = createLegalMetadata({
   path: "/privacy-policy",
 });
 
-export default function PrivacyPolicyPage() {
+export default async function PrivacyPolicyPage() {
+  const { t } = await getPublicTranslator();
+
   return (
-    <LegalPageLayout title="Privacy Policy" lastUpdated="June 2026">
+    <LegalPageLayout title={t("privacyPolicy.title")} lastUpdated="June 2026">
       <p>
         The Urban Real Estate (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) operates theurbanrealestate.com
         (UrbanSaudi), a marketplace for property rentals, used household products, and maintenance services in Saudi

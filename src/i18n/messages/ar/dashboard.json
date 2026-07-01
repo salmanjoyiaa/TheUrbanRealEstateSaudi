@@ -1,0 +1,352 @@
+{
+  "nav": {
+    "groups": {
+      "overview": "نظرة عامة",
+      "teamManagement": "إدارة الفريق",
+      "listings": "القوائم",
+      "requests": "الطلبات",
+      "operations": "العمليات",
+      "content": "المحتوى",
+      "system": "النظام",
+      "account": "الحساب"
+    },
+    "admin": {
+      "dashboard": "لوحة التحكم",
+      "agents": "فريق عقاري",
+      "sellers": "البائعون",
+      "visitingTeam": "فريق الزيارات",
+      "maintenanceAgents": "وكلاء الصيانة",
+      "properties": "العقارات",
+      "products": "المنتجات",
+      "locations": "المواقع",
+      "maintenanceServices": "خدمات الصيانة",
+      "visits": "طلبات الزيارة",
+      "visitPdf": "PDF الزيارات",
+      "leads": "جهات اتصال المنتجات",
+      "maintenanceRequests": "طلبات الصيانة",
+      "visitHours": "ساعات الزيارة",
+      "visitPerformance": "أداء فريق الزيارات",
+      "testimonials": "آراء العملاء",
+      "messageLogs": "سجل الرسائل",
+      "auditLog": "سجل التدقيق",
+      "settings": "الإعدادات",
+      "profile": "الملف الشخصي"
+    },
+    "agent": {
+      "overview": "نظرة عامة",
+      "myProperties": "عقاراتي",
+      "visits": "طلبات الزيارة",
+      "assignments": "مهامي",
+      "messageTemplates": "قوالب الرسائل",
+      "propertiesAssigned": "عقاراتي",
+      "myProducts": "منتجاتي",
+      "leads": "جهات اتصال المنتجات",
+      "myServices": "خدماتي",
+      "serviceRequests": "طلبات الخدمة",
+      "profile": "الملف الشخصي"
+    },
+    "shell": {
+      "adminPanel": "لوحة الإدارة",
+      "visitingTeam": "فريق الزيارات",
+      "agentDashboard": "لوحة الوكيل",
+      "visitingAgent": "وكيل زيارات"
+    }
+  },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "filter": "تصفية",
+    "reset": "إعادة تعيين",
+    "search": "بحث",
+    "loading": "جاري التحميل...",
+    "noResults": "لا توجد نتائج",
+    "actions": "إجراءات",
+    "status": "الحالة",
+    "date": "التاريخ",
+    "time": "الوقت",
+    "name": "الاسم",
+    "phone": "الهاتف",
+    "email": "البريد الإلكتروني",
+    "total": "الإجمالي",
+    "yes": "نعم",
+    "no": "لا",
+    "confirm": "تأكيد",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "all": "الكل",
+    "submit": "إرسال",
+    "saving": "جاري الحفظ...",
+    "saved": "تم الحفظ بنجاح",
+    "error": "حدث خطأ ما",
+    "propertyId": "رقم العقار",
+    "newestFirst": "الأحدث أولاً",
+    "visitDateAsc": "تاريخ الزيارة ↑",
+    "visitDateDesc": "تاريخ الزيارة ↓"
+  },
+  "visitStatus": {
+    "pending": "قيد الانتظار",
+    "assigned": "تم التعيين",
+    "confirmed": "مؤكد",
+    "cancelled": "ملغى",
+    "completed": "مكتمل",
+    "cancelPending": "إلغاء قيد المراجعة"
+  },
+  "pipeline": {
+    "view": "للزيارة",
+    "contact_done": "تم التواصل",
+    "customer_confirmed": "تأكيد العميل",
+    "customer_arrived": "وصول العميل",
+    "visit_done": "تمت الزيارة",
+    "customer_remarks": "تم تسجيل الملاحظات",
+    "deal_pending": "صفقة قيد الانتظار",
+    "deal_fail": "فشل الصفقة",
+    "commission_got": "تم استلام العمولة",
+    "deal_close": "إغلاق الصفقة",
+    "reschedule": "طلب إعادة جدولة"
+  },
+  "admin": {
+    "overview": {
+      "title": "لوحة الإدارة",
+      "subtitle": "نظرة عامة على المنصة والإحصائيات",
+      "actionRequired": "يتطلب إجراء",
+      "platformTotals": "إجماليات المنصة",
+      "siteTraffic": "حركة الموقع",
+      "pendingProperties": "عقارات قيد الانتظار",
+      "awaitingApproval": "في انتظار الموافقة",
+      "pendingAgents": "وكلاء قيد الانتظار",
+      "pendingVisiting": "وكلاء زيارات قيد الانتظار",
+      "approvedAgents": "وكلاء معتمدون",
+      "approvedVisiting": "وكلاء زيارات معتمدون",
+      "pendingVisits": "زيارات قيد الانتظار",
+      "pendingMaintenance": "صيانة قيد الانتظار",
+      "activeProperties": "عقارات نشطة",
+      "totalCount": "{count} إجمالي",
+      "propertyAgents": "وكلاء العقارات",
+      "approved": "معتمد",
+      "visitingTeam": "فريق الزيارات",
+      "customers": "العملاء",
+      "confirmedVisits": "زيارات مؤكدة",
+      "allTime": "كل الوقت",
+      "productContactClicks": "نقرات التواصل على المنتجات",
+      "productContactDescription": "واتساب + اتصال (كل الوقت)",
+      "today": "اليوم",
+      "last7Days": "آخر 7 أيام",
+      "uniqueVisitorsViews": "زوار فريدون • {views} مشاهدة صفحة",
+      "recentVisits": "طلبات الزيارة الأخيرة"
+    },
+    "visits": {
+      "title": "طلبات الزيارة",
+      "subtitle": "تنسيق وتوجيه الزيارات المجدولة.",
+      "allTimeSummary": "ملخص الزيارات الكلي",
+      "summarySubtitle": "توزيع الحالات لجميع طلبات الزيارة.",
+      "count": "العدد",
+      "color": "اللون",
+      "meaning": "المعنى",
+      "visitFrom": "زيارة من",
+      "visitTo": "زيارة إلى",
+      "sort": "ترتيب",
+      "visitsForProperty": "زيارات العقار رقم \"{ref}\" ({count} {unit})",
+      "request": "طلب",
+      "requests": "طلبات",
+      "statusVisits": "زيارات {status}",
+      "propertyIdPlaceholder": "مثال: 55"
+    },
+    "settings": {
+      "title": "إعدادات المنصة",
+      "subtitle": "تكوين تفضيلات المنصة",
+      "languageTitle": "اللغة",
+      "languageSubtitle": "التحكم في لغة الموقع العام ولوحات التحكم",
+      "publicLanguage": "لغة الموقع العام",
+      "dashboardLanguage": "لغة لوحة التحكم",
+      "english": "English",
+      "arabic": "العربية (السعودية)",
+      "saveLanguages": "حفظ إعدادات اللغة",
+      "languagesSaved": "تم حفظ إعدادات اللغة"
+    },
+    "visitPdf": {
+      "title": "PDF الزيارات",
+      "subtitle": "تنزيل PDF يومي للزيارات وإرسال الملخصات للوكلاء."
+    },
+    "properties": {
+      "title": "جميع العقارات",
+      "subtitle": "نظرة عامة على القوائم للمسؤولين.",
+      "editTitle": "تعديل العقار",
+      "editSubtitle": "تحديث تفاصيل العقار كمسؤول."
+    },
+    "products": {
+      "title": "جميع المنتجات",
+      "subtitle": "نظرة عامة على قوائم المنتجات للمسؤولين.",
+      "editTitle": "تعديل المنتج",
+      "editSubtitle": "تحديث تفاصيل المنتج كمسؤول."
+    },
+    "agents": {
+      "tabs": {
+        "property": "فريق AQARI",
+        "seller": "البائعون",
+        "maintenance": "الصيانة"
+      },
+      "subtitleProperty": "الموافقة أو الرفض أو تعليق حسابات وكلاء العقارات.",
+      "subtitleSeller": "الموافقة أو الرفض أو تعليق حسابات البائعين.",
+      "subtitleMaintenance": "الموافقة أو الرفض أو تعليق حسابات وكلاء الصيانة.",
+      "detailTitle": "تفاصيل الوكيل",
+      "detailSubtitle": "مراجعة المعلومات والمستندات المقدمة."
+    },
+    "maintenance": {
+      "title": "طلبات الصيانة",
+      "subtitle": "إدارة طلبات الخدمة قبل توجيهها إلى الوكلاء."
+    },
+    "leads": {
+      "title": "نشاط التواصل على المنتجات",
+      "subtitle": "نقرات واتساب واتصال مجهولة على صفحات المنتجات (لا يتم تخزين بيانات العملاء)."
+    },
+    "locations": {
+      "title": "إدارة المواقع",
+      "subtitle": "إدارة المدن والأحياء عالمياً. إعادة التسمية أو الحذف هنا ستحدّث جميع العقارات المرتبطة تلقائياً."
+    },
+    "slots": {
+      "title": "ساعات الزيارة",
+      "subtitle": "اختر عقاراً واضبط أيام العمل وساعات البداية/النهاية والمواعيد المحجوبة."
+    },
+    "visitingTeam": {
+      "title": "فريق الزيارات",
+      "subtitle": "إدارة وكلاء الزيارات الداخليين وروتين التوزيع."
+    },
+    "testimonials": {
+      "title": "آراء العملاء",
+      "subtitle": "إدارة آراء العملاء في الصفحة الرئيسية."
+    },
+    "logs": {
+      "title": "سجل الرسائل",
+      "subtitle": "مراقبة رسائل واتساب والبريد الإلكتروني المُنشأة تلقائياً."
+    },
+    "auditLog": {
+      "title": "سجل التدقيق",
+      "subtitle": "تتبع جميع إجراءات الإشراف الإداري."
+    },
+    "profile": {
+      "title": "الملف الشخصي",
+      "subtitle": "إدارة تفاصيل حسابك وإعدادات الأمان."
+    },
+    "maintenanceServices": {
+      "title": "خدمات الصيانة",
+      "subtitle": "إدارة قوائم الخدمات في السوق.",
+      "editTitle": "تعديل خدمة الصيانة",
+      "editSubtitle": "تحديث حقول القائمة للسوق."
+    },
+    "visitTeamPerformance": {
+      "title": "أداء فريق الزيارات",
+      "subtitle": "اختر وكيل زيارات لمراجعة الزيارات المؤكدة/المكتملة وتقدم الصفقات."
+    },
+    "notifications": {
+      "title": "سجل الإشعارات",
+      "subtitle": "سجل تدقيق لجميع رسائل البريد وواتساب المُرسلة."
+    }
+  },
+  "agent": {
+    "overview": {
+      "titleVisiting": "نظرة عامة — فريق الزيارات",
+      "titleSeller": "نظرة عامة — البائع",
+      "titleDefault": "نظرة عامة — الوكيل",
+      "titleMaintenance": "نظرة عامة — الصيانة",
+      "subtitle": "تابع قوائمك وطلباتك ونشاطك.",
+      "subtitleMaintenance": "تابع قوائمك في السوق وطلبات خدمة العملاء.",
+      "listedServices": "الخدمات المدرجة",
+      "activeListings": "القوائم النشطة",
+      "serviceRequests": "طلبات الخدمة",
+      "todaySchedule": "جدول اليوم",
+      "scheduleSubtitle": "زيارات يومية حسب العقار. انقر على زيارة للتفاصيل والإجراءات.",
+      "confirmedVisits": "زيارات مؤكدة",
+      "confirmedDeals": "صفقات مؤكدة",
+      "failedDeals": "صفقات فاشلة",
+      "products": "المنتجات",
+      "contactClicks": "نقرات التواصل على المنتجات",
+      "properties": "العقارات",
+      "approvalStatus": "حالة الموافقة",
+      "currentStatus": "حالة الحساب الحالية: {status}"
+    },
+    "assignments": {
+      "title": "مهامي",
+      "subtitle": "عرض زياراتك اليومية وإدارة كل مهمة.",
+      "calendar": "التقويم",
+      "calendarSubtitle": "اختر تاريخاً لعرض المهام.",
+      "assignedProperties": "العقارات المعينة",
+      "assignedSubtitle": "العقارات المعينة لك من الإدارة.",
+      "noAssigned": "لا توجد عقارات معينة.",
+      "propertyIdLabel": "رقم العقار: {ref}",
+      "notSet": "غير محدد"
+    },
+    "messageTemplates": {
+      "title": "قوالب الرسائل",
+      "subtitle": "أنشئ قوالب واتساب بأسماء ومتغيرات. استخدمها من مهامي عند مراسلة العملاء.",
+      "newTemplate": "قالب جديد",
+      "noTemplates": "لا توجد قوالب بعد",
+      "noTemplatesHint": "أنشئ أول قالب بمتغيرات العميل والعقار، ثم أرسله من أي زيارة في مهامي.",
+      "createFirst": "أنشئ أول قالب",
+      "editTemplate": "تعديل القالب",
+      "templateName": "اسم القالب",
+      "message": "الرسالة",
+      "insertPlaceholder": "إدراج متغير",
+      "saveChanges": "حفظ التغييرات",
+      "createTemplate": "إنشاء قالب",
+      "loadingTemplates": "جاري تحميل القوالب...",
+      "nameBodyRequired": "اسم القالب ونص الرسالة مطلوبان",
+      "templateUpdated": "تم تحديث القالب",
+      "templateCreated": "تم إنشاء القالب",
+      "templateDeleted": "تم حذف القالب",
+      "failedSave": "فشل حفظ القالب",
+      "failedDelete": "فشل حذف القالب",
+      "deleteConfirm": "حذف القالب \"{name}\"؟",
+      "namePlaceholder": "مثال: تذكير بالوصول",
+      "bodyPlaceholder": "مرحباً {{customer_name}}، زيارتك لـ {{property_name}} (رقم {{property_id}}) في {{visit_date}} الساعة {{visit_time}}."
+    },
+    "visits": {
+      "title": "طلبات الزيارة",
+      "subtitle": "إدارة زيارات العقارات المؤكدة والمكتملة."
+    },
+    "properties": {
+      "title": "عقاراتي",
+      "subtitle": "إدارة قوائم عقاراتك.",
+      "createTitle": "إنشاء عقار",
+      "editTitle": "تعديل العقار",
+      "blockDatesTitle": "حجب التواريخ",
+      "blockDatesSubtitle": "إدارة الأوقات التي يكون فيها العقار غير متاح لحجز الزيارات."
+    },
+    "propertiesAssigned": {
+      "title": "عقاراتي",
+      "subtitle": "العقارات المعينة لك من الإدارة. هذه العقارات التي أنت مسؤول عنها."
+    },
+    "products": {
+      "title": "منتجاتي",
+      "subtitle": "إدارة قوائم منتجاتك.",
+      "createTitle": "إنشاء منتج",
+      "editTitle": "تعديل المنتج"
+    },
+    "leads": {
+      "title": "نشاط التواصل على المنتجات",
+      "subtitle": "نقرات واتساب واتصال على قوائمك (تحليلات مجمعة؛ لا يتم تخزين بيانات العملاء)."
+    },
+    "profile": {
+      "title": "الملف الشخصي",
+      "subtitle": "إدارة تفاصيل حسابك وإعدادات الأمان."
+    },
+    "maintenanceServices": {
+      "title": "خدماتي",
+      "subtitle": "إدارة خدمات الصيانة التي تقدمها في السوق.",
+      "noServices": "لم تُضف خدمات",
+      "addService": "إضافة خدمة",
+      "newTitle": "إضافة خدمة صيانة",
+      "newSubtitle": "أدرج خدمة في السوق. سيراها العملاء بعد نشرها.",
+      "editTitle": "تعديل الخدمة",
+      "editSubtitle": "تحديث قائمتك في السوق."
+    },
+    "maintenanceRequests": {
+      "title": "طلبات الخدمة",
+      "subtitle": "عرض طلبات العملاء التي وافق عليها إدارة UrbanSaudi."
+    }
+  }
+}

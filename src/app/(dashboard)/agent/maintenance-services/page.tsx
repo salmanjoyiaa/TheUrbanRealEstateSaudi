@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Wrench, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MaintenanceServiceCard } from "@/components/agent/maintenance-service-card";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export const metadata: Metadata = {
   title: "My Services - Agent Dashboard",
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 export const revalidate = 0;
 
 export default async function AgentMaintenanceServicesPage() {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 
   const {
@@ -50,8 +52,8 @@ export default async function AgentMaintenanceServicesPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">My Services</h1>
-          <p className="text-muted-foreground">Manage the maintenance services you offer in the marketplace.</p>
+          <h1 className="text-2xl font-bold tracking-tight">{t("agent.maintenanceServices.title")}</h1>
+          <p className="text-muted-foreground">{t("agent.maintenanceServices.subtitle")}</p>
         </div>
         <Button asChild>
           <Link href="/agent/maintenance-services/new">

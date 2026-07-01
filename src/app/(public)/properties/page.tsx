@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { PropertyFilters } from "@/components/property/property-filters";
 import { PropertySection } from "@/components/property/property-section";
 import type { Property } from "@/types/database";
+import { getPublicTranslator } from "@/i18n/server";
 
 export const revalidate = 60;
 
@@ -75,6 +76,7 @@ async function fetchByStatus(
 }
 
 export default async function PropertiesPage({ searchParams }: PropertiesPageProps) {
+  const { t } = await getPublicTranslator();
   const supabase = await createClient();
 
   const maxForModal = 100;
@@ -94,8 +96,8 @@ export default async function PropertiesPage({ searchParams }: PropertiesPagePro
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8 space-y-6">
       <div className="space-y-1">
-        <h1 className="text-[24px] font-extrabold text-foreground">Rental Listings</h1>
-        <p className="text-[15px] text-muted-foreground">Find affordable homes and spaces for rent across Saudi Arabia.</p>
+        <h1 className="text-[24px] font-extrabold text-foreground">{t("properties.title")}</h1>
+        <p className="text-[15px] text-muted-foreground">{t("properties.subtitle")}</p>
       </div>
 
       <PropertyFilters initialValues={searchParams} />

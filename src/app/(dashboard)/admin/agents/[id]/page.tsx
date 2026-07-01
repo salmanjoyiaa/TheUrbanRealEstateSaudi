@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ModerationActionButton } from "@/components/admin/moderation-action-button";
 import { createClient } from "@/lib/supabase/server";
+import { getDashboardTranslator } from "@/i18n/server";
 
 type PageProps = {
   params: { id: string };
@@ -28,6 +29,7 @@ function normalizeStoragePath(path: string) {
 }
 
 export default async function AdminAgentDetailPage({ params }: PageProps) {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
   const { data } = (await supabase
     .from("agents")
@@ -55,8 +57,8 @@ export default async function AdminAgentDetailPage({ params }: PageProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Agent Detail</h1>
-        <p className="text-sm text-muted-foreground">Review submitted information and documents.</p>
+        <h1 className="text-2xl font-bold text-navy">{t("admin.agents.detailTitle")}</h1>
+        <p className="text-sm text-muted-foreground">{t("admin.agents.detailSubtitle")}</p>
       </div>
 
       <Card>

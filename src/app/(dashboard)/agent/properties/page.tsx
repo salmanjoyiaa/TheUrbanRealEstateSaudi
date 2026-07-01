@@ -8,8 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/server";
 import { formatSAR } from "@/lib/format";
 import type { Property } from "@/types/database";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export default async function AgentPropertiesPage() {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -35,8 +37,8 @@ export default async function AgentPropertiesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-navy">My Properties</h1>
-          <p className="text-sm text-muted-foreground">Manage your property listings.</p>
+          <h1 className="text-2xl font-bold text-navy">{t("agent.properties.title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("agent.properties.subtitle")}</p>
         </div>
         <Link href="/agent/properties/new">
           <Button>Create Property</Button>

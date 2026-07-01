@@ -7,6 +7,7 @@ import { PropertyActions } from "@/components/admin/property-actions";
 import { FeaturedToggle } from "@/components/admin/featured-toggle";
 import { AdminPropertyFilters } from "@/components/admin/admin-property-filters";
 import { sanitizePropertyRefQuery } from "@/lib/server/resolve-property-ids-by-ref";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -40,6 +41,7 @@ export default async function AdminPropertiesPage({
 }: {
   searchParams: { status?: string; city?: string; district?: string; property_ref?: string };
 }) {
+  const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
   const propertyRefQ = sanitizePropertyRefQuery(searchParams?.property_ref);
 
@@ -69,9 +71,9 @@ export default async function AdminPropertiesPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">All Properties</h1>
+        <h1 className="text-2xl font-bold text-navy">{t("admin.properties.title")}</h1>
         <p className="text-sm text-muted-foreground">
-          Global listings overview for administrators.
+          {t("admin.properties.subtitle")}
           {pendingCount > 0 && (
             <span className="ml-2 inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-semibold text-yellow-800">
               {pendingCount} pending approval

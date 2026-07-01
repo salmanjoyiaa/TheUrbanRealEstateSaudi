@@ -1,12 +1,14 @@
 import { redirect, notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { BlockDatesClient } from "@/components/agent/block-dates-client";
+import { getDashboardTranslator } from "@/i18n/server";
 
 type PageProps = {
   params: { id: string };
 };
 
 export default async function AgentPropertyBlockDatesPage({ params }: PageProps) {
+  const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -32,10 +34,8 @@ export default async function AgentPropertyBlockDatesPage({ params }: PageProps)
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Block dates</h1>
-        <p className="text-sm text-muted-foreground">
-          Manage when this property is unavailable for visit bookings.
-        </p>
+        <h1 className="text-2xl font-bold text-navy">{t("agent.properties.blockDatesTitle")}</h1>
+        <p className="text-sm text-muted-foreground">{t("agent.properties.blockDatesSubtitle")}</p>
       </div>
       <BlockDatesClient
         propertyId={property.id}

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { createLegalMetadata } from "@/lib/legal-meta";
 import { LegalPageLayout } from "@/components/legal/legal-page-layout";
 
+import { getPublicTranslator } from "@/i18n/server";
+
 export const metadata = createLegalMetadata({
   title: "Cookie Policy",
   description:
@@ -9,9 +11,11 @@ export const metadata = createLegalMetadata({
   path: "/cookie-policy",
 });
 
-export default function CookiePolicyPage() {
+export default async function CookiePolicyPage() {
+  const { t } = await getPublicTranslator();
+
   return (
-    <LegalPageLayout title="Cookie Policy" lastUpdated="June 2026">
+    <LegalPageLayout title={t("cookiePolicy.title")} lastUpdated="June 2026">
       <p>
         This Cookie Policy explains how The Urban Real Estate (UrbanSaudi) uses cookies and similar technologies on
         theurbanrealestate.com.

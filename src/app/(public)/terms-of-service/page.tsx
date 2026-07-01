@@ -3,6 +3,8 @@ import { createLegalMetadata } from "@/lib/legal-meta";
 import { LegalPageLayout } from "@/components/legal/legal-page-layout";
 import { siteConfig } from "@/config/site";
 
+import { getPublicTranslator } from "@/i18n/server";
+
 export const metadata = createLegalMetadata({
   title: "Terms of Service",
   description:
@@ -10,9 +12,11 @@ export const metadata = createLegalMetadata({
   path: "/terms-of-service",
 });
 
-export default function TermsOfServicePage() {
+export default async function TermsOfServicePage() {
+  const { t } = await getPublicTranslator();
+
   return (
-    <LegalPageLayout title="Terms of Service" lastUpdated="June 2026">
+    <LegalPageLayout title={t("termsOfService.title")} lastUpdated="June 2026">
       <p>
         By accessing or using theurbanrealestate.com (UrbanSaudi), you agree to these Terms of Service. If you do not
         agree, please do not use the site.

@@ -19,6 +19,7 @@ import {
 import { generateSlotsInTimeframe, formatSlotLabel } from "@/lib/slots";
 import { createClient } from "@/lib/supabase/client";
 import { VISIT_BOOKING_LEAD_HOURS, VISIT_BOOKING_WINDOW_DAYS } from "@/lib/constants";
+import { useLocale } from "@/providers/locale-provider";
 
 type BlockedSlot = { id: string; date: string; time: string };
 type Property = { id: string; title: string; status: string; property_ref: string | null };
@@ -51,6 +52,7 @@ const defaultSchedule = (): VisitHourRow[] =>
   }));
 
 export default function AdminSlotsPage() {
+  const { t } = useLocale();
   const [properties, setProperties] = useState<Property[]>([]);
   const [selectedPropertyIds, setSelectedPropertyIds] = useState<Set<string>>(new Set());
   const [activePropertyIndex, setActivePropertyIndex] = useState(0);
@@ -439,10 +441,8 @@ export default function AdminSlotsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Visit Hours</h1>
-        <p className="text-sm text-muted-foreground">
-          Select a property and configure open days, start/end hours, and date-level blocked slots.
-        </p>
+        <h1 className="text-2xl font-bold">{t("admin.slots.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("admin.slots.subtitle")}</p>
       </div>
 
       <Card>

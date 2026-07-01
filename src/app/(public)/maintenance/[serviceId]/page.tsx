@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { MapPin, Building2, User, Star, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { ServiceRequestForm } from "@/components/maintenance/service-request-form";
+import { getPublicTranslator } from "@/i18n/server";
 
 export const metadata: Metadata = {
     title: "Service Details - UrbanSaudi",
@@ -14,6 +15,7 @@ export default async function ServiceDetailPage({
 }: {
     params: { serviceId: string };
 }) {
+    const { t } = await getPublicTranslator();
     const supabase = await createClient();
 
     const { data: serviceData, error } = await supabase
@@ -36,7 +38,7 @@ export default async function ServiceDetailPage({
         <div className="container mx-auto px-4 py-8 lg:py-12 max-w-6xl">
             <Link href="/maintenance" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground mb-6 transition-colors">
                 <ChevronLeft className="w-4 h-4 mr-1" />
-                Back to Marketplace
+                {t("maintenanceDetail.backToMarketplace")}
             </Link>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">

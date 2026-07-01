@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AdminShell } from "@/components/layout/admin-shell";
+import { DashboardLocaleShell } from "@/components/layout/locale-shells";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -24,8 +25,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   }
 
   return (
-    <AdminShell userName={profile?.full_name} avatarUrl={profile?.avatar_url}>
-      {children}
-    </AdminShell>
+    <DashboardLocaleShell>
+      <AdminShell userName={profile?.full_name} avatarUrl={profile?.avatar_url}>
+        {children}
+      </AdminShell>
+    </DashboardLocaleShell>
   );
 }

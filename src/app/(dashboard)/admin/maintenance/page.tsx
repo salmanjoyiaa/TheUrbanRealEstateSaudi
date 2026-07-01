@@ -4,6 +4,7 @@ import { MaintenanceRequestMediaCell } from "@/components/maintenance/maintenanc
 import { Wrench, Calendar } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { MaintenanceRequest } from "@/types/database";
+import { getDashboardTranslator } from "@/i18n/server";
 
 export const metadata: Metadata = {
     title: "Admin - Maintenance Requests",
@@ -28,6 +29,7 @@ type AdminMaintenanceRequestRow = MaintenanceRequest & {
 };
 
 export default async function AdminMaintenancePage() {
+    const { t } = await getDashboardTranslator();
     const supabase = await createClient(); // Use regular client for fetching if admin RLS allows
 
     const { data: requestsData, error } = await supabase
@@ -58,8 +60,8 @@ export default async function AdminMaintenancePage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-bold tracking-tight">Maintenance Requests</h1>
-                <p className="text-muted-foreground">Manage service requests before they are routed to agents.</p>
+                <h1 className="text-2xl font-bold tracking-tight">{t("admin.maintenance.title")}</h1>
+                <p className="text-muted-foreground">{t("admin.maintenance.subtitle")}</p>
             </div>
 
             <div className="rounded-md border bg-card">
