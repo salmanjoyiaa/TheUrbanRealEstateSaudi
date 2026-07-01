@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,6 +17,7 @@ import {
 import type { SiteLanguage } from "@/lib/platform-language";
 
 export function LanguageSettingsForm() {
+  const router = useRouter();
   const [publicLang, setPublicLang] = useState<SiteLanguage>("en");
   const [dashboardLang, setDashboardLang] = useState<SiteLanguage>("en");
   const [loading, setLoading] = useState(true);
@@ -50,7 +52,8 @@ export function LanguageSettingsForm() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Failed to save settings");
-      toast.success("Language settings saved. Refresh pages to see changes.");
+      toast.success("Language settings saved.");
+      router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to save settings");
     } finally {

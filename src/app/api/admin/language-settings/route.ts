@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getAdminRouteContext } from "@/lib/admin";
 import {
@@ -57,6 +58,10 @@ export async function PUT(request: Request) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
+
+  revalidatePath("/", "layout");
+  revalidatePath("/properties");
+  revalidatePath("/products");
 
   return NextResponse.json({
     success: true,

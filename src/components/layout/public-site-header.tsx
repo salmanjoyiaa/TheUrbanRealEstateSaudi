@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { useLocale } from "@/providers/locale-provider";
 import { publicNavKeys } from "@/config/nav";
 
@@ -33,6 +34,7 @@ export function PublicSiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <LanguageSwitcher />
           <Link
             href="/login"
             className="hidden min-h-11 items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-[14px] font-bold text-primary-foreground shadow-[0_4px_6px_-1px_hsl(var(--primary)/0.2)] transition-all hover:bg-primary/90 md:inline-flex"

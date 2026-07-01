@@ -1,8 +1,10 @@
+import { cookies } from "next/headers";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export type SiteLanguage = "en" | "ar";
 
 export const DEFAULT_SITE_LANGUAGE: SiteLanguage = "en";
+export const PUBLIC_LOCALE_COOKIE = "urbansaudi_public_locale";
 
 export function sanitizeSiteLanguage(value: unknown, fallback: SiteLanguage = DEFAULT_SITE_LANGUAGE): SiteLanguage {
   return value === "ar" ? "ar" : value === "en" ? "en" : fallback;
@@ -22,6 +24,15 @@ async function getPlatformSetting(key: string): Promise<string | null> {
 export async function getPublicSiteLanguage(): Promise<SiteLanguage> {
   const value = await getPlatformSetting("public_site_language");
   return sanitizeSiteLanguage(value);
+}
+
+export async function resolvePublicLocale(): Promise<SiteLanguage> {
+  const cookieStore = await cookies();
+  const cookieLang = cookieStore.get(PUBLIC_LOCALE_COOKIE)?.value;
+  if (cookieLang) {
+    return sanitizeSiteLanguage(cookieLang);
+  }
+  return getPublicSiteLanguage();
 }
 
 export async function getDashboardLanguage(): Promise<SiteLanguage> {

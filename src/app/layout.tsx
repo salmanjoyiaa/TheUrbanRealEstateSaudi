@@ -111,8 +111,8 @@ export default function RootLayout({
                 <GoogleAnalytics />
               </Suspense>
               <AdSenseScript />
-              {children}
               <PublicLocaleShell>
+                {children}
                 <CookieConsent />
               </PublicLocaleShell>
               <ToastProvider />

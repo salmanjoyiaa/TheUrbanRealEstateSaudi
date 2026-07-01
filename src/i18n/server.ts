@@ -1,12 +1,12 @@
-import { getPublicSiteLanguage, getDashboardLanguage } from "@/lib/platform-language";
+import { resolvePublicLocale, getDashboardLanguage } from "@/lib/platform-language";
 import { getMessages } from "@/i18n/get-messages";
 import { createTranslator, type Translator } from "@/i18n/create-translator";
 
 export async function getPublicTranslator(): Promise<{
-  locale: Awaited<ReturnType<typeof getPublicSiteLanguage>>;
+  locale: Awaited<ReturnType<typeof resolvePublicLocale>>;
   t: Translator;
 }> {
-  const locale = await getPublicSiteLanguage();
+  const locale = await resolvePublicLocale();
   const messages = await getMessages(locale, "public");
   return { locale, t: createTranslator(messages) };
 }

@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { publicNavKeys } from "@/config/nav";
 import { useLocale } from "@/providers/locale-provider";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
 
 export function HomepageNav() {
   const { t } = useLocale();
@@ -59,6 +60,7 @@ export function HomepageNav() {
           </nav>
 
           <div className="flex items-center gap-2 shrink-0">
+            <LanguageSwitcher variant="homepage" className="hidden sm:inline-flex" />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -121,7 +123,13 @@ export function HomepageNav() {
                 {t(link.titleKey)}
               </Link>
             ))}
-            <div className="pt-4 border-t border-white/10 mt-3 flex flex-col gap-2">
+            <div className="pt-4 border-t border-white/10 mt-3 flex flex-col gap-3">
+              <div className="px-1">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-white/45 mb-2">
+                  {t("common.language")}
+                </p>
+                <LanguageSwitcher variant="homepage" />
+              </div>
               <p className="text-[11px] font-semibold uppercase tracking-wider text-white/45 px-1">
                 {t("nav.partnerLogins")}
               </p>

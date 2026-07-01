@@ -6,7 +6,7 @@ import { PropertySection } from "@/components/property/property-section";
 import type { Property } from "@/types/database";
 import { getPublicTranslator } from "@/i18n/server";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 type SearchParams = {
   city?: string;

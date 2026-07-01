@@ -34,7 +34,10 @@
     "previous": "Previous",
     "close": "Close",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "language": "Language",
+    "english": "EN",
+    "arabic": "عربي"
   },
   "home": {
     "hero": {

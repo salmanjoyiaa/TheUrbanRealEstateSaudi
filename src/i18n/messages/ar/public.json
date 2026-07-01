@@ -34,7 +34,10 @@
     "previous": "السابق",
     "close": "إغلاق",
     "yes": "نعم",
-    "no": "لا"
+    "no": "لا",
+    "language": "اللغة",
+    "english": "EN",
+    "arabic": "عربي"
   },
   "home": {
     "hero": {

@@ -1,12 +1,14 @@
-import { getPublicSiteLanguage, getDashboardLanguage, type SiteLanguage } from "@/lib/platform-language";
+import { resolvePublicLocale, getDashboardLanguage, type SiteLanguage } from "@/lib/platform-language";
 import { getMessages } from "@/i18n/get-messages";
 import { LocaleProvider } from "@/providers/locale-provider";
+import { HtmlLocaleSync } from "@/components/layout/html-locale-sync";
 
 export async function PublicLocaleShell({ children }: { children: React.ReactNode }) {
-  const locale = await getPublicSiteLanguage();
+  const locale = await resolvePublicLocale();
   const messages = await getMessages(locale, "public");
   return (
     <LocaleProvider locale={locale} messages={messages}>
+      <HtmlLocaleSync />
       {children}
     </LocaleProvider>
   );

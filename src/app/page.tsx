@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import { PublicLocaleShell } from "@/components/layout/locale-shells";
 import { HomePageContent } from "@/components/home/home-page-content";
 
 type Property = {
@@ -112,12 +111,10 @@ export default async function HomePage() {
   }
 
   return (
-    <PublicLocaleShell>
-      <HomePageContent
-        featuredProperties={featuredProperties}
-        featuredProducts={featuredProducts}
-        heroStats={heroStats}
-      />
-    </PublicLocaleShell>
+    <HomePageContent
+      featuredProperties={featuredProperties}
+      featuredProducts={featuredProducts}
+      heroStats={heroStats}
+    />
   );
 }

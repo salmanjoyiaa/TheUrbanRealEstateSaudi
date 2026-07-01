@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Phone } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { useLocale } from "@/providers/locale-provider";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
 
 const legalLinks = [
   { href: "/about", labelKey: "footer.about" },
@@ -150,8 +151,10 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
             <p className="text-center text-[12px] font-medium uppercase tracking-widest text-white/50 sm:text-left">
               {t("footer.copyright", { year })}
             </p>
-            <div className="flex items-center gap-3">
-              <a
+            <div className="flex flex-col items-center gap-3 sm:flex-row">
+              <LanguageSwitcher variant="homepage" />
+              <div className="flex items-center gap-3">
+                <a
                 href={`tel:${siteConfig.links.phone}`}
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white transition-transform hover:scale-110"
                 aria-label={t("footer.callUs")}
@@ -166,6 +169,7 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
               >
                 {phoneDisplay}
               </a>
+              </div>
             </div>
           </div>
         </div>
@@ -228,6 +232,11 @@ export function SiteFooter({ variant = "default" }: SiteFooterProps) {
         <p className="text-[12px] font-medium uppercase tracking-widest text-muted-foreground">
           {t("footer.copyright", { year })}
         </p>
+
+        <div className="flex flex-col items-center gap-2">
+          <span className="text-xs font-medium text-muted-foreground">{t("common.language")}</span>
+          <LanguageSwitcher variant="footer" />
+        </div>
       </div>
     </footer>
   );

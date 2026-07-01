@@ -9,7 +9,7 @@ import { ProductFilters } from "@/components/product/product-filters";
 import { Button } from "@/components/ui/button";
 import { getPublicTranslator } from "@/i18n/server";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 type SearchParams = {
   category?: string;
