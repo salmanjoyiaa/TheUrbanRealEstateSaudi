@@ -199,7 +199,11 @@
       "generating": "Generating…",
       "generated": "Receipt slip downloaded",
       "generateFailed": "Failed to generate receipt slip",
-      "nameRequired": "Payee name is required"
+      "nameRequired": "Payee name is required",
+      "sectionDetails": "Transaction details",
+      "sectionPayment": "Payment method",
+      "sectionPurpose": "Purpose",
+      "sectionSignatures": "Signatures"
     },
     "properties": {
       "title": "All Properties",

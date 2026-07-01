@@ -139,6 +139,15 @@ export function buildReceiptSlipAutofill(
   const propertyRef = visit.properties?.property_ref || "N/A";
   const propertyTitle = visit.properties?.title || "Property";
   const amount = visit.commission_received_amount ?? null;
+  const titleAlreadyHasRef =
+    propertyRef !== "N/A" &&
+    (propertyTitle.includes(`ID ${propertyRef}`) ||
+      propertyTitle.includes(`Property ID ${propertyRef}`) ||
+      propertyTitle.includes(`#${propertyRef}`));
+
+  const purpose = titleAlreadyHasRef
+    ? `Property visit — ${propertyTitle}. Customer: ${visit.visitor_name}, ${visit.visitor_phone || "N/A"}`
+    : `Property visit — ID ${propertyRef}: ${propertyTitle}. Customer: ${visit.visitor_name}, ${visit.visitor_phone || "N/A"}`;
 
   return {
     voucherType: "receipt",
@@ -150,7 +159,7 @@ export function buildReceiptSlipAutofill(
     bankDate: "",
     paymentMethod: "cash",
     checkNumber: "",
-    purpose: `Property visit — ID ${propertyRef}: ${propertyTitle}. Customer: ${visit.visitor_name}, ${visit.visitor_phone || "N/A"}`,
+    purpose,
     purposeLine2: "",
     accountant: "",
     receiver: receiverName,

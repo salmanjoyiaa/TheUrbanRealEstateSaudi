@@ -199,7 +199,11 @@
       "generating": "جاري الإنشاء…",
       "generated": "تم تنزيل السند",
       "generateFailed": "فشل إنشاء السند",
-      "nameRequired": "اسم المستلم/الدافع مطلوب"
+      "nameRequired": "اسم المستلم/الدافع مطلوب",
+      "sectionDetails": "تفاصيل المعاملة",
+      "sectionPayment": "طريقة الدفع",
+      "sectionPurpose": "الغرض",
+      "sectionSignatures": "التوقيعات"
     },
     "properties": {
       "title": "جميع العقارات",
