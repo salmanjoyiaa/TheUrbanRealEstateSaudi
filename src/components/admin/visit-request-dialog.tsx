@@ -17,10 +17,12 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Building2, Calendar, Clock, Phone, User, Trash2, Send, CheckCircle2 } from "lucide-react";
+import { Building2, Calendar, Clock, Phone, User, Trash2, Send, CheckCircle2, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { formatDate } from "@/lib/format";
 import { getVisitStatusBadgeClass } from "@/lib/visit-status";
+import { ReceiptSlipDialog } from "@/components/visit/receipt-slip-dialog";
+import { canGenerateReceiptSlip } from "@/lib/receipt-slip";
 
 type CommentRow = {
     id: string;
@@ -39,6 +41,9 @@ type VisitRow = {
     visit_time: string;
     status: string;
     visiting_status?: string | null;
+    visiting_agent_id?: string | null;
+    notification_sent_at?: string | null;
+    commission_received_amount?: number | null;
     customer_remarks?: string | null;
     visiting_agent: {
         id: string;
@@ -46,6 +51,7 @@ type VisitRow = {
     } | null;
     properties: {
         title: string;
+        property_ref?: string | null;
         agents: {
             profiles: {
                 full_name: string;
@@ -366,6 +372,22 @@ export function VisitRequestDialog({ visit, visitingAgents, busyAgentIds = [], t
                                 <CheckCircle2 className="mr-2 h-4 w-4" />
                                 {isLgLoading ? "Confirming..." : "Confirm & Notify All Parties"}
                             </Button>
+                        </div>
+                    )}
+
+                    {canGenerateReceiptSlip(visit) && (
+                        <div className="mt-2 pt-3 border-t border-border/60">
+                            <ReceiptSlipDialog
+                                visit={visit}
+                                apiPath={`/api/admin/visits/${visit.id}/receipt-slip`}
+                                receiverName={visit.visiting_agent?.full_name || ""}
+                                triggerNode={
+                                    <Button variant="outline" className="min-h-[44px] w-full rounded-xl gap-2">
+                                        <FileText className="h-4 w-4" />
+                                        Generate receipt slip
+                                    </Button>
+                                }
+                            />
                         </div>
                     )}
                 </div>

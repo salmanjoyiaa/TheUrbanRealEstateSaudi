@@ -7,7 +7,8 @@ type AdminClient = ReturnType<typeof createAdminClient>;
 export const ADMIN_VISITS_SELECT = `
   id, visitor_name, visitor_email, visitor_phone, visitor_message, request_source, parent_visit_id, reschedule_reason,
   cancellation_reason, cancellation_requested_at, cancellation_reviewed_at,
-  visit_date, visit_time, status, visiting_status, customer_remarks, admin_notes, visiting_agent_id,
+  visit_date, visit_time, status, visiting_status, customer_remarks, admin_notes, visiting_agent_id, notification_sent_at,
+  commission_received_amount,
   visiting_agent:visiting_agent_id(id, full_name, phone),
   properties:property_id (
     id, title, property_ref, location_url, visiting_agent_image, visiting_agent_instructions,
@@ -34,6 +35,8 @@ export type AdminVisitRow = {
   status: string;
   visiting_status?: string | null;
   visiting_agent_id?: string | null;
+  notification_sent_at?: string | null;
+  commission_received_amount?: number | null;
   customer_remarks?: string | null;
   admin_notes?: string | null;
   properties: {

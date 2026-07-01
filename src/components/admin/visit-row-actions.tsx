@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { MoreHorizontal, Trash2, Eye, Ban, Pencil, CheckCircle2 } from "lucide-react";
+import { MoreHorizontal, Trash2, Eye, Ban, Pencil, CheckCircle2, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -15,6 +15,8 @@ import {
 import { toast } from "sonner";
 import { VisitRequestDialog } from "@/components/admin/visit-request-dialog";
 import { EditVisitDialog } from "@/components/admin/edit-visit-dialog";
+import { ReceiptSlipDialog } from "@/components/visit/receipt-slip-dialog";
+import { canGenerateReceiptSlip } from "@/lib/receipt-slip";
 
 type VisitRow = {
     id: string;
@@ -25,10 +27,14 @@ type VisitRow = {
     visit_time: string;
     status: string;
     visiting_status?: string | null;
+    visiting_agent_id?: string | null;
+    notification_sent_at?: string | null;
+    commission_received_amount?: number | null;
     customer_remarks?: string | null;
     admin_notes?: string | null;
     properties: {
         title: string;
+        property_ref?: string | null;
         agents: {
             profiles: {
                 full_name: string;
@@ -124,6 +130,19 @@ export function VisitRowActions({ visit, visitingAgents, busyAgentIds }: VisitRo
                     <DropdownMenuItem onClick={() => handleAction("confirmed")} className="cursor-pointer text-green-600 focus:text-green-600">
                         <CheckCircle2 className="mr-2 h-4 w-4" /> Confirm & Notify
                     </DropdownMenuItem>
+                )}
+
+                {canGenerateReceiptSlip(visit) && (
+                    <ReceiptSlipDialog
+                        visit={visit}
+                        apiPath={`/api/admin/visits/${visit.id}/receipt-slip`}
+                        receiverName={visit.visiting_agent?.full_name || ""}
+                        triggerNode={
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="cursor-pointer">
+                                <FileText className="mr-2 h-4 w-4" /> Receipt slip
+                            </DropdownMenuItem>
+                        }
+                    />
                 )}
 
                 {visit.status !== "completed" && visit.status !== "cancelled" && (

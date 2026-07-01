@@ -38,6 +38,8 @@ import {
 import { getVisitStatusBadgeClass, getVisitStatusLabel } from "@/lib/visit-status";
 import type { VisitMessageTemplate } from "@/lib/visit-message-template";
 import { cn } from "@/lib/utils";
+import { ReceiptSlipDialog } from "@/components/visit/receipt-slip-dialog";
+import { canGenerateReceiptSlip } from "@/lib/receipt-slip";
 
 export type VisitDetailModalProps = {
   visit: AssignmentRow | null;
@@ -343,6 +345,27 @@ export function VisitDetailModal({
                 </>
               )}
             </div>
+
+            {canGenerateReceiptSlip(visit) && (
+              <div
+                className={cn(
+                  "shrink-0 border-t bg-muted/20 px-4 py-3",
+                  "pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6"
+                )}
+              >
+                <ReceiptSlipDialog
+                  visit={visit}
+                  apiPath={`/api/agent/visits/${visit.id}/receipt-slip`}
+                  receiverName={agentName}
+                  triggerNode={
+                    <Button variant="outline" className="min-h-10 w-full gap-2 sm:min-h-11">
+                      <FileText className="h-4 w-4" />
+                      Receipt slip
+                    </Button>
+                  }
+                />
+              </div>
+            )}
 
             {showActionFooter && (
               <div

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, MessageCircle } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, FileText, MessageCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/dashboard/data-table";
@@ -17,6 +17,8 @@ import {
 } from "@/lib/format";
 import { VISIT_STATUS_LABELS, getVisitStatusBadgeClass } from "@/lib/visit-status";
 import { cn } from "@/lib/utils";
+import { ReceiptSlipDialog } from "@/components/visit/receipt-slip-dialog";
+import { canGenerateReceiptSlip } from "@/lib/receipt-slip";
 
 const PAGE_SIZE = 10;
 
@@ -36,6 +38,9 @@ export type AdminVisitRow = {
   visit_time: string;
   status: string;
   visiting_status?: string | null;
+  visiting_agent_id?: string | null;
+  notification_sent_at?: string | null;
+  commission_received_amount?: number | null;
   customer_remarks?: string | null;
   admin_notes?: string | null;
   properties: {
@@ -282,6 +287,23 @@ function useVisitColumns(visitingAgents: VisitingAgentOption[]) {
 
           return (
             <div className="flex items-center gap-1.5">
+              {canGenerateReceiptSlip(row) && (
+                <ReceiptSlipDialog
+                  visit={row}
+                  apiPath={`/api/admin/visits/${row.id}/receipt-slip`}
+                  receiverName={row.visiting_agent?.full_name || ""}
+                  triggerNode={
+                    <button
+                      type="button"
+                      title="Generate receipt slip"
+                      aria-label="Generate receipt slip"
+                      className="inline-flex items-center justify-center h-7 w-7 rounded-md bg-amber-50 hover:bg-amber-100 transition-colors"
+                    >
+                      <FileText className="h-3.5 w-3.5 text-amber-700" />
+                    </button>
+                  }
+                />
+              )}
               {customerLink ? (
                 <a
                   href={customerLink}

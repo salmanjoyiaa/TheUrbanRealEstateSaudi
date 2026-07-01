@@ -1,10 +1,12 @@
 "use client";
 
-import { MapPin, MessageCircle, Phone, Image as ImageIcon, ChevronRight } from "lucide-react";
+import { MapPin, MessageCircle, Phone, Image as ImageIcon, ChevronRight, FileText } from "lucide-react";
 import type { AssignmentRow } from "@/types/visit-assignment";
 import type { VisitMessageTemplate } from "@/lib/visit-message-template";
 import { getPropertyCoverImage } from "@/types/visit-assignment";
 import { VisitTemplatePicker } from "@/components/visit/visit-template-picker";
+import { ReceiptSlipDialog } from "@/components/visit/receipt-slip-dialog";
+import { canGenerateReceiptSlip } from "@/lib/receipt-slip";
 import { cn } from "@/lib/utils";
 
 function whatsAppUrl(phone: string) {
@@ -73,6 +75,23 @@ export function VisitActionIcons({
         templates={templates}
         loading={templatesLoading}
       />
+      {canGenerateReceiptSlip(visit) && (
+        <ReceiptSlipDialog
+          visit={visit}
+          apiPath={`/api/agent/visits/${visit.id}/receipt-slip`}
+          receiverName={agentName}
+          triggerNode={
+            <button
+              type="button"
+              className={cn(iconClass, "text-amber-700")}
+              aria-label="Generate receipt slip"
+              title="Receipt slip"
+            >
+              <FileText className="h-4 w-4" />
+            </button>
+          }
+        />
+      )}
       <a
         href={telUrl(visit.visitor_phone)}
         className={iconClass}

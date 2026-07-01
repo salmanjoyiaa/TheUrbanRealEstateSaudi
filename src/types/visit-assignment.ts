@@ -9,6 +9,8 @@ export type AssignmentRow = {
   visit_time: string;
   status: string;
   visiting_status: string;
+  visiting_agent_id?: string | null;
+  notification_sent_at?: string | null;
   customer_remarks: string | null;
   commission_received_amount?: number | null;
   commission_received_at?: string | null;
