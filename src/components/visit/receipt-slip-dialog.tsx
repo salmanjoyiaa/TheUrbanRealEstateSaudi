@@ -175,6 +175,7 @@ export function ReceiptSlipDialog({
               <DialogDescription className="text-left text-sm">
                 {t("admin.receiptSlip.subtitle")}
               </DialogDescription>
+              <p className="text-left text-xs text-muted-foreground">{t("admin.receiptSlip.disclaimer")}</p>
             </div>
           </div>
           <Button
@@ -191,22 +192,6 @@ export function ReceiptSlipDialog({
 
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-6">
           <div className="space-y-6">
-            <section className="space-y-3">
-              <SectionTitle>{t("admin.receiptSlip.voucherType")}</SectionTitle>
-              <Select
-                value={form.voucherType}
-                onValueChange={(v) => updateField("voucherType", v as ReceiptSlipFormData["voucherType"])}
-              >
-                <SelectTrigger className="min-h-11 w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="receipt">{t("admin.receiptSlip.receipt")}</SelectItem>
-                  <SelectItem value="payment">{t("admin.receiptSlip.payment")}</SelectItem>
-                </SelectContent>
-              </Select>
-            </section>
-
             <section className="space-y-3">
               <SectionTitle>{t("admin.receiptSlip.sectionDetails")}</SectionTitle>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

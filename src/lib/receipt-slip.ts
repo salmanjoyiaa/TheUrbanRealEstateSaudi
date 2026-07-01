@@ -1,10 +1,7 @@
 import { z } from "zod";
 import { formatMonthDayYearWithComma } from "@/lib/format";
 
-export type VoucherType = "receipt" | "payment";
-
 export const receiptSlipFormSchema = z.object({
-  voucherType: z.enum(["receipt", "payment"]),
   date: z.string().min(1, "Date is required"),
   payeeName: z.string().min(1, "Name is required").max(200),
   amount: z.coerce.number().nonnegative().optional().nullable(),
@@ -150,7 +147,6 @@ export function buildReceiptSlipAutofill(
     : `Property visit — ID ${propertyRef}: ${propertyTitle}. Customer: ${visit.visitor_name}, ${visit.visitor_phone || "N/A"}`;
 
   return {
-    voucherType: "receipt",
     date: formatMonthDayYearWithComma(visit.visit_date),
     payeeName: visit.visitor_name,
     amount,

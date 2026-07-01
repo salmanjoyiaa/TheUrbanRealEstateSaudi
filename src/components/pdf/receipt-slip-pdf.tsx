@@ -24,82 +24,45 @@ const styles = StyleSheet.create({
     fontFamily: EN,
     position: "relative",
   },
-  headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 20,
-  },
-  logoRow: {
-    flexDirection: "row",
+  headerBlock: {
     alignItems: "center",
-    gap: 10,
+    marginBottom: 12,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#d1d5db",
   },
-  logoBlocks: {
-    width: 30,
-    gap: 3,
-  },
-  logoBlockGrey: {
-    width: 30,
-    height: 15,
-    backgroundColor: "#9ca3af",
-  },
-  logoBlockNavy: {
-    width: 30,
-    height: 15,
-    backgroundColor: "#0f2f6a",
-  },
-  brandTitle: {
-    fontSize: 14,
+  titleEn: {
+    fontSize: 16,
     fontWeight: 700,
-    color: "#0f2f6a",
-  },
-  brandSub: {
-    fontSize: 8,
-    color: "#6b7280",
-    marginTop: 2,
-  },
-  voucherBox: {
-    borderWidth: 1,
-    borderColor: "#111827",
-    borderRadius: 3,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    width: 190,
-  },
-  voucherRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 5,
-  },
-  voucherLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-  },
-  checkbox: {
-    width: 11,
-    height: 11,
-    borderWidth: 1,
-    borderColor: "#111827",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 5,
-  },
-  checkboxMark: {
-    fontSize: 8,
-    fontWeight: 700,
-  },
-  voucherLabelEn: {
-    fontSize: 9,
     fontFamily: EN,
+    color: "#111827",
+    textAlign: "center",
   },
-  voucherLabelAr: {
-    fontSize: 9,
+  titleAr: {
+    fontSize: 14,
     fontFamily: AR,
-    textAlign: "right",
-    width: 52,
+    color: "#111827",
+    textAlign: "center",
+    marginTop: 4,
+  },
+  disclaimerBlock: {
+    marginBottom: 16,
+    paddingHorizontal: 8,
+  },
+  disclaimerEn: {
+    fontSize: 8.5,
+    fontFamily: EN,
+    color: "#6b7280",
+    textAlign: "center",
+    lineHeight: 1.4,
+    marginBottom: 4,
+  },
+  disclaimerAr: {
+    fontSize: 8.5,
+    fontFamily: AR,
+    color: "#6b7280",
+    textAlign: "center",
+    lineHeight: 1.5,
   },
   bodyBox: {
     borderWidth: 1.5,
@@ -174,7 +137,7 @@ const styles = StyleSheet.create({
   fieldLabelEnWide: {
     fontSize: 9.5,
     fontFamily: EN,
-    width: 155,
+    width: 120,
     flexShrink: 0,
   },
   fieldValueWrap: {
@@ -291,28 +254,6 @@ const styles = StyleSheet.create({
   },
 });
 
-function CheckItem({
-  checked,
-  labelEn,
-  labelAr,
-}: {
-  checked: boolean;
-  labelEn: string;
-  labelAr: string;
-}) {
-  return (
-    <View style={styles.voucherRow}>
-      <View style={styles.voucherLeft}>
-        <View style={styles.checkbox}>
-          {checked ? <Text style={styles.checkboxMark}>X</Text> : null}
-        </View>
-        <Text style={styles.voucherLabelEn}>{labelEn}</Text>
-      </View>
-      <Text style={styles.voucherLabelAr}>{labelAr}</Text>
-    </View>
-  );
-}
-
 function BilingualField({
   labelEn,
   labelAr,
@@ -365,7 +306,6 @@ export type ReceiptSlipPdfProps = {
 
 export function ReceiptSlipPdf({ data }: ReceiptSlipPdfProps) {
   const { riyals, halalas } = splitAmount(data.amount ?? null);
-  const isReceipt = data.voucherType === "receipt";
 
   const paymentEn =
     data.paymentMethod === "check"
@@ -383,22 +323,18 @@ export function ReceiptSlipPdf({ data }: ReceiptSlipPdfProps) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <View style={styles.headerRow}>
-          <View style={styles.logoRow}>
-            <View style={styles.logoBlocks}>
-              <View style={styles.logoBlockGrey} />
-              <View style={styles.logoBlockNavy} />
-            </View>
-            <View>
-              <Text style={styles.brandTitle}>TheUrbanRealEstateSaudi</Text>
-              <Text style={styles.brandSub}>Real Estate Services</Text>
-            </View>
-          </View>
+        <View style={styles.headerBlock}>
+          <Text style={styles.titleEn}>Payment Receiving Receipt</Text>
+          <Text style={styles.titleAr}>سند قبض</Text>
+        </View>
 
-          <View style={styles.voucherBox}>
-            <CheckItem checked={isReceipt} labelEn="Receipt" labelAr="سند قبض" />
-            <CheckItem checked={!isReceipt} labelEn="Payment Voucher" labelAr="سند صرف" />
-          </View>
+        <View style={styles.disclaimerBlock}>
+          <Text style={styles.disclaimerEn}>
+            This document is a payment receiving slip only and does not constitute any agreement or contract.
+          </Text>
+          <Text style={styles.disclaimerAr}>
+            هذا المستند سند قبض فقط ولا يُعد اتفاقية أو عقداً.
+          </Text>
         </View>
 
         <View style={styles.bodyBox}>
@@ -426,8 +362,8 @@ export function ReceiptSlipPdf({ data }: ReceiptSlipPdfProps) {
           <BilingualField labelEn="Date:" labelAr="التاريخ" value={data.date} />
 
           <BilingualField
-            labelEn="Received From / Paid To M/s:"
-            labelAr="استلمنا من / اصرفوا إلى السادة"
+            labelEn="Received From M/s:"
+            labelAr="استلمنا من السادة"
             value={data.payeeName}
             wide
           />
