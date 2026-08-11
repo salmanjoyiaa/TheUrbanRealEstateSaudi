@@ -11,7 +11,6 @@ import {
   MapPin,
   Star,
   Clock,
-  ClipboardList,
   Settings,
   FileText,
   FileDown,
@@ -61,16 +60,13 @@ export const adminNavGroupsDef: NavGroupDef[] = [
       { titleKey: "nav.admin.agents", href: "/admin/agents", icon: Users },
       { titleKey: "nav.admin.sellers", href: "/admin/agents?agent_type=seller", icon: ShoppingBag },
       { titleKey: "nav.admin.visitingTeam", href: "/admin/visiting-team", icon: MapPin },
-      { titleKey: "nav.admin.maintenanceAgents", href: "/admin/agents?agent_type=maintenance", icon: Wrench },
     ],
   },
   {
     labelKey: "nav.groups.listings",
     items: [
       { titleKey: "nav.admin.properties", href: "/admin/properties", icon: Building2 },
-      { titleKey: "nav.admin.products", href: "/admin/products", icon: Package },
       { titleKey: "nav.admin.locations", href: "/admin/locations", icon: MapPin },
-      { titleKey: "nav.admin.maintenanceServices", href: "/admin/maintenance-services", icon: Settings },
     ],
   },
   {
@@ -79,8 +75,6 @@ export const adminNavGroupsDef: NavGroupDef[] = [
       { titleKey: "nav.admin.visits", href: "/admin/visits", icon: Calendar },
       { titleKey: "nav.admin.visitPdf", href: "/admin/visit-pdf", icon: FileDown },
       { titleKey: "nav.admin.manualInvoice", href: "/admin/manual-invoice", icon: FileText },
-      { titleKey: "nav.admin.leads", href: "/admin/leads", icon: ShoppingBag },
-      { titleKey: "nav.admin.maintenanceRequests", href: "/admin/maintenance", icon: ClipboardList },
     ],
   },
   {

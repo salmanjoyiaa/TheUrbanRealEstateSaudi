@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { publicNavKeys } from "@/config/nav";
 import { useLocale } from "@/providers/locale-provider";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 
@@ -44,20 +43,6 @@ export function HomepageNav() {
               {t("nav.tagline")}
             </span>
           </Link>
-
-          <nav className="hidden md:flex flex-1 min-w-0 justify-center px-2">
-            <div className="flex items-center gap-6 lg:gap-8 flex-wrap justify-center">
-              {publicNavKeys.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="relative text-[15px] font-semibold tracking-wide text-white/90 hover:text-white transition-colors after:absolute after:left-0 after:bottom-[-2px] after:h-[2px] after:w-0 after:bg-current after:transition-[width] after:duration-200 hover:after:w-full whitespace-nowrap"
-                >
-                  {t(link.titleKey)}
-                </Link>
-              ))}
-            </div>
-          </nav>
 
           <div className="flex items-center gap-2 shrink-0">
             <LanguageSwitcher variant="homepage" className="hidden sm:inline-flex" />
@@ -112,24 +97,14 @@ export function HomepageNav() {
 
       {open && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-[#1a1a2e]/95 backdrop-blur-xl border-b border-white/10 shadow-2xl z-50 pb-5 animate-slide-down origin-top">
-          <nav className="flex flex-col px-4 pt-3 pb-1 gap-0.5">
-            {publicNavKeys.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="min-h-[48px] flex items-center py-3 px-4 text-[15px] font-semibold rounded-xl text-white/90 hover:bg-white/10 hover:text-white transition-colors active:scale-[0.98] touch-manipulation"
-              >
-                {t(link.titleKey)}
-              </Link>
-            ))}
-            <div className="pt-4 border-t border-white/10 mt-3 flex flex-col gap-3">
-              <div className="px-1">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-white/45 mb-2">
-                  {t("common.language")}
-                </p>
-                <LanguageSwitcher variant="homepage" />
-              </div>
+          <nav className="flex flex-col px-4 pt-3 pb-1 gap-3">
+            <div className="px-1">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-white/45 mb-2">
+                {t("common.language")}
+              </p>
+              <LanguageSwitcher variant="homepage" />
+            </div>
+            <div className="border-t border-white/10 pt-3 flex flex-col gap-2">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-white/45 px-1">
                 {t("nav.partnerLogins")}
               </p>
