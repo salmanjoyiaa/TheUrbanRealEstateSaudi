@@ -13,9 +13,6 @@ import { HomepageNav } from "@/components/home/homepage-nav";
 import { HeroHeadline } from "@/components/home/hero-headline";
 import { PropertyIdSearch } from "@/components/home/property-id-search";
 import { PropertySlider } from "@/components/home/property-slider";
-import { ProductSlider } from "@/components/home/product-slider";
-import { MaintenanceSlider } from "@/components/home/maintenance-slider";
-import { GeneralMaintenanceRequestForm } from "@/components/maintenance/general-maintenance-request-form";
 import { AnimateSection, AnimateStagger, AnimateItem } from "@/components/home/animate-section";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -52,16 +49,6 @@ type Property = {
   is_video_featured?: boolean;
 };
 
-type Product = {
-  id: string;
-  title: string;
-  price: number;
-  category: string;
-  condition: string;
-  district: string | null;
-  images: string[] | null;
-};
-
 type HeroStats = {
   propertiesCount: number;
   propertyAgentsCount: number;
@@ -71,13 +58,11 @@ type HeroStats = {
 
 type HomePageContentProps = {
   featuredProperties: Property[];
-  featuredProducts: Product[];
   heroStats: HeroStats;
 };
 
 export function HomePageContent({
   featuredProperties,
-  featuredProducts,
   heroStats,
 }: HomePageContentProps) {
   const { t } = useLocale();
@@ -195,28 +180,6 @@ export function HomePageContent({
 
       <AnimateSection amount={0.12} duration={0.5}>
         <PropertySlider properties={featuredProperties} showAmenitiesAndBuildingFeatures />
-      </AnimateSection>
-
-      <AnimateSection amount={0.12} duration={0.5} delay={0.05}>
-        <ProductSlider products={featuredProducts} />
-      </AnimateSection>
-
-      <AnimateSection amount={0.12} duration={0.5} delay={0.05}>
-        <MaintenanceSlider />
-      </AnimateSection>
-
-      <AnimateSection amount={0.12} duration={0.5} delay={0.05}>
-        <section className="py-12 lg:py-16 bg-muted/40 border-y border-border/60">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8">
-              <h2 className="font-display text-2xl sm:text-3xl font-bold mb-2">{t("home.maintenance.title")}</h2>
-              <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
-                {t("home.maintenance.subtitle")}
-              </p>
-            </div>
-            <GeneralMaintenanceRequestForm />
-          </div>
-        </section>
       </AnimateSection>
 
       <AnimateSection amount={0.1} duration={0.45}>

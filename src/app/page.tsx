@@ -31,21 +31,10 @@ type Property = {
   is_video_featured?: boolean;
 };
 
-type Product = {
-  id: string;
-  title: string;
-  price: number;
-  category: string;
-  condition: string;
-  district: string | null;
-  images: string[] | null;
-};
-
 export const revalidate = 0;
 
 export default async function HomePage() {
   let featuredProperties: Property[] = [];
-  let featuredProducts: Product[] = [];
   let heroStats = {
     propertiesCount: 0,
     propertyAgentsCount: 0,
@@ -55,7 +44,6 @@ export default async function HomePage() {
 
   try {
     const supabase = await createClient();
-    const shuffle = <T,>(arr: T[]) => [...arr].sort(() => Math.random() - 0.5);
 
     const { data: featuredData, error: featuredError } = await supabase
       .from("properties")
@@ -89,23 +77,6 @@ export default async function HomePage() {
       visitTeamCount: visitTeamCount ?? 0,
       rentedCount: rentedCount ?? 0,
     };
-
-    const { data: prodData, error: prodError } = await supabase
-      .from("products")
-      .select("id, title, price, category, condition, district, images")
-      .eq("is_available", true)
-      .order("created_at", { ascending: false })
-      .limit(12);
-
-    if (prodError) {
-      console.error("[HomePage] products query error:", prodError.message);
-    }
-
-    const rawProds = (prodData as Product[]) || [];
-    featuredProducts = [
-      ...shuffle(rawProds.filter((p) => (p.images?.length ?? 0) > 0)),
-      ...shuffle(rawProds.filter((p) => (p.images?.length ?? 0) === 0)),
-    ];
   } catch (err) {
     console.error("[HomePage] unexpected error:", err);
   }
@@ -113,7 +84,6 @@ export default async function HomePage() {
   return (
     <HomePageContent
       featuredProperties={featuredProperties}
-      featuredProducts={featuredProducts}
       heroStats={heroStats}
     />
   );
