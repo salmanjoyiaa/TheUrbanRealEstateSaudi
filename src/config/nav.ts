@@ -105,8 +105,6 @@ export const adminNavGroupsDef: NavGroupDef[] = [
 export const publicNavKeys = [
   { titleKey: "nav.home", href: "/" },
   { titleKey: "nav.properties", href: "/properties" },
-  { titleKey: "nav.products", href: "/products" },
-  { titleKey: "nav.maintenance", href: "/maintenance" },
   { titleKey: "nav.about", href: "/about" },
   { titleKey: "nav.contact", href: "/contact" },
 ] as const;

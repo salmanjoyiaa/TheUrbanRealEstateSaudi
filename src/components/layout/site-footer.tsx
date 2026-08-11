@@ -18,8 +18,6 @@ const legalLinks = [
 
 const quickLinks = [
   { href: "/properties", labelKey: "common.browseProperties" },
-  { href: "/products", labelKey: "common.browseProducts" },
-  { href: "/maintenance", labelKey: "common.maintenanceServices" },
   { href: "/login", labelKey: "nav.agentLogin" },
 ];
 
