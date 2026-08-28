@@ -302,6 +302,25 @@ export interface VisitMessageTemplateRow {
   updated_at: string;
 }
 
+export interface ManualDocument {
+  id: string;
+  document_type: "invoice" | "receipt";
+  document_number: string;
+  customer_name: string;
+  customer_email: string | null;
+  customer_phone: string | null;
+  customer_address: string | null;
+  property_id: string | null;
+  property_ref: string | null;
+  property_name: string | null;
+  document_date: string | null;
+  total_amount: number | null;
+  form_data: Json;
+  pdf_path: string;
+  created_by: string | null;
+  created_at: string;
+}
+
 // Supabase Database type for client typing
 export interface Database {
   public: {
@@ -403,6 +422,11 @@ export interface Database {
         Row: VisitMessageTemplateRow;
         Insert: Omit<VisitMessageTemplateRow, "id" | "created_at" | "updated_at"> & { id?: string };
         Update: Partial<Omit<VisitMessageTemplateRow, "id" | "created_at" | "agent_profile_id">>;
+      };
+      manual_documents: {
+        Row: ManualDocument;
+        Insert: Omit<ManualDocument, "id" | "created_at"> & { id?: string; created_at?: string };
+        Update: Partial<Omit<ManualDocument, "id" | "created_at">>;
       };
     };
   };

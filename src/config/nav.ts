@@ -75,6 +75,8 @@ export const adminNavGroupsDef: NavGroupDef[] = [
       { titleKey: "nav.admin.visits", href: "/admin/visits", icon: Calendar },
       { titleKey: "nav.admin.visitPdf", href: "/admin/visit-pdf", icon: FileDown },
       { titleKey: "nav.admin.manualInvoice", href: "/admin/manual-invoice", icon: FileText },
+      { titleKey: "nav.admin.manualReceipt", href: "/admin/manual-receipt", icon: FileText },
+      { titleKey: "nav.admin.documents", href: "/admin/documents", icon: ScrollText },
     ],
   },
   {

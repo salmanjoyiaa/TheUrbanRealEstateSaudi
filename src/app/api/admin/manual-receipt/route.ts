@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAdminRouteContext } from "@/lib/admin";
-import { renderManualInvoicePdfResponse } from "@/lib/server/manual-invoice-pdf";
+import { renderManualReceiptPdfResponse } from "@/lib/server/manual-receipt-pdf";
 
 export async function POST(request: Request) {
   const admin = await getAdminRouteContext();
@@ -15,5 +15,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  return renderManualInvoicePdfResponse(body, admin.profile.id);
+  return renderManualReceiptPdfResponse(body, admin.profile.id);
 }
