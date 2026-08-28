@@ -12,7 +12,7 @@ const payloadSchema = z.object({
     is_active: z.boolean().optional(),
 });
 
-export async function PATCH(request: Request, context: { params: { id: string } }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
     const admin = await getAdminRouteContext();
     if (admin.error || !admin.profile) {
         return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -33,7 +33,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     const { error } = await admin.supabase
         .from("testimonials")
         .update(parsed.data as never)
-        .eq("id", context.params.id);
+        .eq("id", (await context.params).id);
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
@@ -43,7 +43,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
         actorId: admin.profile.id,
         action: "testimonial_updated",
         entityType: "testimonials",
-        entityId: context.params.id,
+        entityId: (await context.params).id,
         metadata: parsed.data,
     });
 
@@ -52,7 +52,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     return NextResponse.json({ success: true });
 }
 
-export async function DELETE(request: Request, context: { params: { id: string } }) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
     const admin = await getAdminRouteContext();
     if (admin.error || !admin.profile) {
         return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -62,7 +62,7 @@ export async function DELETE(request: Request, context: { params: { id: string }
     const { error } = await adminDb
         .from("testimonials")
         .delete()
-        .eq("id", context.params.id);
+        .eq("id", (await context.params).id);
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
@@ -72,7 +72,7 @@ export async function DELETE(request: Request, context: { params: { id: string }
         actorId: admin.profile.id,
         action: "testimonial_deleted",
         entityType: "testimonials",
-        entityId: context.params.id,
+        entityId: (await context.params).id,
         metadata: {},
     });
 

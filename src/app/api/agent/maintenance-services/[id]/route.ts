@@ -34,14 +34,14 @@ async function getApprovedMaintenanceAgent() {
   return { supabase, agentId: agent.id, error: null, status: 200 };
 }
 
-export async function GET(_request: Request, context: { params: { id: string } }) {
+export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
   const { supabase, agentId, error, status } = await getApprovedMaintenanceAgent();
   if (!agentId) return NextResponse.json({ error }, { status });
 
   const { data, error: queryError } = (await supabase
     .from("maintenance_services")
     .select("*")
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("agent_id", agentId)
     .single()) as { data: Record<string, unknown> | null; error: { message: string } | null };
 
@@ -49,7 +49,7 @@ export async function GET(_request: Request, context: { params: { id: string } }
   return NextResponse.json({ data });
 }
 
-export async function PATCH(request: Request, context: { params: { id: string } }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   const { supabase, agentId, error, status } = await getApprovedMaintenanceAgent();
   if (!agentId) return NextResponse.json({ error }, { status });
 
@@ -68,7 +68,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   const { error: updateError } = await supabase
     .from("maintenance_services")
     .update(parsed.data as never)
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("agent_id", agentId);
 
   if (updateError) {
@@ -78,14 +78,14 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   return NextResponse.json({ success: true });
 }
 
-export async function DELETE(_request: Request, context: { params: { id: string } }) {
+export async function DELETE(_request: Request, context: { params: Promise<{ id: string }> }) {
   const { supabase, agentId, error, status } = await getApprovedMaintenanceAgent();
   if (!agentId) return NextResponse.json({ error }, { status });
 
   const { error: deleteError } = await supabase
     .from("maintenance_services")
     .delete()
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("agent_id", agentId);
 
   if (deleteError) {

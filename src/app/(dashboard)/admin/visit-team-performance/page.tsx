@@ -52,11 +52,12 @@ const DEAL_STATUS_LABELS: Record<string, string> = {
   reschedule: "Reschedule Requested",
 };
 
-export default async function VisitTeamPerformancePage({
-  searchParams,
-}: {
-  searchParams: { visiting_agent_id?: string };
-}) {
+export default async function VisitTeamPerformancePage(
+  props: {
+    searchParams: Promise<{ visiting_agent_id?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
 

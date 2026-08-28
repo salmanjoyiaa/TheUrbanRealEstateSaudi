@@ -19,11 +19,12 @@ export const metadata: Metadata = {
 
 export const revalidate = 0;
 
-export default async function MaintenanceMarketplacePage({
-  searchParams,
-}: {
-  searchParams: { category?: string; city?: string };
-}) {
+export default async function MaintenanceMarketplacePage(
+    props: {
+      searchParams: Promise<{ category?: string; city?: string }>;
+    }
+) {
+    const searchParams = await props.searchParams;
     const { t } = await getPublicTranslator();
     const supabase = await createClient();
 

@@ -28,7 +28,7 @@ const payloadSchema = z.object({
   visiting_agent_id: z.string().uuid().optional().nullable(),
 });
 
-export async function PATCH(request: Request, context: { params: { id: string } }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -52,7 +52,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       const { data: existingVisit } = await admin.supabase
         .from("visit_requests")
         .select("visiting_agent_id")
-        .eq("id", context.params.id)
+        .eq("id", (await context.params).id)
         .single();
       const existingAgentId = (existingVisit as { visiting_agent_id: string | null } | null)?.visiting_agent_id;
       if (!existingAgentId) {
@@ -78,7 +78,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     const { data: current } = await admin.supabase
       .from("visit_requests")
       .select("visiting_agent_id, notification_sent_at, visit_date, visit_time")
-      .eq("id", context.params.id)
+      .eq("id", (await context.params).id)
       .single();
     alreadyNotified = !!(current as { notification_sent_at: string | null } | null)?.notification_sent_at;
 
@@ -98,14 +98,14 @@ export async function PATCH(request: Request, context: { params: { id: string } 
         .eq("visit_date", schedule.visit_date)
         .eq("visit_time", schedule.visit_time)
         .in("status", ["assigned", "confirmed"])
-        .neq("id", context.params.id);
+        .neq("id", (await context.params).id);
 
       if ((conflictingCount || 0) > 0) {
         await writeAuditLog({
           actorId: adminProfile.id,
           action: "visit_assignment_conflict_blocked",
           entityType: "visit_requests",
-          entityId: context.params.id,
+          entityId: (await context.params).id,
           metadata: {
             visiting_agent_id: parsed.data.visiting_agent_id,
             visit_date: schedule.visit_date,
@@ -132,7 +132,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   const { error } = await admin.supabase
     .from("visit_requests")
     .update(payload as never)
-    .eq("id", context.params.id);
+    .eq("id", (await context.params).id);
 
   if (error) {
     if (error.code === "23505") {
@@ -146,7 +146,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
 
   if (parsed.data.status === "assigned" && parsed.data.visiting_agent_id) {
     await admin.supabase.from("visit_assignment_history").insert({
-      visit_id: context.params.id,
+      visit_id: (await context.params).id,
       old_agent_id: oldVisitingAgentId,
       new_agent_id: parsed.data.visiting_agent_id,
       changed_by: admin.profile.id,
@@ -168,7 +168,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       )
     `
     )
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .single();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -178,7 +178,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
 
   // Skip notifications if already sent for this visit request (dedup)
   if (visitDetails?.properties && !alreadyNotified) {
-    const visitId = context.params.id;
+    const visitId = (await context.params).id;
     const propertyId = visitDetails.properties.property_ref || String(visitDetails.properties.id);
     const templateParams = {
       visitorName: visitDetails.visitor_name,
@@ -281,7 +281,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
         title: "Visit request updated",
         body: `Visit status changed to ${parsed.data.status}.`,
         type: "visit_status",
-        metadata: { visit_id: context.params.id, status: parsed.data.status },
+        metadata: { visit_id: (await context.params).id, status: parsed.data.status },
       } as never);
     }
   }
@@ -293,7 +293,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       await admin.supabase
         .from("visit_requests")
         .update({ notification_sent_at: new Date().toISOString() } as never)
-        .eq("id", context.params.id);
+        .eq("id", (await context.params).id);
     }
   }
 
@@ -301,7 +301,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     actorId: adminProfile.id,
     action: `visit_${parsed.data.status}`,
     entityType: "visit_requests",
-    entityId: context.params.id,
+    entityId: (await context.params).id,
     metadata: {
       status: parsed.data.status,
       admin_notes: parsed.data.admin_notes || null,
@@ -314,7 +314,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   return NextResponse.json({ success: true });
 }
 
-export async function PUT(request: Request, context: { params: { id: string } }) {
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -344,7 +344,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
   const { data: currentVisit } = await admin.supabase
     .from("visit_requests")
     .select("property_id, visit_date, status, visiting_agent_id")
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .maybeSingle();
 
   const existingVisit = currentVisit as {
@@ -368,14 +368,14 @@ export async function PUT(request: Request, context: { params: { id: string } })
       .eq("visit_date", parsed.data.visit_date)
       .eq("visit_time", parsed.data.visit_time)
       .in("status", ["assigned", "confirmed"])
-      .neq("id", context.params.id);
+      .neq("id", (await context.params).id);
 
     if ((conflictingCount || 0) > 0) {
       await writeAuditLog({
         actorId: admin.profile.id,
         action: "visit_assignment_conflict_blocked",
         entityType: "visit_requests",
-        entityId: context.params.id,
+        entityId: (await context.params).id,
         metadata: {
           visiting_agent_id: existingVisit.visiting_agent_id,
           visit_date: parsed.data.visit_date,
@@ -402,7 +402,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
       visit_time: parsed.data.visit_time,
       admin_notes: parsed.data.admin_notes || null,
     } as never)
-    .eq("id", context.params.id);
+    .eq("id", (await context.params).id);
 
   if (error) {
     if (error.code === "23505") {
@@ -427,7 +427,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
     actorId: admin.profile.id,
     action: "visit_edited",
     entityType: "visit_requests",
-    entityId: context.params.id,
+    entityId: (await context.params).id,
     metadata: { ...parsed.data },
   });
 
@@ -435,7 +435,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
   return NextResponse.json({ success: true });
 }
 
-export async function DELETE(request: Request, context: { params: { id: string } }) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -445,7 +445,7 @@ export async function DELETE(request: Request, context: { params: { id: string }
   const { error } = await adminDb
     .from("visit_requests")
     .delete()
-    .eq("id", context.params.id);
+    .eq("id", (await context.params).id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -455,7 +455,7 @@ export async function DELETE(request: Request, context: { params: { id: string }
     actorId: admin.profile.id,
     action: "visit_deleted",
     entityType: "visit_requests",
-    entityId: context.params.id,
+    entityId: (await context.params).id,
     metadata: {},
   });
 

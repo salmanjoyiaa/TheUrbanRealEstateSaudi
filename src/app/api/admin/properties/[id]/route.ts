@@ -29,21 +29,21 @@ async function checkAdmin() {
     return { supabase, isAdmin: true, userId: user.id, error: null, status: 200 };
 }
 
-export async function GET(_request: Request, context: { params: { id: string } }) {
+export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
     const { supabase, isAdmin, error, status } = await checkAdmin();
     if (!isAdmin) return NextResponse.json({ error }, { status });
 
     const { data, error: queryError } = (await supabase
         .from("properties")
         .select("*")
-        .eq("id", context.params.id)
+        .eq("id", (await context.params).id)
         .single()) as { data: Record<string, unknown> | null; error: { message: string } | null };
 
     if (queryError) return NextResponse.json({ error: queryError.message }, { status: 404 });
     return NextResponse.json({ data });
 }
 
-export async function PATCH(request: Request, context: { params: { id: string } }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
     const { supabase, isAdmin, userId, error, status } = await checkAdmin();
     if (!isAdmin) return NextResponse.json({ error }, { status });
 
@@ -74,7 +74,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     const { error: updateError } = await supabase
         .from("properties")
         .update(updatePayload as never)
-        .eq("id", context.params.id);
+        .eq("id", (await context.params).id);
 
     if (updateError) {
         return NextResponse.json({ error: updateError.message }, { status: 500 });
@@ -84,7 +84,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
         try {
             await syncPropertyPhotos(
                 supabase,
-                context.params.id,
+                (await context.params).id,
                 parsed.data.images,
                 (body as { photo_alt_texts?: Record<string, string> })?.photo_alt_texts
             );
@@ -96,14 +96,14 @@ export async function PATCH(request: Request, context: { params: { id: string } 
         }
     }
 
-    await afterPropertySaved(context.params.id);
+    await afterPropertySaved((await context.params).id);
 
     if (userId) {
         await writeAuditLog({
             actorId: userId,
             action: "updated",
             entityType: "properties",
-            entityId: context.params.id,
+            entityId: (await context.params).id,
             metadata: parsed.data,
         });
     }

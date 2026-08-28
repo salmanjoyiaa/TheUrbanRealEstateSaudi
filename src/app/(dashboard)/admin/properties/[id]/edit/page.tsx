@@ -4,7 +4,8 @@ import { PropertyForm } from "@/components/property/property-form";
 import type { Property } from "@/types/database";
 import { getDashboardTranslator } from "@/i18n/server";
 
-export default async function AdminEditPropertyPage({ params }: { params: { id: string } }) {
+export default async function AdminEditPropertyPage(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     const { t } = await getDashboardTranslator();
     const supabase = await createClient();
     const {

@@ -27,21 +27,21 @@ async function checkAdmin() {
     return { supabase, isAdmin: true, userId: user.id, error: null, status: 200 };
 }
 
-export async function GET(_request: Request, context: { params: { id: string } }) {
+export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
     const { supabase, isAdmin, error, status } = await checkAdmin();
     if (!isAdmin) return NextResponse.json({ error }, { status });
 
     const { data, error: queryError } = (await supabase
         .from("products")
         .select("*")
-        .eq("id", context.params.id)
+        .eq("id", (await context.params).id)
         .single()) as { data: Record<string, unknown> | null; error: { message: string } | null };
 
     if (queryError) return NextResponse.json({ error: queryError.message }, { status: 404 });
     return NextResponse.json({ data });
 }
 
-export async function PATCH(request: Request, context: { params: { id: string } }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
     const { supabase, isAdmin, userId, error, status } = await checkAdmin();
     if (!isAdmin) return NextResponse.json({ error }, { status });
 
@@ -60,7 +60,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     const { error: updateError } = await supabase
         .from("products")
         .update(parsed.data as never)
-        .eq("id", context.params.id);
+        .eq("id", (await context.params).id);
 
     if (updateError) {
         return NextResponse.json({ error: updateError.message }, { status: 500 });
@@ -71,7 +71,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
             actorId: userId,
             action: "updated",
             entityType: "products",
-            entityId: context.params.id,
+            entityId: (await context.params).id,
             metadata: parsed.data,
         });
     }

@@ -20,10 +20,11 @@ type SearchParams = {
 };
 
 type PropertiesPageProps = {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 };
 
-export async function generateMetadata({ searchParams }: PropertiesPageProps): Promise<Metadata> {
+export async function generateMetadata(props: PropertiesPageProps): Promise<Metadata> {
+  const searchParams = await props.searchParams;
   const city = searchParams.city ? ` in ${searchParams.city}` : "";
   const type = searchParams.type ? ` (${searchParams.type})` : "";
   return {
@@ -75,7 +76,8 @@ async function fetchByStatus(
   return { data: result.data || [], count: result.count || 0 };
 }
 
-export default async function PropertiesPage({ searchParams }: PropertiesPageProps) {
+export default async function PropertiesPage(props: PropertiesPageProps) {
+  const searchParams = await props.searchParams;
   const { t } = await getPublicTranslator();
   const supabase = await createClient();
 

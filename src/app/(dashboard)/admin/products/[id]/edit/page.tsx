@@ -4,7 +4,8 @@ import { ProductForm } from "@/components/product/product-form";
 import type { Product } from "@/types/database";
 import { getDashboardTranslator } from "@/i18n/server";
 
-export default async function AdminEditProductPage({ params }: { params: { id: string } }) {
+export default async function AdminEditProductPage(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     const { t } = await getDashboardTranslator();
     const supabase = await createClient();
     const {

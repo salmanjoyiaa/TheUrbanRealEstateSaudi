@@ -11,7 +11,7 @@ const unassignSchema = z.object({
   property_id: z.string().uuid(),
 });
 
-export async function GET(_request: Request, context: { params: { id: string } }) {
+export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -21,7 +21,7 @@ export async function GET(_request: Request, context: { params: { id: string } }
   const { data, error } = await supabase
     .from("agent_property_assignments")
     .select("id, property_id, created_at, properties:property_id(id, title)")
-    .eq("agent_id", context.params.id)
+    .eq("agent_id", (await context.params).id)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -31,7 +31,7 @@ export async function GET(_request: Request, context: { params: { id: string } }
   return NextResponse.json({ assignments: data || [] });
 }
 
-export async function POST(request: Request, context: { params: { id: string } }) {
+export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -50,8 +50,9 @@ export async function POST(request: Request, context: { params: { id: string } }
   }
 
   const supabase = createAdminClient();
+  const { id: agentId } = await context.params;
   const rows = parsed.data.property_ids.map((pid) => ({
-    agent_id: context.params.id,
+    agent_id: agentId,
     property_id: pid,
     assigned_by: admin.profile!.id,
   }));
@@ -67,7 +68,7 @@ export async function POST(request: Request, context: { params: { id: string } }
   return NextResponse.json({ success: true });
 }
 
-export async function DELETE(request: Request, context: { params: { id: string } }) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -89,7 +90,7 @@ export async function DELETE(request: Request, context: { params: { id: string }
   const { error } = await supabase
     .from("agent_property_assignments")
     .delete()
-    .eq("agent_id", context.params.id)
+    .eq("agent_id", (await context.params).id)
     .eq("property_id", parsed.data.property_id);
 
   if (error) {

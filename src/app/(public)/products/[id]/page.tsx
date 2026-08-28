@@ -62,10 +62,11 @@ async function getProduct(
 }
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
   const supabase = await createClient();
   const product = await getProduct(supabase, params.id);
 
@@ -106,7 +107,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function ProductDetailPage({ params }: PageProps) {
+export default async function ProductDetailPage(props: PageProps) {
+  const params = await props.params;
   const { t } = await getPublicTranslator();
   const supabase = await createClient();
   const product = await getProduct(supabase, params.id);

@@ -13,7 +13,7 @@ const payloadSchema = z.object({
   rejection_reason: z.string().optional(),
 });
 
-export async function PATCH(request: Request, context: { params: { id: string } }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -41,7 +41,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   const { error } = await admin.supabase
     .from("agents")
     .update(updatePayload as never)
-    .eq("id", context.params.id);
+    .eq("id", (await context.params).id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -50,7 +50,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   const { data: updatedAgent } = (await admin.supabase
     .from("agents")
     .select("profile_id, profiles:profile_id(full_name, phone, email)")
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .single()) as {
       data: {
         profile_id: string;
@@ -115,7 +115,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     actorId: admin.profile.id,
     action: `agent_${parsed.data.status}`,
     entityType: "agents",
-    entityId: context.params.id,
+    entityId: (await context.params).id,
     metadata: {
       status: parsed.data.status,
       rejection_reason: parsed.data.rejection_reason || null,
@@ -128,7 +128,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   return NextResponse.json({ success: true });
 }
 
-export async function PUT(request: Request, context: { params: { id: string } }) {
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -157,7 +157,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
   const { data: agentRecord, error: fetchError } = (await admin.supabase
     .from("agents")
     .select("profile_id")
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .single()) as { data: { profile_id: string } | null; error: unknown };
 
   if (fetchError || !agentRecord) {
@@ -183,7 +183,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
     const { error: agentError } = await admin.supabase
       .from("agents")
       .update(agentUpdate as never)
-      .eq("id", context.params.id);
+      .eq("id", (await context.params).id);
 
     if (agentError) {
       return NextResponse.json({ error: agentError.message }, { status: 500 });
@@ -194,7 +194,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
     actorId: admin.profile.id,
     action: "agent_edited",
     entityType: "agents",
-    entityId: context.params.id,
+    entityId: (await context.params).id,
     metadata: { ...parsed.data },
   });
 
@@ -203,7 +203,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
   return NextResponse.json({ success: true });
 }
 
-export async function DELETE(request: Request, context: { params: { id: string } }) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -214,7 +214,7 @@ export async function DELETE(request: Request, context: { params: { id: string }
   const { data: agent } = (await adminDb
     .from("agents")
     .select("profile_id")
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .single()) as { data: { profile_id: string } | null };
 
   if (agent?.profile_id) {
@@ -228,7 +228,7 @@ export async function DELETE(request: Request, context: { params: { id: string }
   const { error } = await adminDb
     .from("agents")
     .delete()
-    .eq("id", context.params.id);
+    .eq("id", (await context.params).id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -238,7 +238,7 @@ export async function DELETE(request: Request, context: { params: { id: string }
     actorId: admin.profile.id,
     action: "agent_deleted",
     entityType: "agents",
-    entityId: context.params.id,
+    entityId: (await context.params).id,
     metadata: {},
   });
 

@@ -36,11 +36,12 @@ const STATUS_COLORS: Record<string, string> = {
   reserved: "bg-orange-100 text-orange-800 border-orange-300",
 };
 
-export default async function AdminPropertiesPage({
-  searchParams,
-}: {
-  searchParams: { status?: string; city?: string; district?: string; property_ref?: string };
-}) {
+export default async function AdminPropertiesPage(
+  props: {
+    searchParams: Promise<{ status?: string; city?: string; district?: string; property_ref?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
   const propertyRefQ = sanitizePropertyRefQuery(searchParams?.property_ref);

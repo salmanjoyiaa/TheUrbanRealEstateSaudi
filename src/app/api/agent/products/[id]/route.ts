@@ -29,14 +29,14 @@ async function getApprovedAgent() {
   return { supabase, agentId: agent.id, error: null, status: 200 };
 }
 
-export async function GET(_request: Request, context: { params: { id: string } }) {
+export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
   const { supabase, agentId, error, status } = await getApprovedAgent();
   if (!agentId) return NextResponse.json({ error }, { status });
 
   const { data, error: queryError } = (await supabase
     .from("products")
     .select("*")
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("agent_id", agentId)
     .single()) as { data: Record<string, unknown> | null; error: { message: string } | null };
 
@@ -44,7 +44,7 @@ export async function GET(_request: Request, context: { params: { id: string } }
   return NextResponse.json({ data });
 }
 
-export async function PATCH(request: Request, context: { params: { id: string } }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   const { supabase, agentId, error, status } = await getApprovedAgent();
   if (!agentId) return NextResponse.json({ error }, { status });
 
@@ -63,7 +63,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   const { error: updateError } = await supabase
     .from("products")
     .update(parsed.data as never)
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("agent_id", agentId);
 
   if (updateError) {
@@ -73,14 +73,14 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   return NextResponse.json({ success: true });
 }
 
-export async function DELETE(_request: Request, context: { params: { id: string } }) {
+export async function DELETE(_request: Request, context: { params: Promise<{ id: string }> }) {
   const { supabase, agentId, error, status } = await getApprovedAgent();
   if (!agentId) return NextResponse.json({ error }, { status });
 
   const { error: deleteError } = await supabase
     .from("products")
     .delete()
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("agent_id", agentId);
 
   if (deleteError) {

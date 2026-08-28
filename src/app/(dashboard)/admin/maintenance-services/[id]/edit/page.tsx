@@ -5,10 +5,11 @@ import type { MaintenanceService } from "@/types/database";
 import { getDashboardTranslator } from "@/i18n/server";
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export default async function AdminEditMaintenanceServicePage({ params }: PageProps) {
+export default async function AdminEditMaintenanceServicePage(props: PageProps) {
+  const params = await props.params;
   const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 

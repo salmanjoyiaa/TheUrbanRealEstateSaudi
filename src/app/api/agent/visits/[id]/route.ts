@@ -76,7 +76,7 @@ function revalidateAgentSurfaces() {
   revalidatePath("/agent/assignments", "page");
 }
 
-export async function PATCH(request: Request, context: { params: { id: string } }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   const supabase = await createRouteClient();
   const adminDb = createAdminClient();
   const {
@@ -107,7 +107,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       cancellation_requested_at, cancellation_reviewed_at,
       properties:property_id (title)
     `)
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("visiting_agent_id", user.id)
     .maybeSingle()) as {
       data: {
@@ -161,7 +161,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
         cancellation_reviewed_at: null,
         cancellation_review_note: null,
       } as never)
-      .eq("id", context.params.id)
+      .eq("id", (await context.params).id)
       .eq("visiting_agent_id", user.id);
 
     if (error) {
@@ -169,7 +169,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     }
 
     await supabase.from("visit_comments").insert({
-      visit_id: context.params.id,
+      visit_id: (await context.params).id,
       author_id: user.id,
       content: `Cancel requested by visiting agent. Reason: ${cancellation_reason}`,
     } as never);
@@ -178,7 +178,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       title: "Visit cancel request",
       body: `${currentVisit.visitor_name} — ${propertyTitle} on ${formatMessageDate(currentVisit.visit_date)}. Reason: ${cancellation_reason}`,
       type: "visit_cancel_request",
-      metadata: { visit_id: context.params.id, property_id: currentVisit.property_id },
+      metadata: { visit_id: (await context.params).id, property_id: currentVisit.property_id },
     });
 
     revalidateAgentSurfaces();
@@ -230,7 +230,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       .eq("visit_date", newDate)
       .eq("visit_time", newTimeFull)
       .in("status", ["pending", "assigned", "confirmed"])
-      .neq("id", context.params.id);
+      .neq("id", (await context.params).id);
 
     if ((existingVisitCount || 0) > 0) {
       return NextResponse.json({ error: "Selected slot is already booked" }, { status: 409 });
@@ -256,7 +256,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
         reschedule_date: newDate,
         reschedule_time: newTimeFull,
       } as never)
-      .eq("id", context.params.id)
+      .eq("id", (await context.params).id)
       .eq("visiting_agent_id", user.id);
 
     if (error) {
@@ -279,7 +279,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     await cacheDel(`slots:${currentVisit.property_id}:${newDate}`);
 
     await supabase.from("visit_comments").insert({
-      visit_id: context.params.id,
+      visit_id: (await context.params).id,
       author_id: user.id,
       content: `Visit rescheduled from ${oldDate} ${oldTime} to ${newDate} ${newTime}. Reason: ${reschedule_reason}`,
     } as never);
@@ -291,7 +291,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       visitTime: formatMessageTime(newTimeFull),
     };
 
-    await sendWhatsApp(currentVisit.visitor_phone, visitRescheduled(templateParams), context.params.id);
+    await sendWhatsApp(currentVisit.visitor_phone, visitRescheduled(templateParams), (await context.params).id);
 
     revalidateAgentSurfaces();
     return NextResponse.json({ success: true });
@@ -325,7 +325,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     const { error } = await adminDb
       .from("visit_requests")
       .update(updatePayload as never)
-      .eq("id", context.params.id)
+      .eq("id", (await context.params).id)
       .eq("visiting_agent_id", user.id);
 
     if (error) {
@@ -339,7 +339,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
         : "";
 
     await supabase.from("visit_comments").insert({
-      visit_id: context.params.id,
+      visit_id: (await context.params).id,
       author_id: user.id,
       content: `Visit completed. Outcome: ${outcomeLabels[deal_outcome]}.${commissionNote}${remarkNote}`,
     } as never);
@@ -373,7 +373,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   const { error } = await supabase
     .from("visit_requests")
     .update(updatePayload as never)
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("visiting_agent_id", user.id);
 
   if (error) {

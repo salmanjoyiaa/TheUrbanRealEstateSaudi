@@ -6,7 +6,7 @@ const commentSchema = z.object({
   content: z.string().min(1, "Comment cannot be empty").max(2000, "Comment too long"),
 });
 
-export async function GET(_request: Request, context: { params: { id: string } }) {
+export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
   const supabase = await createRouteClient();
   const {
     data: { user },
@@ -19,7 +19,7 @@ export async function GET(_request: Request, context: { params: { id: string } }
   const { data: visit } = await supabase
     .from("visit_requests")
     .select("id")
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("visiting_agent_id", user.id)
     .maybeSingle();
 
@@ -30,7 +30,7 @@ export async function GET(_request: Request, context: { params: { id: string } }
   const { data, error } = await supabase
     .from("visit_comments")
     .select("id, content, created_at, author:author_id(full_name)")
-    .eq("visit_id", context.params.id)
+    .eq("visit_id", (await context.params).id)
     .order("created_at", { ascending: true });
 
   if (error) {
@@ -40,7 +40,7 @@ export async function GET(_request: Request, context: { params: { id: string } }
   return NextResponse.json({ comments: data || [] });
 }
 
-export async function POST(request: Request, context: { params: { id: string } }) {
+export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
   const supabase = await createRouteClient();
   const {
     data: { user },
@@ -53,7 +53,7 @@ export async function POST(request: Request, context: { params: { id: string } }
   const { data: visit } = await supabase
     .from("visit_requests")
     .select("id")
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("visiting_agent_id", user.id)
     .maybeSingle();
 
@@ -74,7 +74,7 @@ export async function POST(request: Request, context: { params: { id: string } }
   }
 
   const { error } = await supabase.from("visit_comments").insert({
-    visit_id: context.params.id,
+    visit_id: (await context.params).id,
     author_id: user.id,
     content: parsed.data.content,
   } as never);

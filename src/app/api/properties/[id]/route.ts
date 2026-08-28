@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { createApiClient } from "@/lib/supabase/api";
 
-export async function GET(_request: Request, context: { params: { id: string } }) {
+export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
   const supabase = createApiClient();
   const { data, error } = await supabase
     .from("properties")
     .select("*")
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("status", "available")
     .single();
 

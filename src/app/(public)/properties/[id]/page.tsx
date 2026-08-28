@@ -139,10 +139,11 @@ async function getProperty(id: string) {
 }
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
   const property = await getProperty(params.id);
 
   if (!property) {
@@ -169,7 +170,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function PropertyDetailPage({ params }: PageProps) {
+export default async function PropertyDetailPage(props: PageProps) {
+  const params = await props.params;
   const { t } = await getPublicTranslator();
   const property = await getProperty(params.id);
 

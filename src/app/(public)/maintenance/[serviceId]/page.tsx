@@ -10,11 +10,17 @@ export const metadata: Metadata = {
     title: "Service Details - UrbanSaudi",
 };
 
-export default async function ServiceDetailPage({
-    params: { serviceId },
-}: {
-    params: { serviceId: string };
-}) {
+export default async function ServiceDetailPage(
+    props: {
+        params: Promise<{ serviceId: string }>;
+    }
+) {
+    const params = await props.params;
+
+    const {
+        serviceId
+    } = params;
+
     const { t } = await getPublicTranslator();
     const supabase = await createClient();
 

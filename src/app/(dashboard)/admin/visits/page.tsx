@@ -27,18 +27,19 @@ function normalizeVisitTime(time: string): string {
 
 const VISIT_STATUSES = ["pending", "assigned", "confirmed", "cancelled", "completed"] as const;
 
-export default async function AdminVisitsPage({
-  searchParams,
-}: {
-  searchParams: {
-    status?: string;
-    date_from?: string;
-    date_to?: string;
-    sort?: string;
-    property_ref?: string;
-    view?: string;
-  };
-}) {
+export default async function AdminVisitsPage(
+  props: {
+    searchParams: Promise<{
+      status?: string;
+      date_from?: string;
+      date_to?: string;
+      sort?: string;
+      property_ref?: string;
+      view?: string;
+    }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
   const propertyRefQ = sanitizePropertyRefQuery(searchParams.property_ref);

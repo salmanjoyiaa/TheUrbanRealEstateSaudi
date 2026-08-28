@@ -15,7 +15,7 @@ const payloadSchema = z.object({
   admin_notes: z.string().optional(),
 });
 
-export async function PUT(request: Request, context: { params: { id: string } }) {
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -51,7 +51,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
       buyer_phone: parsed.data.buyer_phone,
       message: parsed.data.message || null,
     } as never)
-    .eq("id", context.params.id);
+    .eq("id", (await context.params).id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -61,14 +61,14 @@ export async function PUT(request: Request, context: { params: { id: string } })
     actorId: admin.profile.id,
     action: "lead_edited",
     entityType: "buy_requests",
-    entityId: context.params.id,
+    entityId: (await context.params).id,
     metadata: { ...parsed.data },
   });
 
   return NextResponse.json({ success: true });
 }
 
-export async function PATCH(request: Request, context: { params: { id: string } }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -93,7 +93,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       confirmed_by: admin.profile.id,
       confirmed_at: new Date().toISOString(),
     } as never)
-    .eq("id", context.params.id);
+    .eq("id", (await context.params).id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -113,7 +113,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       )
     `
     )
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .single()) as {
       data: {
         buyer_name: string;
@@ -197,7 +197,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       title: "Buy request updated",
       body: `Buy request status changed to ${parsed.data.status}.`,
       type: "lead_status",
-      metadata: { lead_id: context.params.id, status: parsed.data.status },
+      metadata: { lead_id: (await context.params).id, status: parsed.data.status },
     } as never);
   }
 
@@ -209,7 +209,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     actorId: admin.profile.id,
     action: `lead_${parsed.data.status}`,
     entityType: "buy_requests",
-    entityId: context.params.id,
+    entityId: (await context.params).id,
     metadata: {
       status: parsed.data.status,
       admin_notes: parsed.data.admin_notes || null,

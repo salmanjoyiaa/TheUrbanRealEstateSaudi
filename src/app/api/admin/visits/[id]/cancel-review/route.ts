@@ -36,7 +36,7 @@ function revalidateVisitSurfaces() {
   revalidatePath("/agent/assignments", "page");
 }
 
-export async function POST(request: Request, context: { params: { id: string } }) {
+export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -64,7 +64,7 @@ export async function POST(request: Request, context: { params: { id: string } }
       cancellation_requested_at, cancellation_reviewed_at,
       properties:property_id (title)
     `)
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .maybeSingle()) as { data: CancelRequestVisit | null };
 
   if (!visit) {

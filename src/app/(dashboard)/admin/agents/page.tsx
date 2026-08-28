@@ -38,7 +38,8 @@ const tabs = [
 
 type AgentListType = (typeof tabs)[number]["key"];
 
-export default async function AdminAgentsPage({ searchParams }: { searchParams: SearchParams }) {
+export default async function AdminAgentsPage(props: { searchParams: Promise<SearchParams> }) {
+  const searchParams = await props.searchParams;
   const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
   const rawType = searchParams.agent_type;

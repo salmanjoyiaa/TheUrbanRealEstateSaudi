@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getDashboardTranslator } from "@/i18n/server";
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 type AgentDetail = {
@@ -28,7 +28,8 @@ function normalizeStoragePath(path: string) {
   return path.startsWith("agent-documents/") ? path.replace(/^agent-documents\//, "") : path;
 }
 
-export default async function AdminAgentDetailPage({ params }: PageProps) {
+export default async function AdminAgentDetailPage(props: PageProps) {
+  const params = await props.params;
   const { t } = await getDashboardTranslator();
   const supabase = await createClient();
   const { data } = (await supabase

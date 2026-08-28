@@ -68,8 +68,8 @@ type ProductSellerRow = {
   } | null;
 };
 
-export async function POST(request: NextRequest, context: { params: { id: string } }) {
-  const productId = context.params.id;
+export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const productId = (await context.params).id;
   const ip = getClientIp(request);
   const limit = await enforceRateLimit(ip);
 

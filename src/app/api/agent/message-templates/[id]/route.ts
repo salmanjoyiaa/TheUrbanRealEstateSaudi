@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { visitMessageTemplateSchema } from "@/lib/visit-message-template";
 import { getApprovedVisitingAgent } from "@/lib/server/agent-message-template-auth";
 
-export async function PATCH(request: Request, context: { params: { id: string } }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   const { supabase, profileId, error, status } = await getApprovedVisitingAgent();
   if (!profileId) return NextResponse.json({ error }, { status });
 
@@ -28,7 +28,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       body: parsed.data.body,
       updated_at: new Date().toISOString(),
     } as never)
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("agent_profile_id", profileId);
 
   if (updateError) {
@@ -41,14 +41,14 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   return NextResponse.json({ success: true });
 }
 
-export async function DELETE(_request: Request, context: { params: { id: string } }) {
+export async function DELETE(_request: Request, context: { params: Promise<{ id: string }> }) {
   const { supabase, profileId, error, status } = await getApprovedVisitingAgent();
   if (!profileId) return NextResponse.json({ error }, { status });
 
   const { error: deleteError } = await supabase
     .from("visit_message_templates")
     .delete()
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .eq("agent_profile_id", profileId);
 
   if (deleteError) {

@@ -18,7 +18,7 @@ type RescheduleVisit = {
   request_source: string;
 };
 
-export async function POST(request: Request, context: { params: { id: string } }) {
+export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -39,7 +39,7 @@ export async function POST(request: Request, context: { params: { id: string } }
   const { data: requestVisit } = (await admin.supabase
     .from("visit_requests")
     .select("id, parent_visit_id, property_id, visiting_agent_id, visit_date, visit_time, status, request_source")
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .maybeSingle()) as { data: RescheduleVisit | null };
 
   if (!requestVisit || requestVisit.request_source !== "visiting_agent_reschedule") {

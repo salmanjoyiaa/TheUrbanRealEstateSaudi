@@ -6,7 +6,7 @@ import { maintenanceApproved, maintenanceRejected } from "@/lib/whatsapp-templat
 import { maintenanceApprovedEmail, maintenanceRejectedEmail } from "@/lib/email-templates";
 import { maintenanceRequestAdminUpdateSchema } from "@/lib/validators";
 
-export async function PATCH(request: Request, context: { params: { id: string } }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   const admin = await getAdminRouteContext();
   if (admin.error || !admin.profile) {
     return NextResponse.json({ error: admin.error }, { status: admin.status });
@@ -37,7 +37,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     .select(
       "id, status, customer_name, customer_email, customer_phone, service_type, details, visit_date, visit_time, admin_notes, service_id, agent_id"
     )
-    .eq("id", context.params.id)
+    .eq("id", (await context.params).id)
     .single()) as {
     data: {
       id: string;
@@ -75,7 +75,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   const { error } = await admin.supabase
     .from("maintenance_requests")
     .update(updates as never)
-    .eq("id", context.params.id);
+    .eq("id", (await context.params).id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -152,7 +152,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
     actorId: admin.profile.id,
     action: auditAction,
     entityType: "maintenance_requests",
-    entityId: context.params.id,
+    entityId: (await context.params).id,
     metadata: {
       ...parsed.data,
       previous_status: prevStatus,

@@ -19,7 +19,8 @@ type Row = {
   } | null;
 };
 
-export default async function AdminAuditLogPage({ searchParams }: { searchParams: SearchParams }) {
+export default async function AdminAuditLogPage(props: { searchParams: Promise<SearchParams> }) {
+  const searchParams = await props.searchParams;
   const { t } = await getDashboardTranslator();
   const supabase = createAdminClient();
   const action = searchParams.action || "";

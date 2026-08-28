@@ -28,16 +28,17 @@ type NotificationLog = {
     created_at: string;
 };
 
-export default async function MessageLogsPage({
-    searchParams,
-}: {
-    searchParams: {
-        channel?: string;
-        status?: string;
-        date_from?: string;
-        date_to?: string;
-    };
-}) {
+export default async function MessageLogsPage(
+    props: {
+        searchParams: Promise<{
+            channel?: string;
+            status?: string;
+            date_from?: string;
+            date_to?: string;
+        }>;
+    }
+) {
+    const searchParams = await props.searchParams;
     const { t } = await getDashboardTranslator();
     const supabase = createAdminClient();
     let query = supabase

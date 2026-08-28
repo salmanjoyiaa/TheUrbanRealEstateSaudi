@@ -4,10 +4,11 @@ import { BlockDatesClient } from "@/components/agent/block-dates-client";
 import { getDashboardTranslator } from "@/i18n/server";
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export default async function AgentPropertyBlockDatesPage({ params }: PageProps) {
+export default async function AgentPropertyBlockDatesPage(props: PageProps) {
+  const params = await props.params;
   const { t } = await getDashboardTranslator();
   const supabase = await createClient();
 

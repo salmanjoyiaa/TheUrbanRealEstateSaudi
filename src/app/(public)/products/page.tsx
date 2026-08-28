@@ -21,10 +21,11 @@ type SearchParams = {
 };
 
 type ProductsPageProps = {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 };
 
-export async function generateMetadata({ searchParams }: ProductsPageProps): Promise<Metadata> {
+export async function generateMetadata(props: ProductsPageProps): Promise<Metadata> {
+  const searchParams = await props.searchParams;
   const city = searchParams.city ? ` in ${searchParams.city}` : "";
   return {
     title: `Products${city}`,
@@ -40,7 +41,8 @@ export async function generateMetadata({ searchParams }: ProductsPageProps): Pro
   };
 }
 
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+export default async function ProductsPage(props: ProductsPageProps) {
+  const searchParams = await props.searchParams;
   const { t } = await getPublicTranslator();
   const supabase = await createClient();
   const listProductHref = await getListProductFreeHref(supabase);
