@@ -147,6 +147,10 @@ export const propertySchema = z.object({
   blocked_dates: z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format")).default([]),
   video_url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
   is_video_featured: z.boolean().default(false),
+  facebook_video_url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  instagram_video_url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  youtube_video_url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  tiktok_video_url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
   visiting_agent_instructions: z.string().max(5000, "Instructions must not exceed 5000 characters").optional(),
   visiting_agent_image: z.string().url("Must be a valid URL").optional().or(z.literal("")),
 });

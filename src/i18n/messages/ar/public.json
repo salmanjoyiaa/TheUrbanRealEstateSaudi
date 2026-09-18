@@ -208,7 +208,12 @@
   },
   "propertyDetail": {
     "breadcrumbHome": "الرئيسية",
-    "breadcrumbProperties": "العقارات"
+    "breadcrumbProperties": "العقارات",
+    "watchOnSocial": "شاهد على وسائل التواصل",
+    "socialFacebook": "شاهد على فيسبوك",
+    "socialInstagram": "شاهد على إنستغرام",
+    "socialYoutube": "شاهد على يوتيوب",
+    "socialTiktok": "شاهد على تيك توك"
   },
   "productDetail": {
     "breadcrumbHome": "الرئيسية",

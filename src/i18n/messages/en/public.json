@@ -208,7 +208,12 @@
   },
   "propertyDetail": {
     "breadcrumbHome": "Home",
-    "breadcrumbProperties": "Properties"
+    "breadcrumbProperties": "Properties",
+    "watchOnSocial": "Watch on social",
+    "socialFacebook": "Watch on Facebook",
+    "socialInstagram": "Watch on Instagram",
+    "socialYoutube": "Watch on YouTube",
+    "socialTiktok": "Watch on TikTok"
   },
   "productDetail": {
     "breadcrumbHome": "Home",

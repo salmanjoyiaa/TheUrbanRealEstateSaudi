@@ -89,6 +89,10 @@ export interface Property {
   visiting_agent_image: string | null;
   video_url: string | null;
   is_video_featured: boolean;
+  facebook_video_url: string | null;
+  instagram_video_url: string | null;
+  youtube_video_url: string | null;
+  tiktok_video_url: string | null;
   created_at: string;
   updated_at: string;
 }

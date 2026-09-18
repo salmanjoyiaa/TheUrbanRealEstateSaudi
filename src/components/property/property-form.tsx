@@ -117,6 +117,10 @@ export function PropertyForm({ mode, initialData, submitEndpoint, redirectPath }
   );
   const [videoUrl, setVideoUrl] = useState<string | null>(initialData?.video_url || null);
   const [isVideoFeatured, setIsVideoFeatured] = useState<boolean>(initialData?.is_video_featured || false);
+  const [facebookVideoUrl, setFacebookVideoUrl] = useState(initialData?.facebook_video_url || "");
+  const [instagramVideoUrl, setInstagramVideoUrl] = useState(initialData?.instagram_video_url || "");
+  const [youtubeVideoUrl, setYoutubeVideoUrl] = useState(initialData?.youtube_video_url || "");
+  const [tiktokVideoUrl, setTiktokVideoUrl] = useState(initialData?.tiktok_video_url || "");
 
   const [propertyRef, setPropertyRef] = useState(initialData?.property_ref || "");
   const [buildingFeatures, setBuildingFeatures] = useState<string[]>(initialData?.building_features || []);
@@ -209,6 +213,10 @@ export function PropertyForm({ mode, initialData, submitEndpoint, redirectPath }
         photo_alt_texts: photoAltTexts,
         video_url: videoUrl || "",
         is_video_featured: isVideoFeatured,
+        facebook_video_url: facebookVideoUrl || "",
+        instagram_video_url: instagramVideoUrl || "",
+        youtube_video_url: youtubeVideoUrl || "",
+        tiktok_video_url: tiktokVideoUrl || "",
       };
 
       const defaultEndpoint = mode === "create" ? "/api/agent/properties" : `/api/agent/properties/${initialData?.id}`;
@@ -826,6 +834,61 @@ export function PropertyForm({ mode, initialData, submitEndpoint, redirectPath }
                   <Label htmlFor="feature-video" className="cursor-pointer">Feature this video in the Homepage slider</Label>
                 </div>
               )}
+            </div>
+
+            <div className="space-y-4 pt-6 border-t">
+              <div>
+                <Label className="text-base">Video Links on Social Media</Label>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Optional links to this property&apos;s videos on social platforms. Leave blank to hide from customers.
+                </p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="facebook-video-url">Facebook</Label>
+                  <Input
+                    id="facebook-video-url"
+                    type="url"
+                    value={facebookVideoUrl}
+                    onChange={(event) => setFacebookVideoUrl(event.target.value)}
+                    disabled={isSubmitting}
+                    placeholder="https://facebook.com/..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="instagram-video-url">Instagram</Label>
+                  <Input
+                    id="instagram-video-url"
+                    type="url"
+                    value={instagramVideoUrl}
+                    onChange={(event) => setInstagramVideoUrl(event.target.value)}
+                    disabled={isSubmitting}
+                    placeholder="https://instagram.com/..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="youtube-video-url">YouTube</Label>
+                  <Input
+                    id="youtube-video-url"
+                    type="url"
+                    value={youtubeVideoUrl}
+                    onChange={(event) => setYoutubeVideoUrl(event.target.value)}
+                    disabled={isSubmitting}
+                    placeholder="https://youtube.com/..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="tiktok-video-url">TikTok</Label>
+                  <Input
+                    id="tiktok-video-url"
+                    type="url"
+                    value={tiktokVideoUrl}
+                    onChange={(event) => setTiktokVideoUrl(event.target.value)}
+                    disabled={isSubmitting}
+                    placeholder="https://tiktok.com/..."
+                  />
+                </div>
+              </div>
             </div>
           </div>
         )}

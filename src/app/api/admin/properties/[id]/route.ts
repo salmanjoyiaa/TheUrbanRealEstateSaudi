@@ -63,7 +63,8 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     const stringFields = [
         "district", "address", "property_ref", "layout", "location_url",
         "rental_period", "office_fee", "water_bill_included", "security_deposit", "drive_link",
-        "broker_fee", "visiting_agent_image", "payment_methods_accepted", "installments", "video_url"
+        "broker_fee", "visiting_agent_image", "payment_methods_accepted", "installments", "video_url",
+        "facebook_video_url", "instagram_video_url", "youtube_video_url", "tiktok_video_url"
     ];
     for (const field of stringFields) {
         if (updatePayload[field] === "") {

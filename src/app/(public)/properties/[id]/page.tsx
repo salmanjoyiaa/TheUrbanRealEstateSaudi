@@ -6,6 +6,7 @@ import { formatPhone, formatSAR } from "@/lib/format";
 import { KITCHEN_FEATURES, UTILITIES_AND_SERVICES } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { PropertyGallery } from "@/components/property/property-gallery";
+import { PropertySocialVideoLinks } from "@/components/property/property-social-video-links";
 import { VisitScheduler } from "@/components/visit/visit-scheduler";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildBreadcrumbJsonLd } from "@/lib/seo";
@@ -50,6 +51,10 @@ type PropertyDetail = {
   cover_image_index: number;
   video_url: string | null;
   is_video_featured: boolean;
+  facebook_video_url: string | null;
+  instagram_video_url: string | null;
+  youtube_video_url: string | null;
+  tiktok_video_url: string | null;
   created_at: string;
   photoAltTexts?: Record<string, string>;
   agents: {
@@ -95,6 +100,7 @@ async function getProperty(id: string) {
       security_deposit, payment_methods_accepted, rental_period, installments,
       apartment_features, nearby_places,
       blocked_dates, cover_image_index, created_at, video_url, is_video_featured,
+      facebook_video_url, instagram_video_url, youtube_video_url, tiktok_video_url,
       agents:agent_id (
         company_name,
         profiles:profile_id (full_name, phone)
@@ -263,6 +269,13 @@ export default async function PropertyDetailPage(props: PageProps) {
               <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-[#536471]">
                 {property.description}
               </p>
+
+              <PropertySocialVideoLinks
+                facebookVideoUrl={property.facebook_video_url}
+                instagramVideoUrl={property.instagram_video_url}
+                youtubeVideoUrl={property.youtube_video_url}
+                tiktokVideoUrl={property.tiktok_video_url}
+              />
 
               {property.location_url && (
                 <>
