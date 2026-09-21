@@ -78,6 +78,7 @@ export async function PUT(request: Request) {
 
   revalidatePath("/");
   revalidatePath("/properties", "layout");
+  revalidatePath("/admin/themes");
 
   return NextResponse.json({ success: true, enabled, discountPercent });
 }

@@ -12,6 +12,7 @@ import {
   Star,
   Clock,
   Settings,
+  Palette,
   FileText,
   FileDown,
   User,
@@ -88,7 +89,10 @@ export const adminNavGroupsDef: NavGroupDef[] = [
   },
   {
     labelKey: "nav.groups.content",
-    items: [{ titleKey: "nav.admin.testimonials", href: "/admin/testimonials", icon: Star }],
+    items: [
+      { titleKey: "nav.admin.testimonials", href: "/admin/testimonials", icon: Star },
+      { titleKey: "nav.admin.themes", href: "/admin/themes", icon: Palette },
+    ],
   },
   {
     labelKey: "nav.groups.system",

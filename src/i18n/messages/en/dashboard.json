@@ -30,6 +30,7 @@
       "visitHours": "Visit Hours",
       "visitPerformance": "Visit Performance",
       "testimonials": "Testimonials",
+      "themes": "Themes & Campaigns",
       "messageLogs": "Message Logs",
       "auditLog": "Audit Log",
       "settings": "Settings",
@@ -169,11 +170,23 @@
       "english": "English",
       "arabic": "Arabic (Saudi)",
       "saveLanguages": "Save language settings",
-      "languagesSaved": "Language settings saved"
+      "languagesSaved": "Language settings saved",
+      "themesTitle": "Themes & Campaigns",
+      "themesSubtitle": "Seasonal homepage themes and promotional campaigns are managed on their own page.",
+      "themesCta": "Manage themes"
+    },
+    "themes": {
+      "title": "Themes & Campaigns",
+      "subtitle": "Turn seasonal homepage themes and promotions on or off and tune what customers see.",
+      "hint": "Each theme is independent. When a theme is off, its banner, colors, popup, and discounts are fully hidden from the public site.",
+      "saudiNationalDay": {
+        "name": "Saudi National Day",
+        "description": "Green hero theme, celebratory popup, and office-fee discount around 23 September."
+      }
     },
     "promotion": {
-      "title": "Saudi National Day Promotion",
-      "subtitle": "Control the homepage campaign and office fee discount shown to customers.",
+      "title": "Campaign settings",
+      "subtitle": "Control the homepage theme, celebratory popup, and office fee discount shown to customers.",
       "statusActive": "Active",
       "statusInactive": "Inactive",
       "campaignStatus": "Campaign status",
