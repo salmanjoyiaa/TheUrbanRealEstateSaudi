@@ -13,6 +13,7 @@ import { HomepageNav } from "@/components/home/homepage-nav";
 import { HeroHeadline } from "@/components/home/hero-headline";
 import { PropertyIdSearch } from "@/components/home/property-id-search";
 import { PropertySlider } from "@/components/home/property-slider";
+import { SaudiNationalDayBanner } from "@/components/home/saudi-national-day-banner";
 import { AnimateSection, AnimateStagger, AnimateItem } from "@/components/home/animate-section";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -59,13 +60,16 @@ type HeroStats = {
 type HomePageContentProps = {
   featuredProperties: Property[];
   heroStats: HeroStats;
+  nationalDayPromotion?: { enabled: boolean; discountPercent: number } | null;
 };
 
 export function HomePageContent({
   featuredProperties,
   heroStats,
+  nationalDayPromotion = null,
 }: HomePageContentProps) {
   const { t } = useLocale();
+  const promoActive = !!nationalDayPromotion?.enabled;
 
   const statItems = [
     { labelKey: "home.stats.propertiesListed", value: heroStats.propertiesCount.toLocaleString(), icon: Building2 },
@@ -96,8 +100,20 @@ export function HomePageContent({
     <main className="min-h-screen">
       <JsonLd data={[buildOrganizationJsonLd(), buildWebSiteJsonLd()]} />
       <HomepageNav />
+      {promoActive ? (
+        <SaudiNationalDayBanner discountPercent={nationalDayPromotion!.discountPercent} />
+      ) : null}
 
-      <section className="relative min-h-[70vh] flex items-center gradient-primary">
+      <section
+        className={
+          promoActive
+            ? "relative min-h-[70vh] flex items-center gradient-primary national-day-hero"
+            : "relative min-h-[70vh] flex items-center gradient-primary"
+        }
+      >
+        {promoActive ? (
+          <div className="national-day-hero-accent" aria-hidden />
+        ) : null}
         <div className="absolute inset-0 overflow-hidden opacity-10">
           <div className="absolute top-20 right-20 w-72 h-72 bg-blue-400 rounded-full blur-3xl animate-float" />
           <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-400 rounded-full blur-3xl animate-float" style={{ animationDelay: "3s" }} />

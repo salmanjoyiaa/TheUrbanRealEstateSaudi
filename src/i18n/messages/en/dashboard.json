@@ -171,6 +171,27 @@
       "saveLanguages": "Save language settings",
       "languagesSaved": "Language settings saved"
     },
+    "promotion": {
+      "title": "Saudi National Day Promotion",
+      "subtitle": "Control the homepage campaign and office fee discount shown to customers.",
+      "statusActive": "Active",
+      "statusInactive": "Inactive",
+      "campaignStatus": "Campaign status",
+      "campaignStatusHint": "When off, the theme, banner, and discount are fully hidden.",
+      "on": "ON",
+      "off": "OFF",
+      "discountPercent": "Discount percentage",
+      "preview": "Customer preview",
+      "previewTitle": "Saudi National Day Special",
+      "previewMessage": "Enjoy {percent}% OFF on Office Fees",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "saved": "Promotion settings saved",
+      "loading": "Loading settings…",
+      "loadFailed": "Failed to load promotion settings",
+      "saveFailed": "Failed to save promotion settings",
+      "invalidPercent": "Discount must be between 0 and 100"
+    },
     "visitPdf": {
       "title": "Visit PDF",
       "subtitle": "Download daily visit PDFs and send summaries to agents."

@@ -50,6 +50,10 @@
       "browseProperties": "Browse Properties",
       "listProperty": "List Your Property"
     },
+    "nationalDay": {
+      "title": "Saudi National Day Special",
+      "offer": "Enjoy {percent}% OFF on Office Fees"
+    },
     "stats": {
       "propertiesListed": "Properties Listed",
       "propertyAgents": "Property Agents",
@@ -213,7 +217,10 @@
     "socialFacebook": "Watch on Facebook",
     "socialInstagram": "Watch on Instagram",
     "socialYoutube": "Watch on YouTube",
-    "socialTiktok": "Watch on TikTok"
+    "socialTiktok": "Watch on TikTok",
+    "officeFee": "Office Fee",
+    "nationalDayDiscount": "Saudi National Day Discount ({percent}%)",
+    "finalOfficeFee": "Final Office Fee"
   },
   "productDetail": {
     "breadcrumbHome": "Home",

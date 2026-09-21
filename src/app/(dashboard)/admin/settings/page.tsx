@@ -1,4 +1,5 @@
 import { LanguageSettingsForm } from "@/components/admin/language-settings-form";
+import { SaudiNationalDaySettingsForm } from "@/components/admin/saudi-national-day-settings-form";
 import { getDashboardTranslator } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
@@ -12,6 +13,7 @@ export default async function AdminSettingsPage() {
         <p className="text-sm text-muted-foreground">{t("admin.settings.subtitle")}</p>
       </div>
       <LanguageSettingsForm />
+      <SaudiNationalDaySettingsForm />
     </div>
   );
 }

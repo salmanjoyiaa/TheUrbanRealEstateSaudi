@@ -385,6 +385,46 @@ select {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
 }
 
+/* Saudi National Day — subtle hero accent (only when campaign enabled) */
+.national-day-hero {
+  position: relative;
+}
+
+.national-day-hero-accent {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 108, 53, 0.28) 0%, transparent 42%),
+    repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 18px,
+      rgba(255, 255, 255, 0.03) 18px,
+      rgba(255, 255, 255, 0.03) 19px
+    );
+}
+
+.national-day-hero::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 1;
+  background: linear-gradient(90deg, #006c35 0%, #ffffff 50%, #006c35 100%);
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .national-day-hero-accent {
+    animation: none;
+  }
+}
+
 .gradient-accent {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }

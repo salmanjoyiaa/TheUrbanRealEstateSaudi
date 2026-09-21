@@ -7,10 +7,12 @@ import { KITCHEN_FEATURES, UTILITIES_AND_SERVICES } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { PropertyGallery } from "@/components/property/property-gallery";
 import { PropertySocialVideoLinks } from "@/components/property/property-social-video-links";
+import { OfficeFeeDisplay } from "@/components/property/office-fee-display";
 import { VisitScheduler } from "@/components/visit/visit-scheduler";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildBreadcrumbJsonLd } from "@/lib/seo";
 import { getPublicTranslator } from "@/i18n/server";
+import { getActivePromotion } from "@/lib/promotion";
 
 type PropertyDetail = {
   id: string;
@@ -179,7 +181,10 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 export default async function PropertyDetailPage(props: PageProps) {
   const params = await props.params;
   const { t } = await getPublicTranslator();
-  const property = await getProperty(params.id);
+  const [property, promotion] = await Promise.all([
+    getProperty(params.id),
+    getActivePromotion(),
+  ]);
 
   if (!property) {
     notFound();
@@ -408,7 +413,15 @@ export default async function PropertyDetailPage(props: PageProps) {
                         <p className="sm:col-span-2"><span className="font-medium text-[#0f1419]">Payment methods accepted:</span> <span className="text-[#536471]">{property.payment_methods_accepted}</span></p>
                       )}
                       {property.office_fee && (
-                        <p><span className="font-medium text-[#0f1419]">Office Fee:</span> <span className="text-[#536471]">SAR {property.office_fee}</span></p>
+                        <OfficeFeeDisplay
+                          officeFee={property.office_fee}
+                          promotion={promotion}
+                          labels={{
+                            officeFee: t("propertyDetail.officeFee"),
+                            discount: t("propertyDetail.nationalDayDiscount"),
+                            finalOfficeFee: t("propertyDetail.finalOfficeFee"),
+                          }}
+                        />
                       )}
                       {property.broker_fee && (
                         <p><span className="font-medium text-[#0f1419]">Service Fee:</span> <span className="text-[#536471]">SAR {property.broker_fee}</span></p>

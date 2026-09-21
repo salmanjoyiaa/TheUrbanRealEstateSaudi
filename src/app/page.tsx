@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { HomePageContent } from "@/components/home/home-page-content";
+import { getActivePromotion } from "@/lib/promotion";
 
 type Property = {
   id: string;
@@ -81,10 +82,17 @@ export default async function HomePage() {
     console.error("[HomePage] unexpected error:", err);
   }
 
+  const promotion = await getActivePromotion();
+
   return (
     <HomePageContent
       featuredProperties={featuredProperties}
       heroStats={heroStats}
+      nationalDayPromotion={
+        promotion.enabled
+          ? { enabled: true, discountPercent: promotion.discountPercent }
+          : null
+      }
     />
   );
 }
