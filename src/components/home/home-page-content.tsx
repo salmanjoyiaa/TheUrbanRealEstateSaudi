@@ -14,6 +14,8 @@ import { HeroHeadline } from "@/components/home/hero-headline";
 import { PropertyIdSearch } from "@/components/home/property-id-search";
 import { PropertySlider } from "@/components/home/property-slider";
 import { SaudiNationalDayBanner } from "@/components/home/saudi-national-day-banner";
+import { SaudiNationalDayPopup } from "@/components/home/saudi-national-day-popup";
+import { SaudiFlagChip } from "@/components/home/saudi-flag";
 import { AnimateSection, AnimateStagger, AnimateItem } from "@/components/home/animate-section";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -100,33 +102,53 @@ export function HomePageContent({
     <main className="min-h-screen">
       <JsonLd data={[buildOrganizationJsonLd(), buildWebSiteJsonLd()]} />
       <HomepageNav />
+
       {promoActive ? (
-        <SaudiNationalDayBanner discountPercent={nationalDayPromotion!.discountPercent} />
+        <SaudiNationalDayPopup
+          discountPercent={nationalDayPromotion!.discountPercent}
+        />
       ) : null}
 
       <section
         className={
           promoActive
-            ? "relative min-h-[70vh] flex items-center gradient-primary national-day-hero"
+            ? "relative min-h-[70vh] flex items-center national-day-hero"
             : "relative min-h-[70vh] flex items-center gradient-primary"
         }
       >
         {promoActive ? (
           <div className="national-day-hero-accent" aria-hidden />
         ) : null}
-        <div className="absolute inset-0 overflow-hidden opacity-10">
-          <div className="absolute top-20 right-20 w-72 h-72 bg-blue-400 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-400 rounded-full blur-3xl animate-float" style={{ animationDelay: "3s" }} />
+        <div className={promoActive ? "absolute inset-0 overflow-hidden opacity-[0.16]" : "absolute inset-0 overflow-hidden opacity-10"}>
+          <div className={promoActive ? "absolute top-20 right-20 w-72 h-72 bg-emerald-300 rounded-full blur-3xl animate-float" : "absolute top-20 right-20 w-72 h-72 bg-blue-400 rounded-full blur-3xl animate-float"} />
+          <div
+            className={
+              promoActive
+                ? "absolute bottom-20 left-20 w-96 h-96 bg-emerald-500 rounded-full blur-3xl animate-float"
+                : "absolute bottom-20 left-20 w-96 h-96 bg-purple-400 rounded-full blur-3xl animate-float"
+            }
+            style={{ animationDelay: "3s" }}
+          />
           <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-indigo-400 rounded-full blur-3xl animate-float" style={{ animationDelay: "1.5s" }} />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-28">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div className="relative z-10 max-w-xl flex flex-col">
-              <div className="animate-fade-in-up inline-flex items-center gap-2 self-start px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-[12px] sm:text-[13px] mb-5 sm:mb-6 animate-soft-glow">
-                <Star className="h-3.5 w-3.5 text-yellow-400 shrink-0" />
-                {t("home.hero.badge")}
-              </div>
+              {promoActive ? (
+                <div className="animate-fade-in-up mb-5 inline-flex items-center gap-2.5 self-start rounded-full border border-emerald-300/25 bg-emerald-500/[0.12] px-3.5 py-1.5 text-[12px] font-medium tracking-wide text-emerald-100/95 shadow-[0_0_24px_-6px_rgba(0,108,53,0.6)] backdrop-blur-sm sm:mb-6 sm:text-[13px]">
+                  <SaudiFlagChip />
+                  {t("home.nationalDay.badge").replace(
+                    "{percent}",
+                    String(nationalDayPromotion!.discountPercent)
+                  )}
+                </div>
+              ) : (
+                <div className="animate-fade-in-up inline-flex items-center gap-2 self-start px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-[12px] sm:text-[13px] mb-5 sm:mb-6 animate-soft-glow">
+                  <Star className="h-3.5 w-3.5 text-yellow-400 shrink-0" />
+                  {t("home.hero.badge")}
+                </div>
+              )}
 
               <div className="mb-5 sm:mb-6">
                 <HeroHeadline />
@@ -141,7 +163,7 @@ export function HomePageContent({
               <div className="animate-fade-in-up flex justify-center lg:hidden mb-8" style={{ animationDelay: "0.35s" }}>
                 <div className="relative w-full max-w-lg sm:max-w-xl animate-hero-card-float">
                   <div className="absolute inset-0 bg-white/5 rounded-3xl blur-xl" />
-                  <div className="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-3 sm:p-5 shadow-xl animate-hero-card-glow">
+                  <div className={promoActive ? "relative bg-white/10 backdrop-blur-md border border-emerald-300/25 rounded-3xl p-3 sm:p-5 shadow-xl shadow-emerald-900/30 animate-hero-card-glow" : "relative bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-3 sm:p-5 shadow-xl animate-hero-card-glow"}>
                     <div className="grid grid-cols-4 gap-2 sm:gap-3">
                       {statItems.map((stat) => (
                         <div
@@ -174,7 +196,7 @@ export function HomePageContent({
             <div className="animate-fade-in-up hidden lg:flex justify-center lg:justify-end" style={{ animationDelay: "0.4s" }}>
               <div className="relative w-full max-w-3xl xl:max-w-4xl animate-hero-card-float">
                 <div className="absolute inset-0 bg-white/5 rounded-3xl blur-xl" />
-                <div className="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-5 xl:p-7 shadow-xl transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:border-white/30 animate-hero-card-glow w-full">
+                <div className={promoActive ? "relative bg-white/10 backdrop-blur-md border border-emerald-300/25 rounded-3xl p-5 xl:p-7 shadow-xl shadow-emerald-900/30 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:border-emerald-300/40 animate-hero-card-glow w-full" : "relative bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-5 xl:p-7 shadow-xl transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:border-white/30 animate-hero-card-glow w-full"}>
                   <div className="grid grid-cols-4 gap-3 xl:gap-4">
                     {statItems.map((stat) => (
                       <div
@@ -191,6 +213,13 @@ export function HomePageContent({
               </div>
             </div>
           </div>
+
+          {promoActive ? (
+            <SaudiNationalDayBanner
+              discountPercent={nationalDayPromotion!.discountPercent}
+              className="mt-10 sm:mt-14"
+            />
+          ) : null}
         </div>
       </section>
 

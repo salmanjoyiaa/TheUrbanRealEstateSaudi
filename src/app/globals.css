@@ -276,7 +276,11 @@ select {
   .animate-hero-text-glow,
   .animate-soft-glow,
   .animate-hero-card-float,
-  .animate-hero-card-glow {
+  .animate-hero-card-glow,
+  .animate-national-day-glow,
+  .animate-national-day-sweep,
+  .animate-national-day-float,
+  .animate-national-day-spark {
     animation: none;
   }
   .animate-fade-in-up,
@@ -388,6 +392,7 @@ select {
 /* Saudi National Day — subtle hero accent (only when campaign enabled) */
 .national-day-hero {
   position: relative;
+  background: linear-gradient(135deg, #16162b 0%, #16213e 42%, #0b3a2c 100%);
 }
 
 .national-day-hero-accent {
@@ -396,14 +401,13 @@ select {
   inset: 0;
   z-index: 0;
   background:
-    linear-gradient(180deg, rgba(0, 108, 53, 0.28) 0%, transparent 42%),
-    repeating-linear-gradient(
-      135deg,
-      transparent,
-      transparent 18px,
-      rgba(255, 255, 255, 0.03) 18px,
-      rgba(255, 255, 255, 0.03) 19px
-    );
+    radial-gradient(ellipse 70% 55% at 12% 0%, rgba(0, 108, 53, 0.45) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 45% at 90% 100%, rgba(16, 185, 129, 0.18) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(0, 108, 53, 0.18) 0%, transparent 45%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-opacity='0.028' stroke-width='0.8' d='M48 12l7 17 17 7-17 7-7 17-7-17-17-7 17-7z'/%3E%3C/svg%3E");
+  background-size: auto, auto, auto, 96px 96px;
+  mask-image: linear-gradient(180deg, #000 0%, #000 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 70%, transparent 100%);
 }
 
 .national-day-hero::before {
@@ -415,12 +419,83 @@ select {
   right: 0;
   height: 3px;
   z-index: 1;
-  background: linear-gradient(90deg, #006c35 0%, #ffffff 50%, #006c35 100%);
-  opacity: 0.85;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #006c35 15%,
+    #ffffff 50%,
+    #006c35 85%,
+    transparent 100%
+  );
+  opacity: 0.95;
+  box-shadow: 0 0 24px rgba(0, 108, 53, 0.5), 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes national-day-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.06);
+  }
+}
+
+.animate-national-day-glow {
+  animation: national-day-glow 10s ease-in-out infinite;
+}
+
+@keyframes national-day-sweep {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+.animate-national-day-sweep {
+  animation: national-day-sweep 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes national-day-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-1deg);
+  }
+}
+
+.animate-national-day-float {
+  animation: national-day-float 7s ease-in-out infinite;
+  transform: rotate(-2deg);
+}
+
+@keyframes national-day-spark {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-6px);
+  }
+}
+
+.animate-national-day-spark {
+  animation: national-day-spark 3.5s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .national-day-hero-accent {
+  .animate-national-day-glow,
+  .animate-national-day-sweep,
+  .animate-national-day-float,
+  .animate-national-day-spark {
     animation: none;
   }
 }

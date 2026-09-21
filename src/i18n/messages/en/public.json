@@ -51,8 +51,18 @@
       "listProperty": "List Your Property"
     },
     "nationalDay": {
-      "title": "Saudi National Day Special",
-      "offer": "Enjoy {percent}% OFF on Office Fees"
+      "title": "Happy Saudi National Day",
+      "offer": "Enjoy {percent}% OFF on Office Fees",
+      "eyebrow": "Saudi National Day • 23 September",
+      "subtitle": "Celebrate with the Kingdom — a limited-time office-fee offer on every verified listing.",
+      "offLabel": "OFF office fees",
+      "cta": "Browse offers",
+      "badge": "Happy National Day • {percent}% off office fees",
+      "popupGreeting": "Happy Saudi National Day!",
+      "popupMessage": "Proud to celebrate with you. Enjoy {percent}% off office fees on all verified properties.",
+      "popupOfferLabel": "National Day offer",
+      "popupCta": "Explore the offer",
+      "popupDismiss": "Continue browsing"
     },
     "stats": {
       "propertiesListed": "Properties Listed",
